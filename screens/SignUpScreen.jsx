@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native'
 import styles from "../styles";
 
 const auth = getAuth()
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [submitMessage, setSubmitMessage] = useState('')
@@ -14,7 +14,8 @@ export default function SignUpScreen() {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredentials) => {
                 const user = userCredentials.user
-                console.log(user)
+                setSubmitMessage('Votre compte a été créé avec succès !')
+                navigation.navigate('Configurer le compte')
             })
             .catch((error) => {
                 const errorCode = error.code;
