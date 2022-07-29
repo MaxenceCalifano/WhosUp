@@ -1,17 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './config/firebase'
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, onAuthStateChanged} from 'firebase/auth'
 
 import AuthStack from './navigation/AuthStack';
+import Main from './navigation/Main'
 
 export default function App() {
  
   const auth = getAuth()
+  const [user,setUser] = useState(null)
 
+  useEffect ( () => {
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        console.log('user')
+        setUser(user)
+      } else {
+        console.log('user is not connected')
+      }
+    })
+  },[])
   return (
-       <AuthStack />
+       user!==null ? <Main /> : <AuthStack />
   );
 }
 

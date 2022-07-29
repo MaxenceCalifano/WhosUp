@@ -3,7 +3,8 @@ import 'dotenv/config';
 export default {
   expo: {
     name: "WhosUp",
-    slug: "WhosUp",
+    slug: "whosUp",
+    owner : 'velomarchand',
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",

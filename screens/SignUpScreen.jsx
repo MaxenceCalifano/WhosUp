@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native'
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth'
+import { StyleSheet, View, Text, Pressable, TextInput, Button } from 'react-native'
 import styles from "../styles";
+import Google_SignIn from "../components/Google_signIn";
 
 const auth = getAuth()
 
 export default function SignUpScreen({ navigation }) {
-    const [email, setEmail] = useState(null);
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState(null);
     const [submitMessage, setSubmitMessage] = useState('')
 
@@ -63,6 +64,15 @@ export default function SignUpScreen({ navigation }) {
                 <Text style={{ color: styles.color, alignSelf: 'center' }}>Créer un compte</Text>
             </Pressable>
             <Text style={{ alignSelf: 'center' }}>{submitMessage}</Text>
+
+            {/* <TextInput
+                value={email}
+                keyboardType='email-address'
+                autoComplete="email"
+                onChangeText={(value) => setEmail(value)}
+                style={styles.input} placeholder="e-mail" /> */}
+            <Google_SignIn />
+            <Button title="lien magique" />
         </View>
     )
 }
