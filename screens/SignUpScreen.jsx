@@ -64,7 +64,7 @@ export default function SignUpScreen() {
             </Pressable>
             <Text style={{ alignSelf: 'center' }}>{submitMessage}</Text>
 
-            <Google_SignIn navigation={navigation} />
+            <Google_SignIn />
         </View>
     )
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 export default function Main() {
     return (

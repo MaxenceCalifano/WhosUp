@@ -6,7 +6,7 @@ import styles from "../styles";
 
 const auth = getAuth();
 
-export default function ConfigureAccountScreen() {
+export default function ConfigureAccountScreen({ navigation }) {
     const [name, setName] = useState()
     const [photoURL, setPhoto] = useState(null)
 
@@ -27,7 +27,7 @@ export default function ConfigureAccountScreen() {
         updateProfile(auth.currentUser, {
             displayName: name,
             photoURL: photoURL
-        }).then(() => console.log("ok"))
+        }).then(() => navigation.navigate('Carte'))
             .catch(error => console.error(error))
     }
 

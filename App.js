@@ -6,13 +6,14 @@ import {getAuth, onAuthStateChanged,signOut} from 'firebase/auth'
 import {useAuthentication} from './utils/hooks/useAuthentication'
 
 import AuthStack from './navigation/AuthStack';
-import Main from './navigation/Main'
+import UserStack from './navigation/UserStack';
 
 export default function App() {
  
   const auth = getAuth()
   //const [user,setUser] = useState(null)
   const {user} = useAuthentication()
+  const [isNew, setIsNew] = useState();
 
 
   useEffect( () => {
@@ -23,20 +24,21 @@ export default function App() {
     });  */
 
     if(user) {
-      console.log(user.metadata.lastLoginAt - user.metadata.createdAt)
 
     if(user.metadata.lastLoginAt - user.metadata.createdAt <= 1000) {
       //console.log(user.metadata.lastLoginAt - user.metadata.createdAt)
 
         console.log('user is new')
+        setIsNew(true)
       } else {
         console.log('not new')
+        setIsNew(false)
       }
     }
   },[user])
   
   return (
-       user ? <Main /> : <AuthStack />
+       user ? <UserStack isNew = {isNew} /> : <AuthStack />
   );
 }
 
