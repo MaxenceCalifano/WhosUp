@@ -8,7 +8,7 @@ const auth = getAuth()
 
 export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState(null);
+    const [password, setPassword] = useState('');
     const [submitMessage, setSubmitMessage] = useState('')
 
     const createAccount = () => {

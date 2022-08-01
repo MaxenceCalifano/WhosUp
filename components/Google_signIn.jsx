@@ -1,37 +1,37 @@
-import React from "react";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import React, { useEffect } from "react";
+import * as WebBrowser from 'expo-web-browser';
+import { ResponseType } from 'expo-auth-session';
+import * as Google from 'expo-auth-session/providers/google';
+import { getAuth, GoogleAuthProvider, signInWithCredential } from 'firebase/auth'
 import { View, Button } from "react-native";
 
-export default function Google_SignIn() {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
+WebBrowser.maybeCompleteAuthSession();
 
-    const googleSignIn = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                console.log(user)
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
-    }
+export default function Google_SignIn() {
+
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest(
+        {
+            clientId: '40358879547-i3ikmd9qpr9926fbu6rs6tb9v4ea27tk.apps.googleusercontent.com',
+        },
+    );
+
+    useEffect(() => {
+
+        if (response?.type === 'success') {
+            console.log(response)
+            const { id_token } = response.params;
+
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+            const credential = provider.credential(id_token);
+            signInWithCredential(auth, credential);
+        }
+    }, [response]);
 
 
     return (
         <View>
-            <Button title="signin with google" onPress={() => googleSignIn()} />
+            <Button title="signin with google" onPress={() => promptAsync()} />
         </View>
     )
 }
