@@ -21,7 +21,7 @@ export default function App() {
         console.log('user is not connected')
       }
     })
-  },[])
+  },[user])
   return (
        user!==null ? <Main /> : <AuthStack />
   );

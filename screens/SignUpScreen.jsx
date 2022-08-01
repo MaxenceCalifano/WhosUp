@@ -65,14 +65,7 @@ export default function SignUpScreen({ navigation }) {
             </Pressable>
             <Text style={{ alignSelf: 'center' }}>{submitMessage}</Text>
 
-            {/* <TextInput
-                value={email}
-                keyboardType='email-address'
-                autoComplete="email"
-                onChangeText={(value) => setEmail(value)}
-                style={styles.input} placeholder="e-mail" /> */}
             <Google_SignIn />
-            <Button title="lien magique" />
         </View>
     )
 }

@@ -1,11 +1,11 @@
 import React from 'react';
-//import MapView from 'react-native-maps';
+import MapView from 'react-native-maps';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 
 export default function Main() {
     return (
         <View style={styles.container}>
-            {/*  <MapView style={styles.map} /> */}
+            <MapView style={styles.map} />
         </View>
     );
 }

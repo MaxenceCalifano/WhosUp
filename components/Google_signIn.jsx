@@ -23,7 +23,8 @@ export default function Google_SignIn() {
 
             const auth = getAuth();
             const provider = new GoogleAuthProvider();
-            const credential = provider.credential(id_token);
+            //const credential = provider.credential(id_token);
+            const credential = GoogleAuthProvider.credential(id_token)
             signInWithCredential(auth, credential);
         }
     }, [response]);
