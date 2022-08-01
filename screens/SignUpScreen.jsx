@@ -6,7 +6,7 @@ import Google_SignIn from "../components/Google_signIn";
 
 const auth = getAuth()
 
-export default function SignUpScreen({ navigation }) {
+export default function SignUpScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitMessage, setSubmitMessage] = useState('')
@@ -16,7 +16,6 @@ export default function SignUpScreen({ navigation }) {
             .then((userCredentials) => {
                 const user = userCredentials.user
                 setSubmitMessage('Votre compte a été créé avec succès !')
-                navigation.navigate('Configurer le compte')
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -65,7 +64,7 @@ export default function SignUpScreen({ navigation }) {
             </Pressable>
             <Text style={{ alignSelf: 'center' }}>{submitMessage}</Text>
 
-            <Google_SignIn />
+            <Google_SignIn navigation={navigation} />
         </View>
     )
 }
