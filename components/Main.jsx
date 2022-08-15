@@ -1,14 +1,69 @@
 import React from 'react';
-import MapView from 'react-native-maps';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { StyleSheet, View, Text } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import mainStyles from '../styles';
+
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+
+import UserProfile from '../screens/UserProfile';
+import AddEventScreen from '../screens/AddEventScreen';
+import UserEventScreen from '../screens/UserEventsScreen';
+import Map from './Map';
 
 export default function Main() {
+
+    const Tab = createBottomTabNavigator();
+
     return (
-        <View style={styles.container}>
-            <MapView style={styles.map} />
-        </View>
+
+
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarActiveTintColor: 'black'
+            })}
+        >
+            <Tab.Screen name="carte" component={Map} options={{
+                title: 'Carte',
+                tabBarIcon: ({ focused, color, size }) => (
+                    focused ?
+                        <FontAwesome name="map" size={24} color={mainStyles.color} />
+                        : <FontAwesome name="map-o" size={24} color="#454545" />
+
+                )
+            }} />
+
+
+
+            <Tab.Screen name="+" component={AddEventScreen} options={{
+                title: 'événement',
+                tabBarIcon: ({ focused, color, size }) => (
+                    focused ?
+                        <AntDesign name="pluscircle" size={24} color={mainStyles.color} />
+                        : <AntDesign name="pluscircle" size={24} color="black" />
+                )
+            }} />
+            <Tab.Screen name="Calendrier" component={UserEventScreen} options={{
+                title: 'Mes événements',
+                tabBarIcon: ({ focused, color, size }) => (
+                    focused ?
+                        <FontAwesome name="calendar" size={24} color={mainStyles.color} />
+                        : <FontAwesome name="calendar-o" size={24} color={mainStyles.input.color} />
+                )
+            }} />
+
+            <Tab.Screen name="Profil" component={UserProfile} options={{
+                title: 'Profil',
+                tabBarIcon: ({ focused, color, size }) => (
+                    focused ?
+                        <FontAwesome name="user" size={24} color="black" />
+                        : <FontAwesome name="user-o" size={24} color="#454545" />
+
+                )
+            }} />
+        </Tab.Navigator>
     );
 }
 
@@ -18,9 +73,5 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-    },
+    }
 });
