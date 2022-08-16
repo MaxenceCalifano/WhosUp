@@ -17,10 +17,10 @@ export default function UserStack(props) {
                 {props.isNew ?
                     <Stack.Group>
                         <Stack.Screen name='Configurer le compte' component={ConfigureAccount} />
-                        <Stack.Screen name='Carte' component={Main} />
+                        <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />
                     </Stack.Group>
 
-                    : <Stack.Screen name='Carte' component={Main} />}
+                    : <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />}
 
             </Stack.Navigator>
         </NavigationContainer>
