@@ -18,7 +18,7 @@ export default function Map() {
     React.useEffect(() => {
 
 
-        (async () => {
+        /* (async () => {
 
             await setDoc(doc(firestore, "characters", "mario"), {
                 employment: "plumber",
@@ -35,7 +35,7 @@ export default function Map() {
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
             console.log(location.coords.latitude)
-        })();
+        })(); */
     }, []);
 
     let text = 'Waiting..';
