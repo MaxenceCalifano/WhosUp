@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Pressable, Dimensions, ScrollView } from 'react-native'
 import { Input, Slider, Icon, Divider } from 'react-native-elements'
 import { Button } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
+import MapView from 'react-native-maps';
+import { Marker } from "react-native-maps";
+
 import '../config/firebase'
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
 const firestore = getFirestore();
+
+import CoordinateInput from "../components/CoordinateInput";
 
 import styles from "../styles";
 
@@ -55,6 +60,13 @@ export default function AddEventScreen() {
         'apéro',
     ]
 
+    const marker = {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        title: 'coucou',
+        description: 'test'
+    }
+
     const createNewActivity = async () => {
         await setDoc(doc(firestore, "activities", activityTitle), {
             activityTitle: activityTitle,
@@ -67,70 +79,83 @@ export default function AddEventScreen() {
     /*
          */
     return (
-        <View style={{ flex: 1, backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
+        <ScrollView>
+            <View style={{ flex: 1, backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
 
-            <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: 10 }} onChangeText={(value) => setActivityTitle(value)} />
+                <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: 10 }} onChangeText={(value) => setActivityTitle(value)} />
 
-            <Text>Nombre de participants: {people}</Text>
-            <Slider
-                value={people}
-                onValueChange={setPeople}
-                maximumValue={10}
-                minimumValue={1}
-                step={1}
-                thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
-                thumbProps={{
-                    children: (
-                        <Icon
-                            name="people"
-                            type="material"
-                            size={20}
-                            color="#757575"
-                            containerStyle={{ bottom: 0, right: 0 }}
-                        />
-                    )
-                }}
-            />
-            <Divider />
-
-            <Text style={{ marginTop: 20 }}>Quel type d'activité proposez-vous ?</Text>
-            <Picker
-                selectedValue={selectedActivityType}
-                onValueChange={(itemValue, itemIndex) =>
-                    setSelectedActivityType(itemValue)
-                }>
-                <Picker.Item icon={() => <Icon
-                    name="calendar"
-                    type="font-awesome"
-                    size={20}
-                    color="#454545"
-                    onPress={showPicker}
-
-                />} label="jeux de société" value="jeux de société" />
-                <Picker.Item label="apéro" value="apéro" />
-                <Picker.Item label="randonée" value="randonée" />
-            </Picker>
-            <Divider />
-
-            <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
-                <Icon
-                    name="calendar"
-                    type="font-awesome"
-                    size={20}
-                    color="#454545"
-                    onPress={showPicker}
+                <Text>Nombre de participants: {people}</Text>
+                <Slider
+                    value={people}
+                    onValueChange={setPeople}
+                    maximumValue={10}
+                    minimumValue={1}
+                    step={1}
+                    thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
+                    thumbProps={{
+                        children: (
+                            <Icon
+                                name="people"
+                                type="material"
+                                size={20}
+                                color="#757575"
+                                containerStyle={{ bottom: 0, right: 0 }}
+                            />
+                        )
+                    }}
                 />
-                <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
-            </Pressable>
-            <Divider />
+                <Divider />
 
-            <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
+                <Text style={{ marginTop: 20 }}>Quel type d'activité proposez-vous ?</Text>
+                <Picker
+                    selectedValue={selectedActivityType}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedActivityType(itemValue)
+                    }>
+                    <Picker.Item icon={() => <Icon
+                        name="calendar"
+                        type="font-awesome"
+                        size={20}
+                        color="#454545"
+                        onPress={showPicker}
 
-            <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
-        </View>
+                    />} label="jeux de société" value="jeux de société" />
+                    <Picker.Item label="apéro" value="apéro" />
+                    <Picker.Item label="randonée" value="randonée" />
+                </Picker>
+                <Divider />
+
+                <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
+                    <Icon
+                        name="calendar"
+                        type="font-awesome"
+                        size={20}
+                        color="#454545"
+                        onPress={showPicker}
+                    />
+                    <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
+                </Pressable>
+                <Divider />
+
+                <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
+
+                <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
+
+                <CoordinateInput />
+            </View>
+        </ScrollView>
     );
 
 }
 const pageStyles = StyleSheet.create({
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    map: {
+        width: Dimensions.get('window').width - 40,
+        height: Dimensions.get('window').height,
+    },
+    coordinateCard: {
+        backgroundColor: '#959595',
+        width: '50%',
+        padding: '5'
+    }
 })
