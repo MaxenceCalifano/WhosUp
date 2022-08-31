@@ -38,7 +38,7 @@ export default function App() {
   },[user])
   
   return (
-       user ? <UserStack isNew = {isNew} /> : <AuthStack />
+       user ? <UserStack user={user} isNew = {isNew} /> : <AuthStack />
   );
 }
 

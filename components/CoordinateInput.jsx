@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
+/* Used to get user location */
+import * as Location from 'expo-location';
+
 
 export default function CoordinateInput({ selectedIndex, setLocation, location }) {
     if (selectedIndex === 0) {
+
+        useEffect(() => {
+            (async () => {
+
+
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
+
+                let location = await Location.getCurrentPositionAsync({});
+                setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+                console.log(location.coords.latitude)
+            })();
+        }, [])
+
         return (
             <View>
                 <Text>Les coordonnées de votre position actuelle seront utilisées</Text>

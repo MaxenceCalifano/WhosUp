@@ -4,11 +4,13 @@ import { Input, Slider, Icon, Divider } from 'react-native-elements'
 import { Button, ButtonGroup, lightColors } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import uuid from 'react-native-uuid';
 
 
 import '../config/firebase'
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
 const firestore = getFirestore();
+
 
 import CoordinateInput from "../components/CoordinateInput";
 
@@ -17,17 +19,18 @@ import styles from "../styles";
 
 export default function AddEventScreen() {
 
+
     /* All event informations */
     const [people, setPeople] = useState(1);
     const [activityTitle, setActivityTitle] = useState();
     const [activityDescription, setActivityDescription] = useState();
-    const [selectedActivityType, setSelectedActivityType] = useState();
+    const [selectedActivityType, setSelectedActivityType] = useState('apéro');
     const [date, setDate] = useState(new Date());
     const [location, setLocation] = useState({ latitude: '', longitude: '' })
 
     const [selectedIndex, setSelectedIndex] = useState()
 
-
+    /* Related with date picker*/
     const onTimeChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate(currentDate);
@@ -53,6 +56,7 @@ export default function AddEventScreen() {
             is24Hour: true,
         })
     }
+    /* End of date picker dependencies */
 
     const eventTypes = [
         'randonée',
@@ -62,7 +66,7 @@ export default function AddEventScreen() {
     ]
 
     const createNewActivity = async () => {
-        await setDoc(doc(firestore, "activities", activityTitle), {
+        await setDoc(doc(firestore, "activities", activityTitle + uuid.v4()), {
             activityTitle: activityTitle,
             activityDescription: activityDescription,
             activityType: selectedActivityType,
@@ -73,7 +77,7 @@ export default function AddEventScreen() {
     }
 
     useEffect(() => {
-        console.log(location)
+        console.log('location ' + location)
     }, [location])
     return (
 
