@@ -20,11 +20,6 @@ export default function Map() {
 
         /* (async () => {
 
-            await setDoc(doc(firestore, "characters", "mario"), {
-                employment: "plumber",
-                outfitColor: "red",
-                specialAttack: "fireball"
-            });
 
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
