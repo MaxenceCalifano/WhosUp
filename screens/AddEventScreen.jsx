@@ -6,6 +6,9 @@ import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import uuid from 'react-native-uuid';
 
+import { useAuthentication } from '../utils/hooks/useAuthentication'
+
+
 
 import '../config/firebase'
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
@@ -19,6 +22,7 @@ import styles from "../styles";
 
 export default function AddEventScreen() {
 
+    const { user } = useAuthentication()
 
     /* All event informations */
     const [people, setPeople] = useState(1);
@@ -67,6 +71,7 @@ export default function AddEventScreen() {
 
     const createNewActivity = async () => {
         await setDoc(doc(firestore, "activities", activityTitle + uuid.v4()), {
+            hostId: user.uid,
             activityTitle: activityTitle,
             activityDescription: activityDescription,
             activityType: selectedActivityType,
