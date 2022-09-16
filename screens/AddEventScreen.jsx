@@ -34,6 +34,8 @@ export default function AddEventScreen() {
 
     const [selectedIndex, setSelectedIndex] = useState()
 
+    const [responseMessage, setResponseMessage] = useState('')
+
     /* Related with date picker*/
     const onTimeChange = (event, selectedDate) => {
         const currentDate = selectedDate;
@@ -70,95 +72,104 @@ export default function AddEventScreen() {
     ]
 
     const createNewActivity = async () => {
-        await setDoc(doc(firestore, "activities", activityTitle + uuid.v4()), {
-            hostId: user.uid,
-            activityTitle: activityTitle,
-            activityDescription: activityDescription,
-            activityType: selectedActivityType,
-            numberOfParticipants: people,
-            date: date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':')),
-            location: location
-        });
+        try {
+            await setDoc(doc(firestore, "activities", activityTitle + '_' + uuid.v4()), {
+                hostId: user.uid,
+                activityTitle: activityTitle,
+                activityDescription: activityDescription,
+                activityType: selectedActivityType,
+                numberOfParticipants: people,
+                date: date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':')),
+                location: location
+            }).then(() => setResponseMessage('Votre événement a bien été créé !'))
+        }
+
+        catch (err) {
+            console.log('erreur ' + err)
+            setResponseMessage('Une erreur a été détéctée, veuillez remplir tous les champs du formulaire s\'il vous plait')
+        }
     }
 
     useEffect(() => {
         console.log('location ' + location)
     }, [location])
     return (
+        <ScrollView style={{ flex: 1 }} >
+            <View style={{ flex: 1, backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
 
-        <View style={{ flex: 1, backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
+                <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: 10 }} onChangeText={(value) => setActivityTitle(value)} />
 
-            <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: 10 }} onChangeText={(value) => setActivityTitle(value)} />
-
-            <Text>Nombre de participants: {people}</Text>
-            <Slider
-                value={people}
-                onValueChange={setPeople}
-                maximumValue={10}
-                minimumValue={1}
-                step={1}
-                thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
-                thumbProps={{
-                    children: (
-                        <Icon
-                            name="people"
-                            type="material"
-                            size={20}
-                            color="#757575"
-                            containerStyle={{ bottom: 0, right: 0 }}
-                        />
-                    )
-                }}
-            />
-            <Divider />
-
-            <Text style={{ marginTop: 20 }}>Quel type d'activité proposez-vous ?</Text>
-            <Picker
-                selectedValue={selectedActivityType}
-                onValueChange={(itemValue, itemIndex) =>
-                    setSelectedActivityType(itemValue)
-                }>
-                <Picker.Item icon={() => <Icon
-                    name="calendar"
-                    type="font-awesome"
-                    size={20}
-                    color="#454545"
-                    onPress={showPicker}
-
-                />} label="jeux de société" value="jeux de société" />
-                <Picker.Item label="apéro" value="apéro" />
-                <Picker.Item label="randonée" value="randonée" />
-            </Picker>
-            <Divider />
-
-            <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
-                <Icon
-                    name="calendar"
-                    type="font-awesome"
-                    size={20}
-                    color="#454545"
-                    onPress={showPicker}
+                <Text>Nombre de participants: {people}</Text>
+                <Slider
+                    value={people}
+                    onValueChange={setPeople}
+                    maximumValue={10}
+                    minimumValue={1}
+                    step={1}
+                    thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
+                    thumbProps={{
+                        children: (
+                            <Icon
+                                name="people"
+                                type="material"
+                                size={20}
+                                color="#757575"
+                                containerStyle={{ bottom: 0, right: 0 }}
+                            />
+                        )
+                    }}
                 />
-                <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
-            </Pressable>
-            <Divider />
+                <Divider />
 
-            <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
+                <Text style={{ marginTop: 20 }}>Quel type d'activité proposez-vous ?</Text>
+                <Picker
+                    selectedValue={selectedActivityType}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedActivityType(itemValue)
+                    }>
+                    <Picker.Item icon={() => <Icon
+                        name="calendar"
+                        type="font-awesome"
+                        size={20}
+                        color="#454545"
+                        onPress={showPicker}
 
-            <Text>Lieu:</Text>
-            <ButtonGroup
-                buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
-                selectedIndex={selectedIndex}
-                onPress={(value) => {
-                    setSelectedIndex(value);
-                }}
-                selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
-            />
-            <CoordinateInput selectedIndex={selectedIndex} setLocation={setLocation} location={location} />
+                    />} label="jeux de société" value="jeux de société" />
+                    <Picker.Item label="apéro" value="apéro" />
+                    <Picker.Item label="randonée" value="randonée" />
+                </Picker>
+                <Divider />
 
-            <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
-        </View>
+                <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
+                    <Icon
+                        name="calendar"
+                        type="font-awesome"
+                        size={20}
+                        color="#454545"
+                        onPress={showPicker}
+                    />
+                    <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
+                </Pressable>
+                <Divider />
 
+                <Text>Description de l'activité</Text>
+                <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
+
+                <Text>Lieu:</Text>
+                <ButtonGroup
+                    buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
+                    selectedIndex={selectedIndex}
+                    onPress={(value) => {
+                        setSelectedIndex(value);
+                    }}
+                    selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
+                />
+                <CoordinateInput selectedIndex={selectedIndex} setLocation={setLocation} location={location} />
+
+                <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
+                <Text>{responseMessage}</Text>
+            </View>
+        </ScrollView>
     );
 
 }
