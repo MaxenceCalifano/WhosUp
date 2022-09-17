@@ -36,6 +36,8 @@ export default function AddEventScreen() {
 
     const [responseMessage, setResponseMessage] = useState('')
 
+    const [place, setPlace] = useState('') // Used to display the place selected by the google place picker
+
     /* Related with date picker*/
     const onTimeChange = (event, selectedDate) => {
         const currentDate = selectedDate;
@@ -94,11 +96,13 @@ export default function AddEventScreen() {
         console.log('location ' + location)
     }, [location])
     return (
-        <ScrollView style={{ flex: 1 }} >
+        <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
             <View style={{ flex: 1, backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
 
-                <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: 10 }} onChangeText={(value) => setActivityTitle(value)} />
+                {/*Activity title*/}
+                <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
 
+                {/*Number of antendees input*/}
                 <Text>Nombre de participants: {people}</Text>
                 <Slider
                     value={people}
@@ -121,7 +125,8 @@ export default function AddEventScreen() {
                 />
                 <Divider />
 
-                <Text style={{ marginTop: 20 }}>Quel type d'activité proposez-vous ?</Text>
+                {/*Activity type input */}
+                <Text style={{ marginTop: pageStyles.marginTop }}>Quel type d'activité proposez-vous ?</Text>
                 <Picker
                     selectedValue={selectedActivityType}
                     onValueChange={(itemValue, itemIndex) =>
@@ -140,6 +145,7 @@ export default function AddEventScreen() {
                 </Picker>
                 <Divider />
 
+                {/*Calendar */}
                 <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
                     <Icon
                         name="calendar"
@@ -152,10 +158,13 @@ export default function AddEventScreen() {
                 </Pressable>
                 <Divider />
 
-                <Text>Description de l'activité</Text>
+                {/*Activity description*/}
+                <Text style={{ marginTop: pageStyles.marginTop }}>Description de l'activité</Text>
                 <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
+                <Divider />
 
-                <Text>Lieu:</Text>
+                {/*Place input*/}
+                <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
                 <ButtonGroup
                     buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
                     selectedIndex={selectedIndex}
@@ -164,7 +173,7 @@ export default function AddEventScreen() {
                     }}
                     selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
                 />
-                <CoordinateInput selectedIndex={selectedIndex} setLocation={setLocation} location={location} />
+                <CoordinateInput selectedIndex={selectedIndex} setLocation={setLocation} location={location} setPlace={setPlace} />
 
                 <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
                 <Text>{responseMessage}</Text>
@@ -175,6 +184,7 @@ export default function AddEventScreen() {
 }
 const pageStyles = StyleSheet.create({
     backgroundColor: '#FFF',
+    marginTop: 10,
     map: {
         width: Dimensions.get('window').width - 40,
         height: Dimensions.get('window').height,

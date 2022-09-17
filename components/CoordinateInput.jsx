@@ -3,34 +3,14 @@ import { View, Text, TextInput, StyleSheet, Modal, Pressable } from 'react-nativ
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-/* Used to get user location */
-import * as Location from 'expo-location';
+import UserLocation from "./UserLocation";
 
-export default function CoordinateInput({ selectedIndex, setLocation, location }) {
+export default function CoordinateInput({ selectedIndex, setLocation, location, setPlace }) {
 
     switch (selectedIndex) {
         case 0:
-            useEffect(() => {
-                (async () => {
+            return <UserLocation setLocation={setLocation} location={location} />
 
-
-                    let { status } = await Location.requestForegroundPermissionsAsync();
-                    if (status !== 'granted') {
-                        setErrorMsg('Permission to access location was denied');
-                        return;
-                    }
-
-                    let location = await Location.getCurrentPositionAsync({});
-                    setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                    console.log(location.coords.latitude)
-                })();
-            }, [])
-
-            return (
-                <View>
-                    <Text>Les coordonnées de votre position actuelle seront utilisées</Text>
-                </View>
-            );
         case 1:
             return (
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }} >
@@ -56,13 +36,14 @@ export default function CoordinateInput({ selectedIndex, setLocation, location }
                     <View style={{ flex: 1, backgroundColor: 'rgba(200, 200, 200, 0.5)', height: '100%' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <GooglePlacesAutocomplete
-                                keyboardShouldPersistTaps='always'
-                                listViewDisplayed={false}
                                 placeholder='Rechercher'
                                 onPress={(data, details = null) => {
                                     // 'details' is provided when fetchDetails = true
+                                    setModalVisible(false)
+
                                     setLocation(data.description)
-                                    console.log(data);
+                                    setPlace(data.description)
+                                    console.log('date', data, details);
                                 }}
                                 query={{
                                     key: 'AIzaSyC2y8jzrQcwMvNhm0P273F-4elbS5kTFp0',
