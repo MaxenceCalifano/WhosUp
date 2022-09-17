@@ -9,7 +9,7 @@ export default function CoordinateInput({ selectedIndex, setLocation, location, 
 
     switch (selectedIndex) {
         case 0:
-            return <UserLocation setLocation={setLocation} location={location} />
+            return <UserLocation setLocation={setLocation} setPlace={setPlace} />
 
         case 1:
             return (

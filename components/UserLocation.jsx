@@ -6,21 +6,25 @@ import { View, Text } from 'react-native'
 import * as Location from 'expo-location';
 
 
-function UserLocation(location, setLocation) {
+function UserLocation({ setPlace, setLocation }) {
 
     useEffect(() => {
         (async () => {
 
-
             let { status } = await Location.requestForegroundPermissionsAsync();
+
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
                 return;
             }
 
             let location = await Location.getCurrentPositionAsync({});
-            () => setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-            console.log(location.coords.latitude)
+
+            setPlace(location.coords.latitude + ' ' + location.coords.longitude);
+
+            setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+
+            console.log('test dans user location ' + JSON.stringify(location))
         })();
     }, [])
     return (
