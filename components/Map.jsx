@@ -6,17 +6,24 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 import * as Location from 'expo-location';
 
-import '../config/firebase'
-import { getFirestore, setDoc, doc } from 'firebase/firestore';
-const firestore = getFirestore();
+import app from '../config/firebase';
+import { getFirestore, setDoc, doc, collection, getDocs } from 'firebase/firestore';
+const db = getFirestore(app);
 
 export default function Map() {
 
     const [location, setLocation] = React.useState(null);
     const [errorMsg, setErrorMsg] = React.useState(null);
 
-    React.useEffect(() => {
+    const fetchActivities = async () => {
+        const activities = await getDocs(collection(db, "activities"))
+        activities.forEach(doc => console.log(doc.data()))
 
+        //console.log(test)
+    }
+
+    React.useEffect(() => {
+        fetchActivities()
 
         /* (async () => {
 
