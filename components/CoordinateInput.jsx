@@ -5,6 +5,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import UserLocation from "./UserLocation";
 
+
 export default function CoordinateInput({ selectedIndex, setLocation, location, setPlace }) {
 
     switch (selectedIndex) {
@@ -33,10 +34,17 @@ export default function CoordinateInput({ selectedIndex, setLocation, location, 
                     transparent={true}
                     visible={modalVisible}>
 
-                    <View style={{ flex: 1, backgroundColor: 'rgba(200, 200, 200, 0.5)', height: '100%' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flex: 1, backgroundColor: 'rgba(200, 200, 200, 0.5)' }}>
+                        <View style={{ flexDirection: 'row', }}>
                             <GooglePlacesAutocomplete
+                                suppressDefaultStyles={true}
                                 placeholder='Rechercher'
+                                styles={{
+                                    textInput: {
+                                        borderBottomRightRadius: 0,
+                                        borderTopRightRadius: 0
+                                    }
+                                }}
                                 onPress={(data, details = null) => {
                                     // 'details' is provided when fetchDetails = true
                                     setModalVisible(false)
@@ -51,10 +59,10 @@ export default function CoordinateInput({ selectedIndex, setLocation, location, 
                                 }}
                             />
                             <Pressable
-                                style={{ width: '10%' }}
+                                style={{ width: '10%', backgroundColor: 'white' }}
                                 onPress={() => setModalVisible(!modalVisible)}
                             >
-                                <Text style={{ textAlign: 'center' }}>X</Text>
+                                <Text style={{ textAlign: 'center', textAlignVertical: 'center', paddingVertical: 10 }}>X</Text>
                             </Pressable>
                         </View>
                     </View>

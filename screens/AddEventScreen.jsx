@@ -96,8 +96,8 @@ export default function AddEventScreen() {
         console.log('location ' + location)
     }, [location])
     return (
-        <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
-            <View style={{ flex: 1, backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
+        <ScrollView contentContainerStyle={{ minHeight: '100%' }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
+            <View style={{ backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
 
                 {/*Activity title*/}
                 <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
