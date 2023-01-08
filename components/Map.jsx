@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text } from 'react-native'
 import MapView from 'react-native-maps';
-import { Marker } from 'react-native-maps';
+import { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Dimensions } from 'react-native';
 
 import * as Location from 'expo-location';
@@ -28,6 +28,7 @@ export default function Map() {
         })
 
         setMarkers(allMarkers)
+        console.log(markers)
     }
 
     React.useEffect(() => {
@@ -52,13 +53,28 @@ export default function Map() {
     return (
         < View >
             <MapView style={styles.map}>
-                {markers.map((marker, index) => (
-
-                    <Marker key={index}
-                        coordinate={marker.location}
-                        title={marker.activityTitle}
-                        description={marker.activityDescription} />
-                ))}
+                {markers.map((marker, index) => {
+                    console.log(marker.a)
+                    if (marker.activityType == "randonée") {
+                        return (
+                            < Marker key={index}
+                                coordinate={marker.location}
+                                title={marker.activityTitle}
+                                description={marker.activityDescription}
+                                image={require('../assets/hike.png')}
+                            />
+                        )
+                    } if (marker.activityType == "jeux de société") {
+                        return (
+                            < Marker key={index}
+                                coordinate={marker.location}
+                                title={marker.activityTitle}
+                                description={marker.activityDescription}
+                                image={require('../assets/games.png')}
+                            />
+                        )
+                    }
+                })}
             </ MapView>
             <Text>{text}</Text>
         </View >
