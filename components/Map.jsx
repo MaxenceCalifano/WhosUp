@@ -6,6 +6,7 @@ import { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Dimensions } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ActivityCard from './ActivityCard';
 
 import * as Location from 'expo-location';
 
@@ -44,14 +45,6 @@ export default function Map() {
         text = JSON.stringify(location);
     }
 
-    const returnParsedMarker = (marker) => {
-        const latLng = {
-            latitude: parseInt(marker.location.latitude),
-            longitude: parseInt(marker.location.longitude)
-        }
-
-    }
-
     return (
         <GestureHandlerRootView>
             < View >
@@ -86,32 +79,16 @@ export default function Map() {
                     width={Dimensions.get('window').width}
                     height={100}
                     autoPlay={false}
-                    data={[...new Array(6).keys()]}
+                    data={markers}
                     scrollAnimationDuration={1000}
                     onSnapToItem={(index) => console.log('current index:', index)}
-                    renderItem={({ index }) => (
-                        <View
-                            style={{
-                                flex: 1,
-                                borderWidth: 1,
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <Text style={{
-                                textAlign: 'center', fontSize: 30
-                            }}>
-                                {index}
-                            </Text>
-                        </View>
+                    renderItem={({ index, item }) => (
+                        <ActivityCard index={index} item={item} />
                     )}
                 />
 
                 <Text style={{
                     position: 'absolute',
-                    /*  top: 150,
-                     zIndex: 10000,
-                     backgroundColor: 'red',
-                     left: 150 */
                 }}>{text}</Text>
             </View >
         </GestureHandlerRootView>
@@ -126,8 +103,10 @@ const styles = StyleSheet.create({
     },
     carousel: {
         position: 'absolute',
-        top: Dimensions.get('window').height - 500,
-        backgroundColor: 'red',
-        left: 0
+        bottom: 150,
+        backgroundColor: 'white',
+        left: 0,
+        borderRadius: 20,
+        padding: 10
     }
 });
