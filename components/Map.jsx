@@ -73,23 +73,24 @@ export default function Map() {
                     })}
 
                 </ MapView>
-                <Carousel
-                    style={styles.carousel}
-                    loop
-                    width={Dimensions.get('window').width}
-                    height={100}
-                    autoPlay={false}
-                    data={markers}
-                    scrollAnimationDuration={1000}
-                    onSnapToItem={(index) => console.log('current index:', index)}
-                    renderItem={({ index, item }) => (
-                        <ActivityCard index={index} item={item} />
-                    )}
-                />
+                <View style={styles.carouselContainer}>
+                    <Carousel
+                        style={styles.carousel}
+                        loop
+                        width={Dimensions.get('window').width - 10}
+                        height={100}
+                        autoPlay={false}
+                        data={markers}
+                        scrollAnimationDuration={1000}
+                        onSnapToItem={(index) => console.log('current index:', index)}
+                        renderItem={({ index, item }) => (
+                            <ActivityCard index={index} item={item} />
+                        )}
+                    />
+                </View>
 
-                <Text style={{
-                    position: 'absolute',
-                }}>{text}</Text>
+
+                <Text>{text}</Text>
             </View >
         </GestureHandlerRootView>
 
@@ -101,12 +102,13 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
+    carouselContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+
     carousel: {
         position: 'absolute',
         bottom: 150,
-        backgroundColor: 'white',
-        left: 0,
-        borderRadius: 20,
-        padding: 10
     }
 });
