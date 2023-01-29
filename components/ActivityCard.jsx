@@ -8,9 +8,10 @@ function ActivityCard({ index, item, navigation }) {
      navigation.navigate('Activité')
     */
     const thumbnail = item.activityType = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
+
     return (
         <Pressable style={styles.card}
-            onPress={() => navigation.navigate('Activité')}>
+            onPress={() => navigation.navigate('Activité', { item: item })}>
             <Image style={styles.image} source={thumbnail} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>

@@ -24,18 +24,15 @@ export default function Map({ navigation }) {
         const activities = await getDocs(collection(db, "activities"))
         const allMarkers = []
         activities.forEach(doc => {
-            //console.log(doc.data())
-            //setMarkers(prevState => prevState.push(doc.data()))
-            // console.log(markers)
-            allMarkers.push(doc.data())
+            // Add doc ID
+            allMarkers.push({ ...doc.data(), id: doc.id })
         })
-
         setMarkers(allMarkers)
-        console.log(markers)
     }
 
     React.useEffect(() => {
         fetchActivities()//.then(console.log("markers", markers))
+        console.log(markers)
     }, []);
 
     let text = 'Waiting..';
