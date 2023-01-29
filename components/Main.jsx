@@ -32,7 +32,8 @@ export default function Main() {
                         <FontAwesome name="map" size={24} color={mainStyles.color} />
                         : <FontAwesome name="map-o" size={24} color="#454545" />
 
-                )
+                ),
+                headerShown: false
             }} />
 
 

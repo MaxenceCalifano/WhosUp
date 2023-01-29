@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import Main from '../components/Main'
 import ConfigureAccount from '../screens/ConfigureAccount'
+import Activity from "../screens/Activity";
 
 
 const Stack = createNativeStackNavigator();
@@ -20,8 +21,11 @@ export default function UserStack(props) {
                         <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />
                     </Stack.Group>
 
-                    : <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />}
-
+                    : <Stack.Group>
+                        <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />
+                        <Stack.Screen name='Activité' component={Activity} options={{ headerShown: false }} />
+                    </Stack.Group>
+                }
             </Stack.Navigator>
         </NavigationContainer>
     )

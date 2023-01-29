@@ -14,7 +14,7 @@ import app from '../config/firebase';
 import { getFirestore, setDoc, doc, collection, getDocs } from 'firebase/firestore';
 const db = getFirestore(app);
 
-export default function Map() {
+export default function Map({ navigation }) {
 
     const [location, setLocation] = React.useState(null);
     const [errorMsg, setErrorMsg] = React.useState(null);
@@ -84,7 +84,7 @@ export default function Map() {
                         scrollAnimationDuration={1000}
                         onSnapToItem={(index) => console.log('current index:', index)}
                         renderItem={({ index, item }) => (
-                            <ActivityCard style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} item={item} />
+                            <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} item={item} />
                         )}
                     />
                 </View>
@@ -98,7 +98,7 @@ export default function Map() {
 const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        height: Dimensions.get('window').height
     },
     carouselContainer: {
         flexDirection: 'row',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
 
     carousel: {
         position: 'absolute',
-        bottom: 135,
+        bottom: 0,
         gap: 15
     }
 });

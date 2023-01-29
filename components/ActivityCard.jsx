@@ -1,13 +1,16 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
-function ActivityCard({ index, item }) {
+function ActivityCard({ index, item, navigation }) {
     /* let thumbnail;
     if (item.activityType = "randonée") thumbnail = require('../assets/hiking_thumbnail.jpg')
-    if (item.activityType = "jeux de société") thumbnail = require('../assets/tablegame_thumbnail.jpg') */
+    if (item.activityType = "jeux de société") thumbnail = require('../assets/tablegame_thumbnail.jpg') 
+     navigation.navigate('Activité')
+    */
     const thumbnail = item.activityType = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
     return (
-        <View style={styles.card}>
+        <Pressable style={styles.card}
+            onPress={() => navigation.navigate('Activité')}>
             <Image style={styles.image} source={thumbnail} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
@@ -26,8 +29,7 @@ function ActivityCard({ index, item }) {
 
                 <Text><Ionicons name="people" size={24} color="black" />{item.numberOfParticipants}</Text>
             </View>
-
-        </View>
+        </Pressable>
     );
 }
 
