@@ -78,18 +78,16 @@ export default function Map() {
                         style={styles.carousel}
                         loop
                         width={Dimensions.get('window').width - 10}
-                        height={100}
+                        height={150}
                         autoPlay={false}
                         data={markers}
                         scrollAnimationDuration={1000}
                         onSnapToItem={(index) => console.log('current index:', index)}
                         renderItem={({ index, item }) => (
-                            <ActivityCard index={index} item={item} />
+                            <ActivityCard style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} item={item} />
                         )}
                     />
                 </View>
-
-
                 <Text>{text}</Text>
             </View >
         </GestureHandlerRootView>
@@ -109,6 +107,7 @@ const styles = StyleSheet.create({
 
     carousel: {
         position: 'absolute',
-        bottom: 150,
+        bottom: 135,
+        gap: 15
     }
 });
