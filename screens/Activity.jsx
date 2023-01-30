@@ -1,11 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { doc, getDocs, getFirestore, collection, query, where } from 'firebase/firestore';
-
-
-import app from '../config/firebase';
-import { useEffect } from "react";
-const db = getFirestore(app);
+import { View, Text, Button, StyleSheet } from "react-native";
 
 //"Test_a5dd1a08-cb9a-46ac-a288-c8fc430423c8"
 
@@ -17,7 +11,21 @@ function Activity({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text>{item.activityTitle}</Text>
+            <View style={styles.header}>
+                <Text>{item.date}</Text>
+                <Text>{item.activityTitle}</Text>
+            </View>
+            <Text>Nombre de participants {item.numberOfParticipants}</Text>
+            <View style={styles.buttons}>
+                <Button title="Participer" />
+                <Button title="Intéressé(e)" />
+                <Button title="Plus" />
+            </View>
+
+            <Text>{item.activityDescription}</Text>
+
+
+
         </View>
     );
 }
@@ -25,10 +33,13 @@ function Activity({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        marginTop: 40
+    },
+    header: {
+        flexDirection: 'row',
+    },
+    buttons: {
+        flexDirection: 'row'
     }
 })
 export default Activity;
