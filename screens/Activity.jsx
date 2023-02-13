@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -13,24 +13,34 @@ function Activity({ route, navigation }) {
     // Will provide informations from the user that request participating
     const { user } = useAuthentication()
 
+
     const { item } = route.params;
-    console.log("🚀 ~ file: Activity.jsx:19 ~ Activity ~ item", item)
+    let newApplicantsArray = []
+    useEffect(() => {
+        if (item && user) {
+            newApplicantsArray = [...item.applicants]
+            newApplicantsArray.push({
+                userID: user.uid,
+                displayName: user.providerData[0].displayName,
+                photoURL: user.photoURL,
+            })
+        }
+
+    })
 
     const participate = async () => {
         console.log('vous avez demandé à participer à cette activité')
         const activityRef = doc(firestore, "activities", item.id)
+
+
         try {
             await updateDoc(activityRef, {
-                applicants: [{
-                    userID: user.uid,
-                    displayName: user.displayName,
-                    photoURL: user.photoURL,
-                }]
+                applicants: newApplicantsArray
             })
                 .then(() => console.log("c'est bon"))
         }
         catch (err) {
-
+            console.log(err)
         }
     }
 
