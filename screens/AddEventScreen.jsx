@@ -8,12 +8,9 @@ import uuid from 'react-native-uuid';
 
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 
-
-
 import '../config/firebase'
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
 const firestore = getFirestore();
-
 
 import CoordinateInput from "../components/CoordinateInput";
 
@@ -85,7 +82,6 @@ export default function AddEventScreen() {
                 location: location
             }).then(() => setResponseMessage('Votre événement a bien été créé !'))
         }
-
         catch (err) {
             console.log('erreur ' + err)
             setResponseMessage('Une erreur a été détéctée, veuillez remplir tous les champs du formulaire s\'il vous plait')
