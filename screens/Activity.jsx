@@ -1,13 +1,38 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
-//"Test_a5dd1a08-cb9a-46ac-a288-c8fc430423c8"
+import { useAuthentication } from '../utils/hooks/useAuthentication'
+import '../config/firebase'
+import { getFirestore, updateDoc, doc } from 'firebase/firestore';
+const firestore = getFirestore();
 
+//"Test_a5dd1a08-cb9a-46ac-a288-c8fc430423c8"
 
 function Activity({ route, navigation }) {
 
+    // Will provide informations from the user that request participating
+    const { user } = useAuthentication()
+
     const { item } = route.params;
-    console.log(item)
+    console.log("🚀 ~ file: Activity.jsx:19 ~ Activity ~ item", item)
+
+    const participate = async () => {
+        console.log('vous avez demandé à participer à cette activité')
+        const activityRef = doc(firestore, "activities", item.id)
+        try {
+            await updateDoc(activityRef, {
+                applicants: [{
+                    userID: user.uid,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                }]
+            })
+                .then(() => console.log("c'est bon"))
+        }
+        catch (err) {
+
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -17,7 +42,7 @@ function Activity({ route, navigation }) {
             </View>
             <Text>Nombre de participants {item.numberOfParticipants}</Text>
             <View style={styles.buttons}>
-                <Button title="Participer" />
+                <Button onPress={participate} title="Participer" />
                 <Button title="Intéressé(e)" />
                 <Button title="Plus" />
             </View>
