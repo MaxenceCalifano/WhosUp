@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from 'react-native'
+import { Divider } from 'react-native-elements'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 
@@ -34,7 +35,12 @@ function UserEventScreen({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             <Text>Mes événements</Text>
-            {test.map((doc, index) => <ActivityCard navigation={navigation} item={doc} />)}
+            <Divider />
+            <Text>J'organise</Text>
+            <Divider />
+            {test.map((doc, index) => <ActivityCard index={index} navigation={navigation} item={doc} />)}
+            <Text>Je participe</Text>
+            <Divider />
         </View>
         /**
          * Charger toutes les activités auquels participe l'utilisateur et celles dont il est
