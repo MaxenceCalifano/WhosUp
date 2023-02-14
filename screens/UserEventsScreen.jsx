@@ -38,7 +38,7 @@ function UserEventScreen({ navigation }) {
             <Divider />
             <Text>J'organise</Text>
             <Divider />
-            {test.map((doc, index) => <ActivityCard index={index} navigation={navigation} item={doc} />)}
+            {test.map((doc, index) => <ActivityCard key={index} navigation={navigation} item={doc} />)}
             <Text>Je participe</Text>
             <Divider />
         </View>
