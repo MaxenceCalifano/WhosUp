@@ -18,14 +18,21 @@ function Activity({ route, navigation }) {
     let { itemID } = route.params;
 
     const [item, setItem] = useState(null)
+    const [isHost, setIsHost] = useState(true)
 
+    //TODO Si je ne suis pas l'hote ne pas RECEVOIR les infos applicants (dans les règles de sécurité)
     useEffect(() => {
         onSnapshot(doc(firestore, "activities", itemID), (doc) => {
             setItem({ ...doc.data(), id: doc.id })
         });
     }, []);
 
-
+    // Retourne les applicants, ne doit donc s'afficher que pour l'hote
+    const Applicants = () => {
+        if (item) {
+            return item.applicants.map((applicant) => <Text>{applicant.displayName}</Text>)
+        }
+    }
     const userHasAlreadyApplied = (arr) => (
         arr.some((elem) => elem.userID === user.uid)
     )
@@ -76,6 +83,7 @@ function Activity({ route, navigation }) {
                 <Text>{participateMessage}</Text>
 
                 <Text>{item.activityDescription}</Text>
+                {isHost ? <Applicants /> : <></>}
             </View>
         )
     } else {
