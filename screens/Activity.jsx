@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -15,11 +15,16 @@ function Activity({ route, navigation }) {
     // Will provide informations from the user that request participating
     const { user } = useAuthentication()
 
-    let { item } = route.params;
+    let { itemID } = route.params;
 
-    onSnapshot(doc(firestore, "activities", item.id), (doc) => {
-        item = { ...doc.data(), id: doc.id }
-    });
+    const [item, setItem] = useState(null)
+
+    useEffect(() => {
+        onSnapshot(doc(firestore, "activities", itemID), (doc) => {
+            setItem({ ...doc.data(), id: doc.id })
+        });
+    }, []);
+
 
     const userHasAlreadyApplied = (arr) => (
         arr.some((elem) => elem.userID === user.uid)
@@ -55,27 +60,29 @@ function Activity({ route, navigation }) {
         }
 
     }
+    if (item) {
+        return (
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text>{item.date}</Text>
+                    <Text>{item.activityTitle}</Text>
+                </View>
+                <Text>Nombre de participants {item.numberOfParticipants}</Text>
+                <View style={styles.buttons}>
+                    <Button onPress={participate} title="Participer" />
+                    <Button title="Intéressé(e)" />
+                    <Button title="Plus" />
+                </View>
+                <Text>{participateMessage}</Text>
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text>{item.date}</Text>
-                <Text>{item.activityTitle}</Text>
+                <Text>{item.activityDescription}</Text>
             </View>
-            <Text>Nombre de participants {item.numberOfParticipants}</Text>
-            <View style={styles.buttons}>
-                <Button onPress={participate} title="Participer" />
-                <Button title="Intéressé(e)" />
-                <Button title="Plus" />
-            </View>
-            <Text>{participateMessage}</Text>
-
-            <Text>{item.activityDescription}</Text>
-
-
-
-        </View>
-    );
+        )
+    } else {
+        return (
+            <Text>Loader</Text>
+        )
+    }
 }
 
 

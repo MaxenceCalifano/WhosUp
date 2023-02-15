@@ -11,7 +11,7 @@ function ActivityCard({ index, item, navigation }) {
 
     return (
         <Pressable style={styles.card}
-            onPress={() => navigation.navigate('Activité', { item: item })}>
+            onPress={() => navigation.navigate('Activité', { itemID: item.id })}>
             <Image style={styles.image} source={thumbnail} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
