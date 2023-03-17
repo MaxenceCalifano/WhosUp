@@ -18,8 +18,6 @@ export default function Main() {
     const Tab = createBottomTabNavigator();
 
     return (
-
-
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarActiveTintColor: 'black'
@@ -35,9 +33,6 @@ export default function Main() {
                 ),
                 headerShown: false
             }} />
-
-
-
             <Tab.Screen name="+" component={AddEventScreen} options={{
                 title: 'événement',
                 tabBarIcon: ({ focused, color, size }) => (

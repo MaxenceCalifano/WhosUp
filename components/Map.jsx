@@ -32,7 +32,7 @@ export default function Map({ navigation }) {
 
     React.useEffect(() => {
         fetchActivities()//.then(console.log("markers", markers))
-        console.log(markers)
+        console.log("markers", markers)
     }, []);
 
     let text = 'Waiting..';
@@ -47,7 +47,7 @@ export default function Map({ navigation }) {
             < View >
                 <MapView style={styles.map}>
                     {markers.map((marker, index) => {
-                        console.log(marker.a)
+                        console.log("marker a", marker.a)
                         if (marker.activityType == "randonée") {
                             return (
                                 < Marker key={index}

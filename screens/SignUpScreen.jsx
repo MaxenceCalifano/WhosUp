@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth'
 import { StyleSheet, View, Text, Pressable, TextInput, Button } from 'react-native'
 import styles from "../styles";
 import Google_SignIn from "../components/Google_signIn";
 import { supabase } from '../config/supabase'
-
-const auth = getAuth()
 
 export default function SignUpScreen() {
     const [email, setEmail] = useState('');
@@ -21,10 +18,6 @@ export default function SignUpScreen() {
         })
 
         if (error) setSubmitMessage(error.message)
-        else if (data.user.role === "authenticated") {
-            console.log("l24", data)
-        }
-
         //setLoading(false)
     }
     /* createUserWithEmailAndPassword(auth, email, password)
@@ -60,7 +53,6 @@ export default function SignUpScreen() {
             return;
         } else {
             signUpWithEmail()
-            //createAccount()
         }
     }
     return (
