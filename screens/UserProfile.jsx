@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Button } from 'react-native'
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthentication } from '../utils/hooks/useAuthentication'
-
+import { supabase } from '../config/supabase'
 
 
 export default function UserProfile() {
@@ -22,12 +22,10 @@ export default function UserProfile() {
         <View style={{ flex: 1 }}>
             <Text>Page profile</Text>
             <Text>{username}</Text>
-            <Button onPress={() => {
-                signOut(auth).then(() => {
-                    // Sign-out successful.
-                }).catch((error) => {
-                    // An error happened.
-                })
+            <Button onPress={async () => {
+
+                const { error } = await supabase.auth.signOut()
+
             }
             } title="Se déconnecter" />
         </View>

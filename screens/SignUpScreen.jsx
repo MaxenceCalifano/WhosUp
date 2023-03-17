@@ -3,6 +3,7 @@ import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider } from 'fir
 import { StyleSheet, View, Text, Pressable, TextInput, Button } from 'react-native'
 import styles from "../styles";
 import Google_SignIn from "../components/Google_signIn";
+import { supabase } from '../config/supabase'
 
 const auth = getAuth()
 
@@ -11,39 +12,55 @@ export default function SignUpScreen() {
     const [password, setPassword] = useState('');
     const [submitMessage, setSubmitMessage] = useState('')
 
-    const createAccount = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredentials) => {
-                const user = userCredentials.user
-                setSubmitMessage('Votre compte a été créé avec succès !')
-            })
-            .catch((error) => {
-                const errorCode = error.code;
+    // const createAccount = () => {
+    async function signUpWithEmail() {
+        //setLoading(true)
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+        })
 
-                switch (errorCode) {
-                    case 'auth/invalid-email':
-                        setSubmitMessage("L'adresse email est invalide");
-                        break;
-                    case 'auth/admin-restricted-operation':
-                        setSubmitMessage('Erreur lors de la création du compte, veuillez véifier que tous les champs sont remplis');
-                        break;
-                    case 'auth/weak-password':
-                        setSubmitMessage('Veuillez renseigner un mot de passe de minimum 6 charactères');
-                        break;
-                    case 'auth/email-already-in-use':
-                        setSubmitMessage('Cette adresse e-mail est déja utilisée');
-                        break;
-                    default:
-                        setSubmitMessage('Erreur lors de la création du compte')
-                }
-            })
+        if (error) setSubmitMessage(error.message)
+        else if (data.user.role === "authenticated") {
+            console.log("l24", data)
+        }
+
+        //setLoading(false)
     }
+    /* createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+            const user = userCredentials.user
+            setSubmitMessage('Votre compte a été créé avec succès !')
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+
+            switch (errorCode) {
+                case 'auth/invalid-email':
+                    setSubmitMessage("L'adresse email est invalide");
+                    break;
+                case 'auth/admin-restricted-operation':
+                    setSubmitMessage('Erreur lors de la création du compte, veuillez véifier que tous les champs sont remplis');
+                    break;
+                case 'auth/weak-password':
+                    setSubmitMessage('Veuillez renseigner un mot de passe de minimum 6 charactères');
+                    break;
+                case 'auth/email-already-in-use':
+                    setSubmitMessage('Cette adresse e-mail est déja utilisée');
+                    break;
+                default:
+                    setSubmitMessage('Erreur lors de la création du compte')
+            }
+        }) */
+    //  }
     const submit = () => {
+        console.log("submit")
         if (email === '' || password === '') {
             setSubmitMessage("Veuillez renseigner une adresse email et un mot de passe s'il vous plaît")
             return;
         } else {
-            createAccount()
+            signUpWithEmail()
+            //createAccount()
         }
     }
     return (
