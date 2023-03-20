@@ -10,7 +10,6 @@ import Activity from "../screens/Activity";
 const Stack = createNativeStackNavigator();
 
 export default function UserStack(props) {
-    console.log("props is new", props.isNew)
     return (
 
         <NavigationContainer>

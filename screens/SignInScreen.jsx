@@ -18,8 +18,6 @@ export default function SignInScreen() {
         if (error) {
             setErrorMessage(error.message)
         }
-        console.log("🚀 ~ file: SignInScreen.jsx:16 ~ login ~ data:", data.session)
-        console.log("🚀 ~ file: SignInScreen.jsx:13 ~ login ~ error:", error.message)
     }
 
     return (

@@ -21,20 +21,6 @@ export default function App() {
     supabase.auth.onAuthStateChange((_event, session) => {
       //console.log("user state changed", session)
       setUser(session)
-      if(session) {
-        console.log("🚀 ~ file: App.js:25 ~ supabase.auth.onAuthStateChange ~ user:", session)
-        
-        if(new Date(session.user.last_sign_in_at) - new Date(session.user.created_at) <= 1000) {
-            console.log('user is new')
-            setIsNew(true)
-          } else {
-            console.log("🚀 ~ file: App.js:38 ~ useEffect ~ user.user.last_sign_in_at - user.user.created_at:", session.user.created_at)
-            
-            console.log('not new')
-            setIsNew(false)
-          }
-        }
-      //console.log(user)
     })
     
     console.log("🚀 ~ file: App.js:39 ~ useEffect ~ user:", user)
@@ -42,7 +28,7 @@ export default function App() {
   },[])
   
   return (
-       user ? <UserStack user={user} isNew = {isNew} /> : <AuthStack />
+       user ? <UserStack user={user} isNew={isNew}/> : <AuthStack setIsNew={setIsNew}/>
   );
 }
 

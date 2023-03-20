@@ -4,10 +4,12 @@ import styles from "../styles";
 import Google_SignIn from "../components/Google_signIn";
 import { supabase } from '../config/supabase'
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation, setIsNew }) {
+    console.log("🚀 ~ file: SignUpScreen.jsx:8 ~ SignUpScreen ~ setIsNew:", setIsNew)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitMessage, setSubmitMessage] = useState('')
+
 
     // const createAccount = () => {
     async function signUpWithEmail() {
@@ -18,6 +20,9 @@ export default function SignUpScreen() {
         })
 
         if (error) setSubmitMessage(error.message)
+        if (data) {
+            setIsNew(true)
+        }
         //setLoading(false)
     }
     /* createUserWithEmailAndPassword(auth, email, password)
