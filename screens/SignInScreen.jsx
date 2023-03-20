@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import style from '../styles';
 import { StyleSheet, View, TextInput, Pressable, Text } from 'react-native'
+import { supabase } from '../config/supabase'
 
 export default function SignInScreen() {
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
+
+    const login = async () => {
+        const { error, data } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        })
+
+        if (error) {
+            setErrorMessage(error.message)
+        }
+        console.log("🚀 ~ file: SignInScreen.jsx:16 ~ login ~ data:", data.session)
+        console.log("🚀 ~ file: SignInScreen.jsx:13 ~ login ~ error:", error.message)
+    }
+
     return (
         <View style={styles.container}>
             <Text style={[styles.text, { fontSize: 25 }]} >Bon retour parmis nous !</Text>
-            <TextInput style={style.input} placeholder="e-mail" />
-            <TextInput style={style.input} placeholder="mot de passe" />
-            <Pressable style={[style.button, styles.button]}>
+            <TextInput style={style.input} placeholder="e-mail" onChangeText={(value) => setEmail(value)} />
+            <TextInput style={style.input} placeholder="mot de passe" onChangeText={(value) => setPassword(value)} />
+            <Pressable style={[style.button, styles.button]} onPress={login}>
                 <Text style={[styles.text, { color: style.color, fontSize: 20 }]}>Connexion</Text>
             </Pressable>
             <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end' }} >Mot de passe oublié ?</Text>
+            <Text>{errorMessage}</Text>
         </View>
     )
 }
