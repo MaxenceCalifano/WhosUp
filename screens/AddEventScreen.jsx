@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, Pressable, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Pressable, Dimensions, ActivityIndicator, Modal } from 'react-native'
 import { Input, Slider, Icon, Divider } from 'react-native-elements'
 import { Button, ButtonGroup } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
@@ -9,7 +9,6 @@ import { supabase } from '../config/supabase'
 import CoordinateInput from "../components/CoordinateInput";
 
 import styles from "../styles";
-import Loader from "../components/Loader";
 
 
 export default function AddEventScreen() {
@@ -30,6 +29,7 @@ export default function AddEventScreen() {
 
     const [selectedIndex, setSelectedIndex] = useState()
     const [loading, setLoading] = useState(false)
+    const [isSuccess, setIsSuccess] = useState(false)
     const [responseMessage, setResponseMessage] = useState('')
 
     const [place, setPlace] = useState('') // Used to display the place selected by the google place picker
@@ -86,7 +86,11 @@ export default function AddEventScreen() {
         }
         // TO DO créer une modale qui s'affiche quelques secondes puis rediriger vers la carte ou vers la page "mes activitées"
         if (status === 201) {
-            setResponseMessage("Votre activité a bien été créée")
+            setIsSuccess(true)
+            setLoading(false)
+            setTimeout(() => {
+
+            }, 5000)
         }
     }
 
@@ -97,7 +101,32 @@ export default function AddEventScreen() {
     return (
         //   <ScrollView contentContainerStyle={{ minHeight: '100%' }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
         <View style={pageStyles.container}>
-            {loading ? <Loader /> : <></>}
+            {loading ?
+                <View style={pageStyles.modalContainer}>
+                    <Modal animationType="fade" transparent={true}>
+                        <View style={pageStyles.modalView}>
+                            <View style={pageStyles.loaderContainer}>
+                                <ActivityIndicator color={styles.color} size={"large"} />
+                                <Text style={{ marginTop: 10 }}>Création de votre activité..</Text>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+                : <></>
+            }
+            {isSuccess ?
+                <View style={pageStyles.modalContainer}>
+                    <Modal animationType="fade" transparent={true}>
+                        <View style={pageStyles.modalView}>
+                            <View style={pageStyles.loaderContainer}>
+                                <Text style={{ marginTop: 10 }}>Votre activité a été créée !</Text>
+                                <Text style={{ marginTop: 10, textAlign: "center" }}>Vous allez être redirigé vers la page de vos évènements dans quelques secondes</Text>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+                : <></>
+            }
 
             {/*Activity title*/}
             <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
@@ -191,6 +220,36 @@ const pageStyles = StyleSheet.create({
         height: Dimensions.get('window').height - 150,
         flexDirection: "column",
         justifyContent: "space-between"
-    }
-
+    },
+    modalContainer: {
+        display: "flex",
+        position: "absolute",
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    loaderContainer: {
+        height: 250,
+        width: 250,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+        borderRadius: 15,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
 })
