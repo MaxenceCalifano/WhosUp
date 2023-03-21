@@ -83,7 +83,12 @@ export default function AddEventScreen() {
                 location: location
             })
 
-        if (error) setResponseMessage(error.message)
+        if (error) {
+            console.log(error)
+            if (status === 400) setResponseMessage("Une erreur est survenue, veuillez érifier les informations que vous avez renseignées")
+            if (status === 401) setResponseMessage("Vous devez être connecté pour créer une activité")
+            if (status >= 500) setResponseMessage("Le serveur ne répond pas, veuillez réessayer plus tard")
+        }
         // TO DO créer une modale qui s'affiche quelques secondes puis rediriger vers la carte ou vers la page "mes activitées"
         if (status === 201) {
             setResponseMessage("Votre activité a bien été créée")
