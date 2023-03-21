@@ -4,13 +4,7 @@ import { Input, Slider, Icon, Divider } from 'react-native-elements'
 import { Button, ButtonGroup, lightColors } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import uuid from 'react-native-uuid';
-
-import { useAuthentication } from '../utils/hooks/useAuthentication'
-
-import '../config/firebase'
-import { getFirestore, setDoc, doc } from 'firebase/firestore';
-const firestore = getFirestore();
+import { supabase } from '../config/supabase'
 
 import CoordinateInput from "../components/CoordinateInput";
 
@@ -19,9 +13,13 @@ import styles from "../styles";
 
 export default function AddEventScreen() {
 
-    const { user } = useAuthentication()
+    /*Get the id of the current user */
+    supabase.auth.getSession()
+        .then(res => { setHostId(res.data.session.user.id) })
+
 
     /* All event informations */
+    const [hostId, setHostId] = useState();
     const [people, setPeople] = useState(1);
     const [activityTitle, setActivityTitle] = useState();
     const [activityDescription, setActivityDescription] = useState();
@@ -71,9 +69,11 @@ export default function AddEventScreen() {
     ]
 
     const createNewActivity = async () => {
-        try {
-            await setDoc(doc(firestore, "activities", activityTitle + '_' + uuid.v4()), {
-                hostId: user.uid,
+
+        const { error, status } = await supabase
+            .from('activities')
+            .insert({
+                hostId: hostId,
                 activityTitle: activityTitle,
                 activityDescription: activityDescription,
                 activityType: selectedActivityType,
@@ -81,11 +81,12 @@ export default function AddEventScreen() {
                 numberOfParticipants: people,
                 date: date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':')),
                 location: location
-            }).then(() => setResponseMessage('Votre événement a bien été créé !'))
-        }
-        catch (err) {
-            console.log('erreur ' + err)
-            setResponseMessage('Une erreur a été détéctée, veuillez remplir tous les champs du formulaire s\'il vous plait')
+            })
+
+        if (error) setResponseMessage(error.message)
+        // TO DO créer une modale qui s'affiche quelques secondes puis rediriger vers la carte ou vers la page "mes activitées"
+        if (status === 201) {
+            setResponseMessage("Votre activité a bien été créée")
         }
     }
 
