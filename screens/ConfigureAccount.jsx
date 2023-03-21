@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, TextInput, Text, Pressable, Image, Button } from 'react-native';
-import { getAuth, updateProfile } from "firebase/auth";
 import * as ImagePicker from 'expo-image-picker';;
 import styles from "../styles";
-
-const auth = getAuth();
 
 export default function ConfigureAccountScreen({ navigation }) {
     const [name, setName] = useState()

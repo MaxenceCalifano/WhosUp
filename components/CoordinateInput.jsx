@@ -42,7 +42,12 @@ export default function CoordinateInput({ selectedIndex, setLocation, location, 
                                 styles={{
                                     textInput: {
                                         borderBottomRightRadius: 0,
-                                        borderTopRightRadius: 0
+                                        borderTopRightRadius: 0,
+                                        width: 90
+                                    },
+                                    container: {
+                                        flex: 1,
+                                        borderColor: 'red'
                                     }
                                 }}
                                 onPress={(data, details = null) => {
