@@ -34,7 +34,7 @@ export default function Main() {
                 headerShown: false
             }} />
             <Tab.Screen name="+" component={AddEventScreen} options={{
-                title: 'événement',
+                title: 'Créer une activité',
                 tabBarIcon: ({ focused, color, size }) => (
                     focused ?
                         <AntDesign name="pluscircle" size={24} color={mainStyles.color} />
