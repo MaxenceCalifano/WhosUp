@@ -92,102 +92,101 @@ export default function AddEventScreen() {
         console.log('location ' + location)
     }, [location])
     return (
-        <ScrollView contentContainerStyle={{ minHeight: '100%' }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
-            <View style={{ backgroundColor: pageStyles.backgroundColor, paddingHorizontal: 20 }}>
+        //   <ScrollView contentContainerStyle={{ minHeight: '100%' }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
+        <View style={pageStyles.container}>
 
-                {/*Activity title*/}
-                <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
+            {/*Activity title*/}
+            <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
 
-                {/*Number of antendees input*/}
-                <Text>Nombre de participants: {people}</Text>
-                <Slider
-                    value={people}
-                    onValueChange={setPeople}
-                    maximumValue={10}
-                    minimumValue={1}
-                    step={1}
-                    thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
-                    thumbProps={{
-                        children: (
-                            <Icon
-                                name="people"
-                                type="material"
-                                size={20}
-                                color="#757575"
-                                containerStyle={{ bottom: 0, right: 0 }}
-                            />
-                        )
-                    }}
+            {/*Number of antendees input*/}
+            <Text>Nombre de participants: {people}</Text>
+            <Slider
+                value={people}
+                onValueChange={setPeople}
+                maximumValue={10}
+                minimumValue={1}
+                step={1}
+                thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
+                thumbProps={{
+                    children: (
+                        <Icon
+                            name="people"
+                            type="material"
+                            size={20}
+                            color="#757575"
+                            containerStyle={{ bottom: 0, right: 0 }}
+                        />
+                    )
+                }}
+            />
+            <Divider />
+
+            {/*Activity type input */}
+            <Text style={{ marginTop: pageStyles.marginTop }}>Quel type d'activité proposez-vous ?</Text>
+            <Picker
+                selectedValue={selectedActivityType}
+                onValueChange={(itemValue, itemIndex) =>
+                    setSelectedActivityType(itemValue)
+                }>
+                <Picker.Item icon={() => <Icon
+                    name="calendar"
+                    type="font-awesome"
+                    size={20}
+                    color="#454545"
+                    onPress={showPicker}
+
+                />} label="jeux de société" value="jeux de société" />
+                <Picker.Item label="apéro" value="apéro" />
+                <Picker.Item label="randonée" value="randonée" />
+            </Picker>
+            <Divider />
+
+            {/*Calendar */}
+            <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
+                <Icon
+                    name="calendar"
+                    type="font-awesome"
+                    size={20}
+                    color="#454545"
+                    onPress={showPicker}
                 />
-                <Divider />
+                <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
+            </Pressable>
+            <Divider />
 
-                {/*Activity type input */}
-                <Text style={{ marginTop: pageStyles.marginTop }}>Quel type d'activité proposez-vous ?</Text>
-                <Picker
-                    selectedValue={selectedActivityType}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedActivityType(itemValue)
-                    }>
-                    <Picker.Item icon={() => <Icon
-                        name="calendar"
-                        type="font-awesome"
-                        size={20}
-                        color="#454545"
-                        onPress={showPicker}
+            {/*Activity description*/}
+            <Text style={{ marginTop: pageStyles.marginTop }}>Description de l'activité</Text>
+            <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
+            <Divider />
 
-                    />} label="jeux de société" value="jeux de société" />
-                    <Picker.Item label="apéro" value="apéro" />
-                    <Picker.Item label="randonée" value="randonée" />
-                </Picker>
-                <Divider />
+            {/*Place input*/}
+            <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
+            <ButtonGroup
+                buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
+                selectedIndex={selectedIndex}
+                onPress={(value) => {
+                    setSelectedIndex(value);
+                }}
+                selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
+            />
+            <CoordinateInput setSelectedIndex={setSelectedIndex} selectedIndex={selectedIndex} setLocation={setLocation} location={location} setPlace={setPlace} />
 
-                {/*Calendar */}
-                <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
-                    <Icon
-                        name="calendar"
-                        type="font-awesome"
-                        size={20}
-                        color="#454545"
-                        onPress={showPicker}
-                    />
-                    <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
-                </Pressable>
-                <Divider />
-
-                {/*Activity description*/}
-                <Text style={{ marginTop: pageStyles.marginTop }}>Description de l'activité</Text>
-                <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
-                <Divider />
-
-                {/*Place input*/}
-                <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
-                <ButtonGroup
-                    buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
-                    selectedIndex={selectedIndex}
-                    onPress={(value) => {
-                        setSelectedIndex(value);
-                    }}
-                    selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
-                />
-                <CoordinateInput selectedIndex={selectedIndex} setLocation={setLocation} location={location} setPlace={setPlace} />
-
-                <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
-                <Text>{responseMessage}</Text>
-            </View>
-        </ScrollView>
+            <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
+            <Text>{responseMessage}</Text>
+        </View>
+        //   </ScrollView>
     );
 
 }
 const pageStyles = StyleSheet.create({
     backgroundColor: '#FFF',
     marginTop: 10,
-    map: {
-        width: Dimensions.get('window').width - 40,
-        height: Dimensions.get('window').height,
-    },
-    coordinateCard: {
-        backgroundColor: '#959595',
-        width: '50%',
-        padding: '5'
+    container: {
+        backgroundColor: '#FFF',
+        paddingHorizontal: 20,
+        height: Dimensions.get('window').height - 150,
+        flexDirection: "column",
+        justifyContent: "space-between"
     }
+
 })

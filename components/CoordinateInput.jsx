@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, Modal, Pressable } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Modal, Pressable, Dimensions } from 'react-native'
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import UserLocation from "./UserLocation";
 
 
-export default function CoordinateInput({ selectedIndex, setLocation, location, setPlace }) {
+export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLocation, location, setPlace }) {
 
     switch (selectedIndex) {
         case 0:
@@ -35,43 +35,55 @@ export default function CoordinateInput({ selectedIndex, setLocation, location, 
                     visible={modalVisible}>
 
                     <View style={{ flex: 1, backgroundColor: 'rgba(200, 200, 200, 0.5)' }}>
-                        <View style={{ flexDirection: 'row', }}>
+                        {/**Input and closing button */}
+                        <View style={{ flexDirection: 'row', alignItems: "flex-start", margin: 10 }}>
                             <GooglePlacesAutocomplete
+                                fetchDetails
                                 suppressDefaultStyles={true}
+                                enablePoweredByContainer={false}
                                 placeholder='Rechercher'
                                 styles={{
                                     textInput: {
                                         borderBottomRightRadius: 0,
                                         borderTopRightRadius: 0,
-                                        width: 90
+                                        backgroundColor: 'white',
+                                        height: 50,
+                                        padding: 10
                                     },
                                     container: {
                                         flex: 1,
-                                        borderColor: 'red'
+                                    },
+                                    listView: {
+                                        backgroundColor: "white",
+                                        width: Dimensions.get('window').width - 20,
+                                        padding: 10
                                     }
                                 }}
                                 onPress={(data, details = null) => {
-                                    // 'details' is provided when fetchDetails = true
                                     setModalVisible(false)
-
-                                    setLocation(data.description)
+                                    // Get coordinate of theplace selecter by user
+                                    setLocation(details.geometry.location)
+                                    //Get the name of the place selected by user
                                     setPlace(data.description)
-                                    console.log('date', data, details);
                                 }}
                                 query={{
-                                    key: 'AIzaSyC2y8jzrQcwMvNhm0P273F-4elbS5kTFp0',
+                                    key: 'AIzaSyCFqiJdXcKGbazXuBJayQHSau6sdZN0fMw',
                                     language: 'fr',
                                 }}
                             />
                             <Pressable
                                 style={{ width: '10%', backgroundColor: 'white' }}
-                                onPress={() => setModalVisible(!modalVisible)}
+                                onPress={() => {
+                                    setModalVisible(!modalVisible)
+                                    setSelectedIndex()
+                                }
+                                }
                             >
-                                <Text style={{ textAlign: 'center', textAlignVertical: 'center', paddingVertical: 10 }}>X</Text>
+                                <Text style={{ textAlign: 'center', textAlignVertical: 'center', height: 50 }}>X</Text>
                             </Pressable>
                         </View>
                     </View>
-                </Modal>
+                </Modal >
             )
         default:
             return <></>
