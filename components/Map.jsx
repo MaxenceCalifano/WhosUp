@@ -3,9 +3,7 @@ import { View, Text } from 'react-native'
 import MapView from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Dimensions } from 'react-native';
-import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import ActivityCard from './ActivityCard';
 
 import * as Location from 'expo-location';
 
