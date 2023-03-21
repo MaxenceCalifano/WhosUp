@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, Pressable, Dimensions, ScrollView } from 'react-native'
 import { Input, Slider, Icon, Divider } from 'react-native-elements'
-import { Button, ButtonGroup, lightColors } from "@rneui/themed";
+import { Button, ButtonGroup } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { supabase } from '../config/supabase'
@@ -60,13 +60,6 @@ export default function AddEventScreen() {
         })
     }
     /* End of date picker dependencies */
-
-    const eventTypes = [
-        'randonée',
-        'jeux de société',
-        'sport',
-        'apéro',
-    ]
 
     const createNewActivity = async () => {
 
