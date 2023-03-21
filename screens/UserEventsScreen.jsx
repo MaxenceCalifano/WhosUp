@@ -6,11 +6,11 @@ function UserEventScreen({ navigation }) {
     //console.log("🚀 ~ file: UserEventsScreen.jsx:10 ~ UserEventScreen ~ user", user.uid)
     const [test, setTest] = useState([])
 
-    useEffect(() => {
-        if (user) {
-
-        }
-    }, [user])
+    /*  useEffect(() => {
+         if (user) {
+ 
+         }
+     }, [user]) */
 
 
     return (

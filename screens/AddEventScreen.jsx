@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, Pressable, Dimensions, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Pressable, Dimensions } from 'react-native'
 import { Input, Slider, Icon, Divider } from 'react-native-elements'
 import { Button, ButtonGroup } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
@@ -9,6 +9,7 @@ import { supabase } from '../config/supabase'
 import CoordinateInput from "../components/CoordinateInput";
 
 import styles from "../styles";
+import Loader from "../components/Loader";
 
 
 export default function AddEventScreen() {
@@ -28,7 +29,7 @@ export default function AddEventScreen() {
     const [location, setLocation] = useState({ latitude: '', longitude: '' })
 
     const [selectedIndex, setSelectedIndex] = useState()
-
+    const [loading, setLoading] = useState(false)
     const [responseMessage, setResponseMessage] = useState('')
 
     const [place, setPlace] = useState('') // Used to display the place selected by the google place picker
@@ -62,6 +63,7 @@ export default function AddEventScreen() {
     /* End of date picker dependencies */
 
     const createNewActivity = async () => {
+        setLoading(true)
 
         const { error, status } = await supabase
             .from('activities')
@@ -91,9 +93,11 @@ export default function AddEventScreen() {
     useEffect(() => {
         console.log('location ' + location)
     }, [location])
+
     return (
         //   <ScrollView contentContainerStyle={{ minHeight: '100%' }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
         <View style={pageStyles.container}>
+            {loading ? <Loader /> : <></>}
 
             {/*Activity title*/}
             <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
