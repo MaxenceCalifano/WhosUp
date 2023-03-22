@@ -11,7 +11,7 @@ import CoordinateInput from "../components/CoordinateInput";
 import styles from "../styles";
 
 
-export default function AddEventScreen() {
+export default function AddEventScreen({ navigation }) {
 
     /*Get the id of the current user */
     supabase.auth.getSession()
@@ -89,7 +89,7 @@ export default function AddEventScreen() {
             setIsSuccess(true)
             setLoading(false)
             setTimeout(() => {
-
+                navigation.navigate("Calendrier")
             }, 5000)
         }
     }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button } from 'react-native'
+import { supabase } from "../config/supabase";
 
 export default function UserProfile() {
-    const { user } = useAuthentication()
+
     const [username, setUsername] = useState()
 
     return (
