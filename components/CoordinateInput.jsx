@@ -62,7 +62,8 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                                 onPress={(data, details = null) => {
                                     setModalVisible(false)
                                     // Get coordinate of theplace selecter by user
-                                    setLocation(details.geometry.location)
+                                    setLocation({ latitude: details.geometry.location.lng, longitude: details.geometry.location.lng })
+                                    console.log("🚀 ~ file: CoordinateInput.jsx:66 ~ CoordinateInput ~ details.geometry.location:", details.geometry.location)
                                     //Get the name of the place selected by user
                                     setPlace(data.description)
                                 }}
