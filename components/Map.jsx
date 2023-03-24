@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native'
 import MapView from 'react-native-maps';
-import { Marker, Callout } from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
 import ActivityCard from './ActivityCard';
 import { StyleSheet, Dimensions } from 'react-native';
@@ -46,12 +46,19 @@ export default function Map({ navigation }) {
                 <MapView style={styles.map}>
                     {
                         activities.map((marker, index) => {
+                            //Load icon corresponding with the type of activity
+                            let markerIcon;
+                            if (marker.activityType === "apéro") { markerIcon = require('../assets/drink_icon.png') }
+                            if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
+                            if (marker.activityType === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
+
                             return (
                                 < Marker
                                     key={index}
                                     coordinate={marker.location}
                                     title={marker.activityTitle}
                                     description={marker.activityDescription}
+                                    image={markerIcon}
                                 />
                             )
                         })
