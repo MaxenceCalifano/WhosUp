@@ -46,7 +46,6 @@ export default function Map({ navigation }) {
                 <MapView style={styles.map}>
                     {
                         activities.map((marker, index) => {
-                            console.log(marker.activityDescription)
                             return (
                                 < Marker
                                     key={index}
