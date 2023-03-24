@@ -3,10 +3,10 @@ import { View, Text } from 'react-native'
 import MapView from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
+import ActivityCard from './ActivityCard';
 import { StyleSheet, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
-import * as Location from 'expo-location';
 
 export default function Map({ navigation }) {
 
@@ -57,6 +57,21 @@ export default function Map({ navigation }) {
                         })
                     }
                 </ MapView>
+                <View style={styles.carouselContainer}>
+                    <Carousel
+                        style={styles.carousel}
+                        loop
+                        width={Dimensions.get('window').width - 10}
+                        height={150}
+                        autoPlay={false}
+                        data={activities}
+                        scrollAnimationDuration={1000}
+                        onSnapToItem={(index) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
+                        renderItem={({ index, item }) => (
+                            <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} item={item} />
+                        )}
+                    />
+                </View>
                 <Text>{text}</Text>
             </View >
         </GestureHandlerRootView>
