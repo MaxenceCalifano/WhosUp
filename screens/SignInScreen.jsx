@@ -16,6 +16,7 @@ export default function SignInScreen() {
         })
 
         if (error) {
+            console.log(error)
             setErrorMessage(error.message)
         }
     }
@@ -23,8 +24,13 @@ export default function SignInScreen() {
     return (
         <View style={styles.container}>
             <Text style={[styles.text, { fontSize: 25 }]} >Bon retour parmis nous !</Text>
-            <TextInput style={style.input} placeholder="e-mail" onChangeText={(value) => setEmail(value)} />
-            <TextInput style={style.input} placeholder="mot de passe" onChangeText={(value) => setPassword(value)} />
+            <TextInput
+                keyboardType='email-address'
+                autoComplete="email"
+                style={style.input}
+                placeholder="e-mail"
+                onChangeText={(value) => setEmail(value)} />
+            <TextInput secureTextEntry style={style.input} placeholder="mot de passe" onChangeText={(value) => setPassword(value)} />
             <Pressable style={[style.button, styles.button]} onPress={login}>
                 <Text style={[styles.text, { color: style.color, fontSize: 20 }]}>Connexion</Text>
             </Pressable>

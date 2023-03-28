@@ -13,6 +13,7 @@ export default function Map({ navigation }) {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [activities, setActivities] = useState([])
+    const [latLngDeltas, setLatLngDeltas] = useState();
 
 
     let text = 'Waiting..';
@@ -22,20 +23,19 @@ export default function Map({ navigation }) {
         text = JSON.stringify(location);
     }
 
+    const fetchData = async () => {
+        const { data, error } = await supabase
+            .from('activities')
+            .select()
+            .eq('location')
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const { data, error } = await supabase
-                .from('activities')
-                .select()
-
-            if (data) {
-                //console.log('data ligne 30 map.jsx', data)
-                setActivities(data)
-            }
-            if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
+        if (data) {
+            //console.log('data ligne 30 map.jsx', data)
+            setActivities(data)
         }
-
+        if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
+    }
+    useEffect(() => {
         fetchData()
     }, [])
 
@@ -43,7 +43,17 @@ export default function Map({ navigation }) {
     return (
         <GestureHandlerRootView>
             < View >
-                <MapView style={styles.map}>
+                <MapView
+                    initialRegion={{
+                        latitude: 38.012243326086676,
+                        longitude: -122.55204247310758,
+                        latitudeDelta: 10.615515039661084,
+                        longitudeDelta: 10.109313167631598,
+                    }}
+                    onRegionChangeComplete={e => {
+                        console.log(e)
+                    }}
+                    style={styles.map}>
                     {
                         activities.map((marker, index) => {
                             //Load icon corresponding with the type of activity
