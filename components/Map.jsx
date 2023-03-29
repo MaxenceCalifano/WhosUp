@@ -51,11 +51,11 @@ export default function Map({ navigation }) {
                             if (marker.activityType === "apéro") { markerIcon = require('../assets/drink_icon.png') }
                             if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
                             if (marker.activityType === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
-
+                            console.log(JSON.parse(marker.location))
                             return (
                                 < Marker
                                     key={index}
-                                    coordinate={marker.location}
+                                    coordinate={JSON.parse(marker.location)}
                                     title={marker.activityTitle}
                                     description={marker.activityDescription}
                                     image={markerIcon}

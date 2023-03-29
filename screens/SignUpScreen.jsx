@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Pressable, TextInput, Button } from 'react-native'
 import styles from "../styles";
-import Google_SignIn from "../components/Google_signIn";
 import { supabase } from '../config/supabase'
 
 export default function SignUpScreen({ navigation, setIsNew }) {
@@ -19,9 +18,10 @@ export default function SignUpScreen({ navigation, setIsNew }) {
             password: password,
         })
 
-        if (error) setSubmitMessage(error.message)
+        if (error) console.log(error)//setSubmitMessage(error.message)
         if (data) {
-            setIsNew(true)
+            // setIsNew(true)
+            console.log("test")
         }
         //setLoading(false)
     }
@@ -77,8 +77,6 @@ export default function SignUpScreen({ navigation, setIsNew }) {
                 <Text style={{ color: styles.color, alignSelf: 'center' }}>Créer un compte</Text>
             </Pressable>
             <Text style={{ alignSelf: 'center' }}>{submitMessage}</Text>
-
-            <Google_SignIn />
         </View>
     )
 }
