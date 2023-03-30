@@ -29,7 +29,6 @@ export default function Map({ navigation }) {
 
 
     useEffect(() => {
-        // initial state {"latitude": 1.4113178344796395, "latitudeDelta": 114.87415842507339, "longitude": 0.6542491167783702, "longitudeDelta": 69.03412833809853} 
         const minimalLatitude = location.latitude - location.latitudeDelta / 2
         const maximalLatitude = location.latitude + location.latitudeDelta / 2
         const minimalLongitude = location.longitude - location.longitudeDelta / 2
@@ -39,19 +38,20 @@ export default function Map({ navigation }) {
             const { data, error } = await supabase
                 .from('activities')
                 .select()
-                .lte("location -> latitude", 40)
-            //.gt("numberOfParticipants", 2)
+                .lte("location -> latitude", maximalLatitude)
+                .gte("location -> latitude", minimalLatitude)
+                .lte("location -> longitude", maximalLongitude)
+                .gte("location -> longitude", minimalLongitude)
 
             if (data) {
-                //console.log('data ligne 30 map.jsx', data)
-                data.forEach(data => console.log(data.id))
+                data.forEach(data => console.log("id des activités chargées, fetch data map.jsx", data.id))
                 setActivities(data)
             }
             if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
         }
 
         fetchData()
-    }, [])
+    }, [location])
 
 
     return (
@@ -59,12 +59,13 @@ export default function Map({ navigation }) {
             < View >
                 <MapView
                     style={styles.map}
-                    onRegionChangeComplete={e => console.log(e)}
+                    onRegionChangeComplete={e => {
+                        setLocation(e)
+                        console.log(e)
+                    }}
                 >
                     {
                         activities.map((marker, index) => {
-                            //console.log("🚀 ~ file: Map.jsx:53 ~ activities.map ~ marker:", typeof marker.location)
-                            //Load icon corresponding with the type of activity
                             let markerIcon;
                             if (marker.activityType === "apéro") { markerIcon = require('../assets/drink_icon.png') }
                             if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
