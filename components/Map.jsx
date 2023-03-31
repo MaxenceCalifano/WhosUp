@@ -35,19 +35,21 @@ export default function Map({ navigation }) {
             .gte("location -> longitude", minimalLongitude)
 
         if (data) {
-            data.forEach(data => console.log("id des activités chargées, fetch data map.jsx", data.id))
+            data.forEach(data => console.log(typeof data.activityType))
             setActivities(data)
         }
         if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
+        console.log('ligne 40', activities)
     }
     const handleRegionChangeComplete = (mapRegion) => {
-        //console.log(mapRegion, 'ligne 44')
+        console.log(activities, 'ligne 44')
         setLocation(mapRegion)
         setShowSearchInthisArea(true)
     }
 
     useEffect(() => {
         fetchData()
+        console.log(activities, 'ligne 52')
     }, [])
 
 
@@ -56,31 +58,30 @@ export default function Map({ navigation }) {
             < View >
                 <MapView
                     style={styles.map}
-                    onRegionChangeComplete={handleRegionChangeComplete}>
+                    onRegionChangeComplete={handleRegionChangeComplete}
+                >
                     {
                         activities ? activities.map((marker, index) => {
                             let markerIcon;
                             if (marker.activityType === "apéro") { markerIcon = require('../assets/drink_icon.png') }
                             if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
                             if (marker.activityType === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
-
                             console.log(marker.activityType)
                             return (
                                 < Marker
                                     key={index}
                                     coordinate={marker.location}
                                     title={marker.activityTitle}
-                                    description={marker.activityDescription}
+                                    description={marker.activityType}
                                     image={markerIcon}
                                 />
                             )
                         }) : ""
                     }
-                    {console.log(activities, "ligne 80")}
 
                 </ MapView>
                 <View style={styles.carouselContainer}>
-                    <Carousel
+                    {/*  <Carousel
                         style={styles.carousel}
                         loop
                         width={Dimensions.get('window').width - 10}
@@ -92,7 +93,7 @@ export default function Map({ navigation }) {
                         renderItem={({ index, item }) => (
                             <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} item={item} />
                         )}
-                    />
+                    /> */}
                 </View>
 
                 {
