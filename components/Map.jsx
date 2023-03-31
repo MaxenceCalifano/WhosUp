@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
@@ -7,6 +7,7 @@ import ActivityCard from './ActivityCard';
 import { StyleSheet, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function Map({ navigation }) {
 
@@ -51,7 +52,7 @@ export default function Map({ navigation }) {
         }
 
         fetchData()
-    }, [location])
+    }, [])
 
 
     return (
@@ -82,6 +83,7 @@ export default function Map({ navigation }) {
                             )
                         })
                     }
+
                 </ MapView>
                 <View style={styles.carouselContainer}>
                     <Carousel
@@ -98,6 +100,12 @@ export default function Map({ navigation }) {
                         )}
                     />
                 </View>
+                <View style={styles.regionChangedButton_container}>
+                    <Pressable style={styles.regionChangedButton}>
+                        <Text><FontAwesome name="search" size={24} color="black" /> </Text><Text>Rechercher dans cette zone</Text>
+                    </Pressable>
+                </View>
+
                 <Text>{text}</Text>
             </View >
         </GestureHandlerRootView>
@@ -119,5 +127,20 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         gap: 15
+    },
+    regionChangedButton_container: {
+        position: "absolute",
+        width: "100%",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    regionChangedButton: {
+        top: 50,
+        backgroundColor: "white",
+        padding: 10,
+        borderRadius: 35,
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 });
