@@ -19,7 +19,7 @@ export default function Map({ navigation }) {
     });
     const [errorMsg, setErrorMsg] = useState(null);
     const [activities, setActivities] = useState([])
-
+    const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
 
     let text = 'Waiting..';
     if (errorMsg) {
@@ -28,29 +28,27 @@ export default function Map({ navigation }) {
         text = JSON.stringify(location);
     }
 
-
-    useEffect(() => {
+    const fetchData = async () => {
         const minimalLatitude = location.latitude - location.latitudeDelta / 2
         const maximalLatitude = location.latitude + location.latitudeDelta / 2
         const minimalLongitude = location.longitude - location.longitudeDelta / 2
         const maximalLongitude = location.longitude + location.longitudeDelta / 2
+        const { data, error } = await supabase
+            .from('activities')
+            .select()
+            .lte("location -> latitude", maximalLatitude)
+            .gte("location -> latitude", minimalLatitude)
+            .lte("location -> longitude", maximalLongitude)
+            .gte("location -> longitude", minimalLongitude)
 
-        const fetchData = async () => {
-            const { data, error } = await supabase
-                .from('activities')
-                .select()
-                .lte("location -> latitude", maximalLatitude)
-                .gte("location -> latitude", minimalLatitude)
-                .lte("location -> longitude", maximalLongitude)
-                .gte("location -> longitude", minimalLongitude)
-
-            if (data) {
-                data.forEach(data => console.log("id des activités chargées, fetch data map.jsx", data.id))
-                setActivities(data)
-            }
-            if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
+        if (data) {
+            data.forEach(data => console.log("id des activités chargées, fetch data map.jsx", data.id))
+            setActivities(data)
         }
+        if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
+    }
 
+    useEffect(() => {
         fetchData()
     }, [])
 
@@ -63,6 +61,7 @@ export default function Map({ navigation }) {
                     onRegionChangeComplete={e => {
                         setLocation(e)
                         console.log(e)
+                        setShowSearchInthisArea(true)
                     }}
                 >
                     {
@@ -100,12 +99,20 @@ export default function Map({ navigation }) {
                         )}
                     />
                 </View>
-                <View style={styles.regionChangedButton_container}>
-                    <Pressable style={styles.regionChangedButton}>
-                        <Text><FontAwesome name="search" size={24} color="black" /> </Text><Text>Rechercher dans cette zone</Text>
-                    </Pressable>
-                </View>
 
+                {
+                    /* Search in this area button */
+                    showSearchIsthisArea ?
+                        <View style={styles.regionChangedButton_container}>
+                            <Pressable onPress={() => {
+                                setShowSearchInthisArea(false)
+                                fetchData()
+                            }} style={styles.regionChangedButton}>
+                                <Text><FontAwesome name="search" size={24} color="black" /> </Text><Text>Rechercher dans cette zone</Text>
+                            </Pressable>
+                        </View>
+                        : ''
+                }
                 <Text>{text}</Text>
             </View >
         </GestureHandlerRootView>
