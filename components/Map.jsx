@@ -17,16 +17,9 @@ export default function Map({ navigation }) {
         "longitude": 0.6542491167783702,
         "longitudeDelta": 69.03412833809853
     });
-    const [errorMsg, setErrorMsg] = useState(null);
+
     const [activities, setActivities] = useState([])
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
-
-    let text = 'Waiting..';
-    if (errorMsg) {
-        text = errorMsg;
-    } else if (location) {
-        text = JSON.stringify(location);
-    }
 
     const fetchData = async () => {
         const minimalLatitude = location.latitude - location.latitudeDelta / 2
@@ -47,6 +40,13 @@ export default function Map({ navigation }) {
         }
         if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
     }
+    const handleRegionChangeComplete = (mapRegion) => {
+        console.log(activities)
+        const test = mapRegion
+        //setLocation(mapRegion)
+        //setShowSearchInthisArea(true)
+        console.log(mapRegion)
+    }
 
     useEffect(() => {
         fetchData()
@@ -58,12 +58,7 @@ export default function Map({ navigation }) {
             < View >
                 <MapView
                     style={styles.map}
-                    onRegionChangeComplete={e => {
-                        setLocation(e)
-                        console.log(e)
-                        setShowSearchInthisArea(true)
-                    }}
-                >
+                    onRegionChangeComplete={handleRegionChangeComplete}>
                     {
                         activities.map((marker, index) => {
                             let markerIcon;
@@ -71,6 +66,7 @@ export default function Map({ navigation }) {
                             if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
                             if (marker.activityType === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
 
+                            console.log(marker.activityType)
                             return (
                                 < Marker
                                     key={index}
@@ -82,6 +78,7 @@ export default function Map({ navigation }) {
                             )
                         })
                     }
+                    {console.log(activities, "ligne 80")}
 
                 </ MapView>
                 <View style={styles.carouselContainer}>
@@ -113,7 +110,6 @@ export default function Map({ navigation }) {
                         </View>
                         : ''
                 }
-                <Text>{text}</Text>
             </View >
         </GestureHandlerRootView>
 
