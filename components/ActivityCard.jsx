@@ -1,35 +1,35 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
-function ActivityCard({ index, item, navigation }) {
+function ActivityCard({ index, activity, navigation }) {
     /* let thumbnail;
     if (item.activityType = "randonée") thumbnail = require('../assets/hiking_thumbnail.jpg')
     if (item.activityType = "jeux de société") thumbnail = require('../assets/tablegame_thumbnail.jpg') 
      navigation.navigate('Activité')
     */
-    const thumbnail = item.activityType = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
-
+    const thumbnail = activity.activitytype = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
+    console.log(activity, 'item dans activity card')
     return (
         <Pressable style={styles.card}
-            onPress={() => navigation.navigate('Activité', { itemID: item.id })}>
+            onPress={() => navigation.navigate('Activité', { itemID: activity.id })}>
             <Image style={styles.image} source={thumbnail} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
                     <View>
-                        <Text>{item.activityTitle}</Text>
-                        <Text>{item.activityDescription}</Text>
+                        <Text>{activity.activityTitle}</Text>
+                        <Text>{activity.activityDescription}</Text>
                     </View>
                     <View style={styles.date}>
                         <Ionicons name="time-sharp" size={24} color="black" />
                         <View>
-                            <Text>{item.date.slice(4, 10)}</Text>
-                            <Text>{item.date.slice(11, item.date.length)}</Text>
-                            <Text>{item.activityType}</Text>
+                            <Text>{activity.date.slice(4, 10)}</Text>
+                            <Text>{activity.date.slice(11, activity.date.length)}</Text>
+                            <Text>{activity.activitytype}</Text>
                         </View>
                     </View>
                 </View>
 
-                <Text><Ionicons name="people" size={24} color="black" />{item.numberOfParticipants}</Text>
+                <Text><Ionicons name="people" size={24} color="black" />{activity.numberOfParticipants}</Text>
             </View>
         </Pressable>
     );
