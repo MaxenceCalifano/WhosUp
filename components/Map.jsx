@@ -18,7 +18,7 @@ export default function Map({ navigation }) {
         "longitudeDelta": 69.03412833809853
     });
 
-    const [activities, setActivities] = useState([])
+    const [activities, setActivities] = useState()
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
 
     const fetchData = async () => {
@@ -41,11 +41,9 @@ export default function Map({ navigation }) {
         if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
     }
     const handleRegionChangeComplete = (mapRegion) => {
-        console.log(activities)
-        const test = mapRegion
-        //setLocation(mapRegion)
-        //setShowSearchInthisArea(true)
-        console.log(mapRegion)
+        //console.log(mapRegion, 'ligne 44')
+        setLocation(mapRegion)
+        setShowSearchInthisArea(true)
     }
 
     useEffect(() => {
@@ -60,7 +58,7 @@ export default function Map({ navigation }) {
                     style={styles.map}
                     onRegionChangeComplete={handleRegionChangeComplete}>
                     {
-                        activities.map((marker, index) => {
+                        activities ? activities.map((marker, index) => {
                             let markerIcon;
                             if (marker.activityType === "apéro") { markerIcon = require('../assets/drink_icon.png') }
                             if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
@@ -76,7 +74,7 @@ export default function Map({ navigation }) {
                                     image={markerIcon}
                                 />
                             )
-                        })
+                        }) : ""
                     }
                     {console.log(activities, "ligne 80")}
 
