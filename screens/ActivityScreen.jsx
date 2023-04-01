@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useSyncExternalStore } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Button, StyleSheet, ActivityIndicator } from "react-native";
 import { supabase } from '../config/supabase'
+import styles from "../styles";
+
 
 
 function Activity({ route, navigation }) {
@@ -67,13 +69,13 @@ function Activity({ route, navigation }) {
     }
     if (item) {
         return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text>{item.date}</Text>
+            <View style={activityStyles.container}>
+                <View style={activityStyles.header}>
                     <Text>{item.activityTitle}</Text>
+                    <Text>{item.date}</Text>
                 </View>
                 <Text>Nombre de participants {item.numberOfParticipants}</Text>
-                <View style={styles.buttons}>
+                <View style={activityStyles.buttons}>
                     <Button onPress={participate} title="Participer" />
                     <Button title="Intéressé(e)" />
                     <Button title="Plus" />
@@ -86,13 +88,13 @@ function Activity({ route, navigation }) {
         )
     } else {
         return (
-            <Text>Loader</Text>
+            <ActivityIndicator color={styles.color} size={"large"} />
         )
     }
 }
 
 
-const styles = StyleSheet.create({
+const activityStyles = StyleSheet.create({
     container: {
         marginTop: 40
     },
