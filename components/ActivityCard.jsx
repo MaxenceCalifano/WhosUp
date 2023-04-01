@@ -24,7 +24,7 @@ function ActivityCard({ index, activity, navigation }) {
                         <View>
                             <Text>{activity.date.slice(4, 10)}</Text>
                             <Text>{activity.date.slice(11, activity.date.length)}</Text>
-                            <Text>{activity.activitytype}</Text>
+                            <Text>{activity.activityType}</Text>
                         </View>
                     </View>
                 </View>

@@ -92,7 +92,7 @@ export default function Map({ navigation }) {
                         onSnapToItem={(index, item) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
                         renderItem={({ index, item }) => (
                             //console.log(index, item, 'ligne 94')
-                            <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} activity={{ "activityDescription": "apéro", "activityTitle": "barna", "test": "apéro", "applicants": [], "created_at": "2023-03-30T16:59:19.833357+00:00", "date": "2023-03-30T04:56:00+00:00", "hostId": "aa72fabb-edb1-4eef-816b-c0c790e7ce31", "id": 6, "location": { "latitude": 41.3873974, "longitude": 2.168568 }, "numberOfParticipants": 3 }} />
+                            <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} activity={item} />
                         )}
                     />
                 </View>
