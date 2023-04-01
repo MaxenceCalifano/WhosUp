@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useSyncExternalStore } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { supabase } from '../config/supabase'
 
 
 function Activity({ route, navigation }) {
@@ -9,11 +10,32 @@ function Activity({ route, navigation }) {
     let { itemID } = route.params;
 
     const [item, setItem] = useState(null)
-    const [isHost, setIsHost] = useState(true)
+    const [isHost, setIsHost] = useState(false)
+    const [user, setUser] = useState()
+
+    const fetchData = async () => {
+        const { data, error } = await supabase
+            .from('activities')
+            .select()
+            .eq('id', itemID)
+
+        if (data) {
+            setItem(data[0])
+            /*Get the id of the current user and compare it with the id of the host of the activity */
+            supabase.auth.getSession()
+                .then(res => {
+                    setUser(res.data.session.user)
+                    if (res.data.session.user.id === data[0].hostId) {
+                        console.log('is host')
+                        setIsHost(true)
+                    }
+                })
+        }
+    }
 
     //TODO Si je ne suis pas l'hote ne pas RECEVOIR les infos applicants (dans les règles de sécurité)
     useEffect(() => {
-
+        fetchData()
     }, []);
 
     // Retourne les applicants, ne doit donc s'afficher que pour l'hote
@@ -22,39 +44,26 @@ function Activity({ route, navigation }) {
             return item.applicants.map((applicant) => <Text>{applicant.displayName}</Text>)
         }
     }
+
+    //Check if id of user is already in the provided array
     const userHasAlreadyApplied = (arr) => (
-        arr.some((elem) => elem.userID === user.uid)
+        arr.some((elem) => elem.userID === user.id)
     )
 
-    const participate = async () => {
-        let newApplicantsArray = []
+    const participate = () => {
+        console.log(item.applicants)
+        let newApplicantsArray = [...item.applicants]
+        if (userHasAlreadyApplied(item.applicants)) {
+            console.log('existe déja')
+            setParticipateMessage("Vous avez déjà demandé à participer et votre demande a bien été envoyée")
+        } else {
+            newApplicantsArray.push({
+                userID: user.ui,
+                //photoURL: user.photoURL,
+            })
 
-        if (user) {
-            newApplicantsArray = [...item.applicants]
-            if (userHasAlreadyApplied(item.applicants)) {
-                console.log('existe déja')
-                setParticipateMessage("Vous avez déjà demandé à participer et votre demande a bien été envoyée")
-            } else {
-                newApplicantsArray.push({
-                    userID: user.uid,
-                    displayName: user.providerData[0].displayName,
-                    photoURL: user.photoURL,
-                })
-
-                const activityRef = doc(firestore, "activities", item.id)
-                try {
-                    await updateDoc(activityRef, {
-                        applicants: newApplicantsArray
-                    })
-                        .then(() => setParticipateMessage("Votre demande a bien été envoyée, l'organisateur la vérifiera très vite"))
-                }
-                catch (err) {
-                    console.log(err)
-                }
-            }
-
+            //Mettre a jour la liste des "applicants"
         }
-
     }
     if (item) {
         return (
