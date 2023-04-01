@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, Button, StyleSheet, ActivityIndicator, Image } from "react-native";
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
 
@@ -70,20 +71,29 @@ function Activity({ route, navigation }) {
     if (item) {
         return (
             <View style={activityStyles.container}>
-                <View style={activityStyles.header}>
-                    <Text>{item.activityTitle}</Text>
-                    <Text>{item.date}</Text>
+                <View style={activityStyles.backIcon}>
+                    <Ionicons name="arrow-back-outline" size={24} color="black" />
                 </View>
-                <Text>Nombre de participants {item.numberOfParticipants}</Text>
-                <View style={activityStyles.buttons}>
-                    <Button onPress={participate} title="Participer" />
-                    <Button title="Intéressé(e)" />
-                    <Button title="Plus" />
-                </View>
-                <Text>{participateMessage}</Text>
+                <Image style={activityStyles.image} source={require('../assets/hiking_thumbnail.jpg')} />
 
-                <Text>{item.activityDescription}</Text>
-                {isHost ? <Applicants /> : <></>}
+                <View style={activityStyles.dataContainer} >
+
+                    <Text style={activityStyles.title}>{item.activityTitle}</Text>
+                    <Text><FontAwesome5 name="clock" size={24} color="black" /> {item.date}</Text>
+
+                    <Text><Ionicons name="people" size={24} color="black" /> {item.numberOfParticipants}</Text>
+                    <View style={activityStyles.buttons}>
+                        <Button onPress={participate} title="Participer" />
+                        <Button title="Intéressé(e)" />
+                        <Button title="Plus" />
+                    </View>
+                    <Text>{participateMessage}</Text>
+
+                    <Text style={{ fontWeight: 'bold' }}>Description</Text>
+                    <Text>{item.activityDescription}</Text>
+                    {isHost ? <Applicants /> : <></>}
+                </View>
+
             </View>
         )
     } else {
@@ -96,13 +106,38 @@ function Activity({ route, navigation }) {
 
 const activityStyles = StyleSheet.create({
     container: {
-        marginTop: 40
+        // marginTop: 40
     },
     header: {
         flexDirection: 'row',
     },
     buttons: {
         flexDirection: 'row'
-    }
+    },
+    image: {
+        width: '100%',
+        height: '40%',
+    },
+    backIcon: {
+        position: 'absolute',
+        top: 50,
+        left: 15,
+        zIndex: 2,
+        backgroundColor: 'white',
+        borderRadius: 50
+    },
+    dataContainer: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        position: "relative",
+        top: -15,
+        backgroundColor: "#F2F2F2",
+        padding: 15
+
+    },
+    title: {
+        fontSize: 25,
+        fontWeight: 'bold'
+    },
 })
 export default Activity;
