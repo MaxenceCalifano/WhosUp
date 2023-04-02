@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, ActivityIndicator, Image, Pressable } from "react-native";
+import { View, Text, Button, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
@@ -98,7 +98,9 @@ function Activity({ route, navigation }) {
         )
     } else {
         return (
-            <ActivityIndicator color={styles.color} size={"large"} />
+            <View style={activityStyles.loaderContainer}>
+                <ActivityIndicator color={styles.color} size={"large"} />
+            </View>
         )
     }
 }
@@ -138,6 +140,11 @@ const activityStyles = StyleSheet.create({
     title: {
         fontSize: 25,
         fontWeight: 'bold'
+    },
+    loaderContainer: {
+        display: "flex",
+        justifyContent: 'center',
+        height: Dimensions.get('window').height,
     },
 })
 export default Activity;
