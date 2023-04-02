@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
 
@@ -62,7 +62,6 @@ function Activity({ route, navigation }) {
         } else {
             newApplicantsArray.push({
                 userID: user.ui,
-                //photoURL: user.photoURL,
             })
 
             //Mettre a jour la liste des "applicants"
@@ -82,16 +81,22 @@ function Activity({ route, navigation }) {
                     <Text><FontAwesome5 name="clock" size={24} color="black" /> {item.date}</Text>
 
                     <Text><Ionicons name="people" size={24} color="black" /> {item.numberOfParticipants}</Text>
-                    <View style={activityStyles.buttons}>
-                        <Button onPress={participate} title="Participer" />
-                        <Button title="Intéressé(e)" />
-                        <Button title="Plus" />
+                    <View style={activityStyles.buttonsContainer}>
+                        <Pressable style={activityStyles.buttons} onPress={participate}>
+                            <Text>Participer</Text>
+                        </Pressable>
+                        <Pressable style={activityStyles.buttons}>
+                            <Text>Intéressé(e)</Text>
+                        </Pressable>
+                        <Pressable style={activityStyles.buttons}>
+                            <Entypo name="dots-three-vertical" size={24} color="black" />
+                        </Pressable>
                     </View>
                     <Text>{participateMessage}</Text>
 
                     <Text style={{ fontWeight: 'bold' }}>Description</Text>
                     <Text>{item.activityDescription}</Text>
-                    {isHost ? <Applicants /> : <></>}
+                    {item && isHost ? <Applicants /> : <></>}
                 </View>
 
             </View>
@@ -113,8 +118,14 @@ const activityStyles = StyleSheet.create({
     header: {
         flexDirection: 'row',
     },
+    buttonsContainer: {
+        flexDirection: 'row',
+        gap: 15
+    },
     buttons: {
-        flexDirection: 'row'
+        backgroundColor: styles.color,
+        padding: 5,
+        borderRadius: 5,
     },
     image: {
         width: '100%',
