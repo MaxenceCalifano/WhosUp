@@ -22,7 +22,7 @@ function ActivityCard({ index, activity, navigation }) {
                     <View style={styles.date}>
                         <Ionicons name="time-sharp" size={24} color="black" />
                         <View>
-                            <Text>{activity.date.slice(4, 10)}</Text>
+                            {/* <Text>{activity.date.slice(4, 10)}</Text> */}
                             <Text>{activity.date.slice(11, activity.date.length)}</Text>
                             <Text>{activity.activityType}</Text>
                         </View>
@@ -37,11 +37,11 @@ function ActivityCard({ index, activity, navigation }) {
 
 const styles = StyleSheet.create({
     card: {
-        //padding: 10,
+        // padding: 10,
         flexDirection: 'row',
-        // width: '100%',
+        width: '100%',
         borderRadius: 20,
-        // height: '100%',
+        //height: 400,
         backgroundColor: 'white',
     },
     image: {
@@ -51,12 +51,13 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 15,
     },
     textContent: {
-        padding: 7
+        padding: 7,
+        flexWrap: 'nowrap'
     },
     firstColumn: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%',
+        width: '50%',
         paddingHorizontal: 5
     },
     date: {

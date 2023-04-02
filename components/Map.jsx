@@ -83,7 +83,7 @@ export default function Map({ navigation }) {
                 <View style={styles.carouselContainer}>
                     <Carousel
                         style={styles.carousel}
-                        loop
+                        loop={false}
                         width={Dimensions.get('window').width - 10}
                         height={150}
                         autoPlay={false}
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 
     carousel: {
         position: 'absolute',
-        bottom: 0,
+        bottom: 15,
         gap: 15
     },
     regionChangedButton_container: {
