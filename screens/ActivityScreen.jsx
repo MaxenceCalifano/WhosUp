@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, ActivityIndicator, Image } from "react-native";
+import { View, Text, Button, StyleSheet, ActivityIndicator, Image, Pressable } from "react-native";
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
@@ -71,9 +71,9 @@ function Activity({ route, navigation }) {
     if (item) {
         return (
             <View style={activityStyles.container}>
-                <View style={activityStyles.backIcon}>
+                <Pressable style={activityStyles.backIcon} onPress={() => navigation.goBack()}>
                     <Ionicons name="arrow-back-outline" size={24} color="black" />
-                </View>
+                </Pressable>
                 <Image style={activityStyles.image} source={require('../assets/hiking_thumbnail.jpg')} />
 
                 <View style={activityStyles.dataContainer} >
