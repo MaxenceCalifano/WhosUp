@@ -11,7 +11,7 @@ function Activity({ route, navigation }) {
     const [participateMessage, setParticipateMessage] = useState()
 
     let { itemID } = route.params;
-    console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
+    //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
 
     const [item, setItem] = useState(null)
     const [isHost, setIsHost] = useState(false)
@@ -30,9 +30,9 @@ function Activity({ route, navigation }) {
             supabase.auth.getSession()
                 .then(res => {
                     setUser(res.data.session.user)
-                    console.log(data)
-                    if (res.data.session.user.id === data[0].hostId) {
-                        console.log('is host')
+                    //console.log(typeof data[0].host_id, '/', typeof res.data.session.user.id)
+                    if (res.data.session.user.id === data[0].host_id) {
+                        //console.log('is host')
                         setIsHost(true)
                     }
                 })
@@ -40,45 +40,24 @@ function Activity({ route, navigation }) {
         if (error) console.log(error)
     }
 
-    //TODO Si je ne suis pas l'hote ne pas RECEVOIR les infos applicants (dans les règles de sécurité)
     useEffect(() => {
         fetchData()
     }, []);
 
-    // Retourne les applicants, ne doit donc s'afficher que pour l'hote
+    // Returns applicants
     const Applicants = () => {
         if (item) {
-            return item.applicants.map((applicant) => <Text>{applicant.displayName}</Text>)
+            console.log(item.applicants)
+            return item.applicants.map((applicant) => <Text>{applicant}</Text>)
         }
     }
 
-    //Check if id of user is already in the provided array
-    const userHasAlreadyApplied = (arr) => (
-        arr.some((elem) => elem.userID === user.id)
-    )
-
     const participate = async () => {
-        console.log(item.applicants)
-        let newApplicantsArray = [...item.applicants]
-        if (userHasAlreadyApplied(item.applicants)) {
-            console.log('existe déja')
-            setParticipateMessage("Vous avez déjà demandé à participer et votre demande a bien été envoyée")
-        } else {
-            newApplicantsArray.push({
-                userID: user.id,
-            })
-
-            console.log(newApplicantsArray)
-
-            const { data, error } = await supabase
-                .from('applicants')
-                .update({ applicants: newApplicantsArray })
-                .eq('id', itemID)
-
-            console.log('data', data)
-            console.log('error', error)
-            //Mettre a jour la liste des "applicants"
-        }
+        await supabase
+            .from('applicants')
+            .insert({ activity_id: itemID, user_id: user.id })
+            .then(res => console.log(res))
+            .catch(error => console.log('error', error))
     }
     if (item) {
         return (
@@ -109,7 +88,7 @@ function Activity({ route, navigation }) {
 
                     <Text style={{ fontWeight: 'bold' }}>Description</Text>
                     <Text>{item.activityDescription}</Text>
-                    {/*  {item && isHost ? <Applicants /> : <></>} */}
+                    {item.applicants && isHost ? <Applicants /> : <></>}
                 </View>
 
             </View>
