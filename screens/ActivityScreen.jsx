@@ -126,6 +126,7 @@ const activityStyles = StyleSheet.create({
         backgroundColor: styles.color,
         padding: 5,
         borderRadius: 5,
+        marginRight: 5
     },
     image: {
         width: '100%',
