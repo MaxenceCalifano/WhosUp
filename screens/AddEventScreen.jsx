@@ -80,6 +80,7 @@ export default function AddEventScreen({ navigation }) {
 
         if (error) {
             console.log(error)
+            setLoading(false)
             if (status === 400) setResponseMessage("Une erreur est survenue, veuillez érifier les informations que vous avez renseignées")
             if (status === 401) setResponseMessage("Vous devez être connecté pour créer une activité")
             if (status >= 500) setResponseMessage("Le serveur ne répond pas, veuillez réessayer plus tard")
