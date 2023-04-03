@@ -30,7 +30,7 @@ function Activity({ route, navigation }) {
             supabase.auth.getSession()
                 .then(res => {
                     setUser(res.data.session.user)
-                    //console.log(typeof data[0].host_id, '/', typeof res.data.session.user.id)
+                    console.log(res.data.session.user.id)
                     if (res.data.session.user.id === data[0].host_id) {
                         //console.log('is host')
                         setIsHost(true)
@@ -47,12 +47,14 @@ function Activity({ route, navigation }) {
     // Returns applicants
     const Applicants = () => {
         if (item) {
-            console.log(item.applicants)
-            return item.applicants.map((applicant) => <Text>{applicant}</Text>)
+            console.log('ligne 50', item.applicants)
+            return item.applicants.map((applicant) => <Text>{applicant.user_id}</Text>)
         }
     }
 
     const participate = async () => {
+        //TO DO ajouter le username dans la table
+        console.log(user)
         await supabase
             .from('applicants')
             .insert({ activity_id: itemID, user_id: user.id })
@@ -88,7 +90,12 @@ function Activity({ route, navigation }) {
 
                     <Text style={{ fontWeight: 'bold' }}>Description</Text>
                     <Text>{item.activityDescription}</Text>
-                    {item.applicants && isHost ? <Applicants /> : <></>}
+                    {item.applicants && isHost ?
+                        <View>
+                            <Text>Personnes souhaitant participer à votre activité:</Text>
+                            <Applicants />
+                        </View>
+                        : <></>}
                 </View>
 
             </View>
