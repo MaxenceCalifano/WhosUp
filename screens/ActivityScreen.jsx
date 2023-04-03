@@ -11,6 +11,7 @@ function Activity({ route, navigation }) {
     const [participateMessage, setParticipateMessage] = useState()
 
     let { itemID } = route.params;
+    console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
 
     const [item, setItem] = useState(null)
     const [isHost, setIsHost] = useState(false)
@@ -53,7 +54,7 @@ function Activity({ route, navigation }) {
         arr.some((elem) => elem.userID === user.id)
     )
 
-    const participate = () => {
+    const participate = async () => {
         console.log(item.applicants)
         let newApplicantsArray = [...item.applicants]
         if (userHasAlreadyApplied(item.applicants)) {
@@ -61,9 +62,18 @@ function Activity({ route, navigation }) {
             setParticipateMessage("Vous avez déjà demandé à participer et votre demande a bien été envoyée")
         } else {
             newApplicantsArray.push({
-                userID: user.ui,
+                userID: user.id,
             })
 
+            console.log(newApplicantsArray)
+
+            const { data, error } = await supabase
+                .from('activities')
+                .update({ applicants: newApplicantsArray })
+                .eq('id', itemID)
+
+            console.log('data', data)
+            console.log('error', error)
             //Mettre a jour la liste des "applicants"
         }
     }
