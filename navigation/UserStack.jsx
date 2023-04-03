@@ -9,22 +9,15 @@ import Activity from "../screens/ActivityScreen";
 
 const Stack = createNativeStackNavigator();
 
-export default function UserStack(props) {
+export default function UserStack() {
     return (
-
         <NavigationContainer>
             <Stack.Navigator>
-                {props.isNew ?
-                    <Stack.Group>
-                        <Stack.Screen name='Configurer le compte' component={ConfigureAccount} />
-                        <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />
-                    </Stack.Group>
-
-                    : <Stack.Group>
-                        <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />
-                        <Stack.Screen name='Activité' component={Activity} options={{ headerShown: false }} />
-                    </Stack.Group>
-                }
+                <Stack.Group>
+                    <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />
+                    <Stack.Screen name='Activité' component={Activity} options={{ headerShown: false }} />
+                    <Stack.Screen name='Configurer le compte' component={ConfigureAccount} />
+                </Stack.Group>
             </Stack.Navigator>
         </NavigationContainer>
     )

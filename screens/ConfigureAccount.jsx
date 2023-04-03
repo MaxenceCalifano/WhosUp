@@ -21,11 +21,8 @@ export default function ConfigureAccountScreen({ navigation }) {
     }
 
     const updateAccount = () => {
-        updateProfile(auth.currentUser, {
-            displayName: name,
-            photoURL: photoURL
-        }).then(() => navigation.navigate('Carte'))
-            .catch(error => console.error(error))
+        /*  .then(() => navigation.navigate('Carte'))
+              .catch(error => console.error(error)) */
     }
 
     return (

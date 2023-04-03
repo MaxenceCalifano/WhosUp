@@ -20,7 +20,7 @@ export default function SignUpScreen({ navigation, setIsNew }) {
 
         if (error) console.log(error)//setSubmitMessage(error.message)
         if (data) {
-            // setIsNew(true)
+            setIsNew(true)
             console.log("test")
         }
         //setLoading(false)

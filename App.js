@@ -7,11 +7,7 @@ import UserStack from './navigation/UserStack';
 
 export default function App() {
 
-  //const {user} = useAuthentication()
   const [user,setUser] = useState(null)
-  const [isNew, setIsNew] = useState();
-
-
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       console.log("session: ")
@@ -28,7 +24,7 @@ export default function App() {
   },[])
   
   return (
-       user ? <UserStack user={user} isNew={isNew}/> : <AuthStack setIsNew={setIsNew}/>
+       user ? <UserStack user={user}/> : <AuthStack/>
   );
 }
 
