@@ -8,7 +8,7 @@ function ActivityCard({ index, activity, navigation }) {
      navigation.navigate('Activité')
     */
     const thumbnail = activity.activitytype = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
-    console.log(activity, 'item dans activity card')
+    //console.log(activity, 'item dans activity card')
     return (
         <Pressable style={styles.card}
             onPress={() => navigation.navigate('Activité', { itemID: activity.uid })}>

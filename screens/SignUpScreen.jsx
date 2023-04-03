@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Pressable, TextInput, Button } from 'react-native'
 import styles from "../styles";
 import { supabase } from '../config/supabase'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default function SignUpScreen({ navigation, setIsNew }) {
-    console.log("🚀 ~ file: SignUpScreen.jsx:8 ~ SignUpScreen ~ setIsNew:", setIsNew)
+
+export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitMessage, setSubmitMessage] = useState('')
-
 
     // const createAccount = () => {
     async function signUpWithEmail() {
@@ -19,38 +19,21 @@ export default function SignUpScreen({ navigation, setIsNew }) {
         })
 
         if (error) console.log(error)//setSubmitMessage(error.message)
-        if (data) {
-            setIsNew(true)
-            console.log("test")
+        if (data.session !== null) {
+            const storeData = async (value) => {
+                try {
+                    await AsyncStorage.setItem('welcomeScreenSeen', value)
+                } catch (e) {
+                    console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ storeData ~ e:", e)
+                    // saving error
+
+                }
+            }
+            storeData("false")
         }
         //setLoading(false)
     }
-    /* createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-            const user = userCredentials.user
-            setSubmitMessage('Votre compte a été créé avec succès !')
-        })
-        .catch((error) => {
-            const errorCode = error.code;
 
-            switch (errorCode) {
-                case 'auth/invalid-email':
-                    setSubmitMessage("L'adresse email est invalide");
-                    break;
-                case 'auth/admin-restricted-operation':
-                    setSubmitMessage('Erreur lors de la création du compte, veuillez véifier que tous les champs sont remplis');
-                    break;
-                case 'auth/weak-password':
-                    setSubmitMessage('Veuillez renseigner un mot de passe de minimum 6 charactères');
-                    break;
-                case 'auth/email-already-in-use':
-                    setSubmitMessage('Cette adresse e-mail est déja utilisée');
-                    break;
-                default:
-                    setSubmitMessage('Erreur lors de la création du compte')
-            }
-        }) */
-    //  }
     const submit = () => {
         console.log("submit")
         if (email === '' || password === '') {

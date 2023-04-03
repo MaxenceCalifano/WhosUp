@@ -8,6 +8,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 export default function Map({ navigation }) {
 
@@ -35,22 +37,36 @@ export default function Map({ navigation }) {
             .gte("location -> longitude", minimalLongitude)
 
         if (data) {
-            data.forEach(data => console.log(typeof data.activityType))
+            //data.forEach(data => console.log(typeof data.activityType))
             setActivities(data)
         }
         if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
         // console.log('ligne 40', activities)
     }
     const handleRegionChangeComplete = (mapRegion) => {
-        console.log(activities, 'ligne 44')
+        //console.log(activities, 'ligne 44')
         setLocation(mapRegion)
         setShowSearchInthisArea(true)
     }
 
     useEffect(() => {
+        const getData = async () => {
+            console.log('getData')
+            try {
+                const value = await AsyncStorage.getItem("welcomeScreenSeen")
+                if (value === 'false') {
+                    // value previously stored
+                    navigation.navigate("Configurer le compte")
+                }
+            } catch (e) {
+                // error reading value
+                console.log(e)
+            }
+        }
+        getData()
         fetchData()
-        console.log(activities, 'ligne 52')
-    }, [])
+        //console.log(activities, 'ligne 52')
+    }, [AsyncStorage])
 
 
     return (

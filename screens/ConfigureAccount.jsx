@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TextInput, Text, Pressable, Image, Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';;
 import styles from "../styles";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 export default function ConfigureAccountScreen({ navigation }) {
     const [name, setName] = useState()
     const [photoURL, setPhoto] = useState(null)
+
+    useEffect(() => {
+        /*   const storeData = async (value) => {
+              try {
+                  await AsyncStorage.setItem('welcomeScreenSeen', value)
+              } catch (e) {
+                  console.log("🚀 ~ file: ConfigureAccount.jsx:17 ~ storeData ~ e:", e)
+                  // saving error
+              }
+          }
+          storeData("true") */
+    }, [])
 
     const imagePicker = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
