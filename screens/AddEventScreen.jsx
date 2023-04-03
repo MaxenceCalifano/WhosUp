@@ -72,7 +72,6 @@ export default function AddEventScreen({ navigation }) {
                 activityTitle: activityTitle,
                 activityDescription: activityDescription,
                 activityType: selectedActivityType,
-                applicants: [],
                 numberOfParticipants: people,
                 date: date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':')),
                 location: location
