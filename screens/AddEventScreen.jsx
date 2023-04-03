@@ -68,7 +68,7 @@ export default function AddEventScreen({ navigation }) {
         const { error, status } = await supabase
             .from('activities')
             .insert({
-                hostId: hostId,
+                host_id: hostId,
                 activityTitle: activityTitle,
                 activityDescription: activityDescription,
                 activityType: selectedActivityType,
