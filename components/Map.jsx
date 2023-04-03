@@ -56,6 +56,7 @@ export default function Map({ navigation }) {
                 const value = await AsyncStorage.getItem("welcomeScreenSeen")
                 if (value === 'false') {
                     // value previously stored
+                    console.log('navigate')
                     navigation.navigate("Configurer le compte")
                 }
             } catch (e) {
@@ -66,7 +67,7 @@ export default function Map({ navigation }) {
         getData()
         fetchData()
         //console.log(activities, 'ligne 52')
-    }, [AsyncStorage])
+    }, [])
 
 
     return (
