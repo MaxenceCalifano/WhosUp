@@ -20,8 +20,9 @@ function Activity({ route, navigation }) {
     const fetchData = async () => {
         const { data, error } = await supabase
             .from('activities')
-            .select()
-            .eq('id', itemID)
+            .select(`*,
+                    applicants(user_id)`)
+            .eq('uid', itemID)
 
         if (data) {
             setItem(data[0])
@@ -29,12 +30,14 @@ function Activity({ route, navigation }) {
             supabase.auth.getSession()
                 .then(res => {
                     setUser(res.data.session.user)
+                    console.log(data)
                     if (res.data.session.user.id === data[0].hostId) {
                         console.log('is host')
                         setIsHost(true)
                     }
                 })
         }
+        if (error) console.log(error)
     }
 
     //TODO Si je ne suis pas l'hote ne pas RECEVOIR les infos applicants (dans les règles de sécurité)
@@ -68,7 +71,7 @@ function Activity({ route, navigation }) {
             console.log(newApplicantsArray)
 
             const { data, error } = await supabase
-                .from('activities')
+                .from('applicants')
                 .update({ applicants: newApplicantsArray })
                 .eq('id', itemID)
 
@@ -106,7 +109,7 @@ function Activity({ route, navigation }) {
 
                     <Text style={{ fontWeight: 'bold' }}>Description</Text>
                     <Text>{item.activityDescription}</Text>
-                    {item && isHost ? <Applicants /> : <></>}
+                    {/*  {item && isHost ? <Applicants /> : <></>} */}
                 </View>
 
             </View>
