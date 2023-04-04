@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {useAuthentication} from './utils/hooks/useAuthentication'
 
 import { supabase } from './config/supabase';
 import AuthStack from './navigation/AuthStack';
@@ -18,7 +17,7 @@ export default function App() {
       setUser(session)
     })
     
-    console.log("🚀 ~ file: App.js:39 ~ useEffect ~ user:", user)
+    //console.log("🚀 ~ file: App.js:39 ~ useEffect ~ user:", user)
     
   },[])
   
