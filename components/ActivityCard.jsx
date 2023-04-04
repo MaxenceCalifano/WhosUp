@@ -17,7 +17,7 @@ function ActivityCard({ index, activity, navigation }) {
                 <View style={styles.firstColumn}>
                     <View>
                         <Text>{activity.activityTitle}</Text>
-                        <Text>{activity.activityDescription}</Text>
+                        <Text>{activity.activityDescription.slice(0, 40)}</Text>
                     </View>
                     <View style={styles.date}>
                         <Ionicons name="time-sharp" size={24} color="black" />
