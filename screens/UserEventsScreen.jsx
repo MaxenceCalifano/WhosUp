@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { supabase } from '../config/supabase'
 import { useUser } from "../UserContext";
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 function UserEventScreen() {
@@ -24,10 +26,13 @@ function UserEventScreen() {
     }
 
     const Activity = ({ item }) => (
-        <Pressable key={item.uid}>
-            <Text>{item.activityTitle}</Text>
-            <Text>{item.date}</Text>
+        <Pressable style={userEventStyle.activity}>
+            <Text style={userEventStyle.activityTitle}>{item.activityTitle}</Text>
             <Text>{item.activityDescription.slice(0, 40)}</Text>
+            <View style={userEventStyle.dateAndAttendees}>
+                <Text><Ionicons name="time-sharp" size={24} color="black" /> {item.date}</Text>
+                <Text><Ionicons name="people" size={24} color="black" /> 0/{item.numberOfParticipants}</Text>
+            </View>
         </Pressable>
     )
 
@@ -38,7 +43,7 @@ function UserEventScreen() {
 
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={userEventStyle.container}>
             <Text>Mes événements</Text>
             <Divider />
             <Text>J'organise</Text>
@@ -54,3 +59,26 @@ function UserEventScreen() {
 }
 
 export default UserEventScreen;
+
+const userEventStyle = StyleSheet.create({
+    activity: {
+        backgroundColor: "white",
+        marginVertical: 10,
+        elevation: 10,
+        padding: 10,
+        borderRadius: 15
+    },
+    activityTitle: {
+        fontSize: 18,
+        fontWeight: "500"
+    },
+    dateAndAttendees: {
+        display: "flex",
+        flexDirection: "row",
+        rowGap: 18
+    },
+    container: {
+        flex: 1,
+        padding: 10
+    }
+})
