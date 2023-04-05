@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
+import { Divider } from 'react-native-elements'
 import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
@@ -94,8 +95,9 @@ function Activity({ route, navigation }) {
                     <Text style={{ fontWeight: 'bold' }}>Description</Text>
                     <Text>{item.activityDescription}</Text>
                     {item.applicants && isHost ?
-                        <View>
-                            <Text>Personnes souhaitant participer à votre activité:</Text>
+                        <View style={activityStyles.applicantsList}>
+                            <Divider />
+                            <Text style={{ fontWeight: '500', fontSize: 15 }}>Personnes souhaitant participer à votre activité:</Text>
                             <Applicants />
                         </View>
                         : <></>}
@@ -160,5 +162,8 @@ const activityStyles = StyleSheet.create({
         justifyContent: 'center',
         height: Dimensions.get('window').height,
     },
+    applicantsList: {
+        marginTop: 10
+    }
 })
 export default Activity;
