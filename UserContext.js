@@ -8,27 +8,26 @@ export const UserContext = createContext({
 
   export const UserContextProvider = (props) => {
     const [session, setSession] = useState(null)
-    const [user, setUser] = useState(null)
+    //const [user, setUser] = useState(null)
   
     useEffect(() => {
       const session = supabase.auth.getSession()
       setSession(session)
-      setUser(session.user)
-      const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+     // setUser(session.user)
+     supabase.auth.onAuthStateChange(async (event, session) => {
         console.log(`Supabase auth event: ${event}`)
         setSession(session)
-        setUser(session.user)
+       // setUser(session.user)
       })
+        console.log("🚀 ~ file: UserContext.js:22 ~ const{data:authListener}=supabase.auth.onAuthStateChange ~ session:", session)
   
-      return () => {
-        authListener.unsubscribe()
-      }
+    
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   
     const value = {
       session,
-      user,
+     // user,
     }
     return <UserContext.Provider value={value} {...props} />
   }

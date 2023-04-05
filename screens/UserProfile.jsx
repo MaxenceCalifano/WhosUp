@@ -5,7 +5,7 @@ import { useUser } from "../UserContext";
 
 export default function UserProfile() {
 
-    const { user } = useUser()
+    // const { user } = useUser()
 
     /*    const fetchUser = async () => {
            const { data, error } = await supabase.auth.getSession()
@@ -39,7 +39,6 @@ export default function UserProfile() {
     return (
         <View style={{ flex: 1 }}>
             <Text>Page profile</Text>
-            <Text>user id, {user.id}</Text>
             <Text>{username}</Text>
             <Button onPress={async () => {
 

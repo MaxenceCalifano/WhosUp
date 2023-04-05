@@ -23,9 +23,12 @@ export default function App() {
   },[]) */
   
   const Container = () => {
-    const {user} = useUser()
-    console.log(user)
-    return user ? <UserStack user={user}/> : <AuthStack/>
+    //const {user} = useUser()
+    const {session} = useUser()
+    console.log("🚀 ~ file: App.js:28 ~ Container ~ session:", session)
+    
+    //console.log('user', user)
+    return session ? <UserStack /> : <AuthStack/>
   } 
   
   return (

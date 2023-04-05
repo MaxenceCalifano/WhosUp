@@ -50,7 +50,7 @@ export default function Map({ navigation }) {
     }
 
     useEffect(() => {
-        const getData = async () => {
+        const displayConfigureAccount = async () => {
             console.log('getData')
             try {
                 const value = await AsyncStorage.getItem("welcomeScreenSeen")
@@ -64,7 +64,7 @@ export default function Map({ navigation }) {
                 console.log(e)
             }
         }
-        getData()
+        displayConfigureAccount()
         fetchData()
         //console.log(activities, 'ligne 52')
     }, [])
@@ -83,7 +83,6 @@ export default function Map({ navigation }) {
                             if (marker.activityType === "apéro") { markerIcon = require('../assets/drink_icon.png') }
                             if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
                             if (marker.activityType === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
-                            console.log(marker.activityType)
                             return (
                                 < Marker
                                     key={index}
