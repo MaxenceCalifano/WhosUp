@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { supabase } from '../config/supabase'
+import { useUser } from "../UserContext";
 
 
 function UserEventScreen() {
-    const [userId, setUserId] = useState()
+
+    const { user } = useUser()
+    const [hostActivities, setHostActivities] = useState([])
 
     const fetchHostActivites = async () => {
         const { data, error } = await supabase
             .from('activities')
             .select()
-            .eq('host_id', userId)
+            .eq('host_id', user.id)
 
         if (data) {
-            console.log(data)
+            console.log("🚀 ~ file: UserEventsScreen.jsx:17 ~ fetchHostActivites ~ data:", data)
+            setHostActivities(data)
         }
-        if (error) console.log(error)
+        if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ error:", error)
     }
 
-    const fetchUserId = async () => {
-        const { data, error } = await supabase.auth.getSession()
-        if (data) setUserId(data.session.user.id)
-        if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:27 ~ useEffect ~ error:", error)
-    }
+    const Activity = ({ item }) => (
+        <Pressable key={item.uid}>
+            <Text>{item.activityTitle}</Text>
+            <Text>{item.date}</Text>
+            <Text>{item.activityDescription.slice(0, 40)}</Text>
+        </Pressable>
+    )
 
     useEffect(() => {
-        fetchUserId()
         fetchHostActivites()
     }, [])
 
@@ -37,6 +42,7 @@ function UserEventScreen() {
             <Text>Mes événements</Text>
             <Divider />
             <Text>J'organise</Text>
+            {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} />) : <></>}
             <Divider />
             <Text>Je participe</Text>
             <Divider />
