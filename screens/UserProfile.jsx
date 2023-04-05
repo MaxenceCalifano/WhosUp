@@ -5,32 +5,22 @@ import { useUser } from "../UserContext";
 
 export default function UserProfile() {
 
-    // const { user } = useUser()
+    const { user } = useUser()
 
-    /*    const fetchUser = async () => {
-           const { data, error } = await supabase.auth.getSession()
-           if (data) {
-               setUser(data.session.user)
-               console.log(data.session.user)
-           }
-           if (error) console.log("🚀 ~ file: UserProfile.jsx:12 ~ fetchUser ~ error:", error)
-   
-           const fetchProfile = async () => {
-               let { data: profiles, error } = await supabase
-                   .from('profiles')
-                   .select('username')
-                   .eq('id', user.id)
-   
-               if (profiles) console.log(profiles)
-               if (error) console.log("🚀 ~ file: UserProfile.jsx:24 ~ fetchUser ~ error:", error)
-           }
-   
-           //fetchProfile()
-   
-       } */
+    const fetchProfile = async () => {
+        let { data: profiles, error } = await supabase
+            .from('profiles')
+            .select('username')
+            .eq('id', user.id)
+
+        if (profiles) {
+            setUsername(profiles[0].username)
+        }
+        if (error) console.log("🚀 ~ file: UserProfile.jsx:24 ~ fetchUser ~ error:", error)
+    }
 
     useEffect(() => {
-        //fetchUser()
+        fetchProfile()
     }, [])
 
     const [username, setUsername] = useState()
@@ -39,7 +29,11 @@ export default function UserProfile() {
     return (
         <View style={{ flex: 1 }}>
             <Text>Page profile</Text>
+            <Text>Votre adresse e-mail:</Text>
+            <Text>{user.email}</Text>
+            <Text>Votre pseudo</Text>
             <Text>{username}</Text>
+
             <Button onPress={async () => {
 
                 const { error } = await supabase.auth.signOut()
