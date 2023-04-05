@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
 import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
+import { useUser } from "../UserContext";
 
 
 
 function Activity({ route, navigation }) {
 
     const [participateMessage, setParticipateMessage] = useState()
+    const { user } = useUser()
 
     let { itemID } = route.params;
     //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
 
     const [item, setItem] = useState(null)
     const [isHost, setIsHost] = useState(false)
-    const [user, setUser] = useState()
 
     const fetchData = async () => {
         const { data, error } = await supabase
@@ -25,17 +26,15 @@ function Activity({ route, navigation }) {
             .eq('uid', itemID)
 
         if (data) {
+            console.log("🚀 ~ file: ActivityScreen.jsx:29 ~ fetchData ~ data:", data)
+
             setItem(data[0])
             /*Get the id of the current user and compare it with the id of the host of the activity */
-            supabase.auth.getSession()
-                .then(res => {
-                    setUser(res.data.session.user)
-                    console.log(res.data.session.user.id)
-                    if (res.data.session.user.id === data[0].host_id) {
-                        //console.log('is host')
-                        setIsHost(true)
-                    }
-                })
+            if (user.id === data[0].host_id) {
+                //console.log('is host')
+                setIsHost(true)
+            }
+
         }
         if (error) console.log(error)
     }
