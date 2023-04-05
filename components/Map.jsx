@@ -49,22 +49,24 @@ export default function Map({ navigation }) {
         setShowSearchInthisArea(true)
     }
 
-    useEffect(() => {
-        const displayConfigureAccount = async () => {
-            console.log('getData')
-            try {
-                const value = await AsyncStorage.getItem("welcomeScreenSeen")
-                if (value === 'false') {
-                    // value previously stored
-                    console.log('navigate')
-                    navigation.navigate("Configurer le compte")
-                }
-            } catch (e) {
-                // error reading value
-                console.log(e)
+    const displayConfigureAccount = async () => {
+        console.log('display configure account')
+        try {
+            const value = await AsyncStorage.getItem("welcomeScreenSeen")
+            if (value === 'false') {
+                // value previously stored
+                console.log('navigate')
+                navigation.navigate("Configurer le compte")
             }
+        } catch (e) {
+            // error reading value
+            console.log(e)
         }
-        displayConfigureAccount()
+    }
+    displayConfigureAccount()
+
+    useEffect(() => {
+
         fetchData()
         //console.log(activities, 'ligne 52')
     }, [])

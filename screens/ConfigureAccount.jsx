@@ -43,7 +43,10 @@ export default function ConfigureAccountScreen({ navigation }) {
             .update({ username: name })
             .eq('id', userId)
 
-        if (error) setResponseMessage(error)
+        if (error) {
+            console.log(error)
+            setResponseMessage(error.message)
+        }
         if (status === 204) {
             setResponseMessage("Votre compte a été mis à jour, redirection vers la page principale")
             setTimeout(() => navigation.navigate('Carte'), 2000)
@@ -76,7 +79,7 @@ export default function ConfigureAccountScreen({ navigation }) {
                 </View>
             }
             <Button title='valider' onPress={() => updateAccount()} />
-            <Text>{responseMessage}</Text>
+
         </View>
     )
 }

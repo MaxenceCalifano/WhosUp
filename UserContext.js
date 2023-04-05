@@ -8,26 +8,44 @@ export const UserContext = createContext({
 
   export const UserContextProvider = (props) => {
     const [session, setSession] = useState(null)
-    //const [user, setUser] = useState(null)
+    const [user, setUser] = useState(null)
+
+    const updateUser = async () => {
+      const session = await supabase.auth.getSession()
+      
+      setSession(session)
+      setUser(session.user)
+      
+      const{data:authListener}= supabase.auth.onAuthStateChange((event, session) => {
+        
+        console.log(`Supabase auth event: ${event}`)
+
+        if(event ==='SIGNED_OUT') {
+          console.log('signed out')
+          setSession(null)
+          setUser(null)
+        } 
+        else {
+            setSession(session)
+            setUser(session.user)
+        }
+        
+      })
+       // console.log("🚀 ~ file: UserContext.js:22 ~ const{data:authListener}=supabase.auth.onAuthStateChange ~ session:", session)
+  
+      return () => {
+        authListener.unsubscribe()
+      }
+    }
   
     useEffect(() => {
-      const session = supabase.auth.getSession()
-      setSession(session)
-     // setUser(session.user)
-     supabase.auth.onAuthStateChange(async (event, session) => {
-        console.log(`Supabase auth event: ${event}`)
-        setSession(session)
-       // setUser(session.user)
-      })
-        console.log("🚀 ~ file: UserContext.js:22 ~ const{data:authListener}=supabase.auth.onAuthStateChange ~ session:", session)
-  
-    
+      updateUser()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   
     const value = {
       session,
-     // user,
+      user,
     }
     return <UserContext.Provider value={value} {...props} />
   }
