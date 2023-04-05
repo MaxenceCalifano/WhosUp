@@ -22,7 +22,7 @@ function Activity({ route, navigation }) {
         const { data, error } = await supabase
             .from('activities')
             .select(`*,
-                    applicants(user_id)`)
+                    applicants(user_id, username)`)
             .eq('uid', itemID)
 
         if (data) {
@@ -47,16 +47,20 @@ function Activity({ route, navigation }) {
     const Applicants = () => {
         if (item) {
             console.log('ligne 50', item.applicants)
-            return item.applicants.map((applicant) => <Text>{applicant.user_id}</Text>)
+            return item.applicants.map((applicant) => <Text key={applicant.user_id}>{applicant.username}</Text>)
         }
     }
 
     const participate = async () => {
-        //TO DO ajouter le username dans la table
-        console.log(user)
+
+        let { data: profiles, error } = await supabase
+            .from('profiles')
+            .select('username')
+            .eq('id', user.id)
+
         await supabase
             .from('applicants')
-            .insert({ activity_id: itemID, user_id: user.id })
+            .insert({ activity_id: itemID, user_id: user.id, username: profiles[0].username })
             .then(res => console.log(res))
             .catch(error => console.log('error', error))
     }
