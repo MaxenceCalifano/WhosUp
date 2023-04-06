@@ -56,9 +56,25 @@ function Activity({ route, navigation }) {
         }
     }
 
+    const unsubscribe = async () => {
+
+        const { error, status, statusText } = await supabase
+            .from('applicants')
+            .delete()
+            .eq('user_id', user.id)
+
+        if (error) console.log("🚀 ~ file: ActivityScreen.jsx:69 ~ unsubscribe ~ error:", error)
+        if (status === 204) {
+            setParticipateMessage("Vous avez bien été désincrit(e) de l'activité")
+            setIsAttendee(false)
+            setIsUnsubscribing(false)
+        }
+        console.log(status, statusText, error)
+    }
+
     const Unsubscribe = () => (
         <View style={{ flexDirection: "row" }}>
-            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(127, 220, 103, 1)' }]} onPress={() => setIsUnsubscribing(false)}>
+            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(127, 220, 103, 1)' }]} onPress={() => unsubscribe()}>
                 <Text>Oui</Text>
                 <AntDesign name="check" size={24} color="black" />
             </Pressable>
@@ -85,7 +101,10 @@ function Activity({ route, navigation }) {
         await supabase
             .from('applicants')
             .insert({ activity_id: itemID, user_id: user.id, username: profiles[0].username })
-            .then(res => setParticipateMessage("Votre demande a bien été transmise à l'organisateur"))
+            .then(() => {
+                setParticipateMessage("Votre demande a bien été transmise à l'organisateur")
+                setIsAttendee(true)
+            })
             .catch(error => console.log('error', error))
     }
 
