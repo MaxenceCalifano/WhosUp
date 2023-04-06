@@ -28,7 +28,7 @@ function Activity({ route, navigation }) {
 
         if (data) {
             console.log("🚀 ~ file: ActivityScreen.jsx:29 ~ fetchData ~ data:", data)
-
+            console.log(data[0].applicants)
             setItem(data[0])
             /*Get the id of the current user and compare it with the id of the host of the activity */
             if (user.id === data[0].host_id) {
