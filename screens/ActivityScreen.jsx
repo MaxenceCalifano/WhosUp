@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
 import { Divider } from 'react-native-elements'
-import { Ionicons, FontAwesome5, Entypo, AntDesign } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, Entypo, AntDesign, Feather } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
 import { useUser } from "../UserContext";
@@ -13,12 +13,13 @@ function Activity({ route, navigation }) {
     const [participateMessage, setParticipateMessage] = useState()
     const [isAttendee, setIsAttendee] = useState(false)
     const { user } = useUser()
+    const [item, setItem] = useState(null)
+    const [isHost, setIsHost] = useState(false)
+    const [unsubscribing, setIsUnsubscribing] = useState(false)
 
     let { itemID } = route.params;
     //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
 
-    const [item, setItem] = useState(null)
-    const [isHost, setIsHost] = useState(false)
 
     const fetchData = async () => {
         const { data, error } = await supabase
@@ -55,8 +56,27 @@ function Activity({ route, navigation }) {
         }
     }
 
+    const Unsubscribe = () => (
+        <View style={{ flexDirection: "row" }}>
+            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(127, 220, 103, 1)' }]} onPress={() => setIsUnsubscribing(false)}>
+                <Text>Oui</Text>
+                <AntDesign name="check" size={24} color="black" />
+            </Pressable>
+            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(214, 61, 57, 1)' }]} onPress={() => { setIsUnsubscribing(false); setParticipateMessage("") }}>
+                <Text>Non</Text>
+                <Feather name="x-circle" size={24} color="black" />
+            </Pressable>
+        </View>
+    )
+
     const participate = async () => {
 
+        if (isAttendee) return (
+            setParticipateMessage("Vous avez déjà demandé à particier à cette activité, souhaitez-vous vous déinscrire ?"),
+            setIsUnsubscribing(true)
+        )
+
+        //Get username of the current user
         let { data: profiles, error } = await supabase
             .from('profiles')
             .select('username')
@@ -65,9 +85,10 @@ function Activity({ route, navigation }) {
         await supabase
             .from('applicants')
             .insert({ activity_id: itemID, user_id: user.id, username: profiles[0].username })
-            .then(res => console.log(res))
+            .then(res => setParticipateMessage("Votre demande a bien été transmise à l'organisateur"))
             .catch(error => console.log('error', error))
     }
+
     if (item) {
         return (
             <View style={activityStyles.container}>
@@ -95,6 +116,7 @@ function Activity({ route, navigation }) {
                         </Pressable>
                     </View>
                     <Text>{participateMessage}</Text>
+                    {unsubscribing ? <Unsubscribe /> : <></>}
 
                     <Text style={{ fontWeight: 'bold' }}>Description</Text>
                     <Text>{item.activityDescription}</Text>
@@ -141,6 +163,15 @@ const activityStyles = StyleSheet.create({
     },
     validatedButton: {
         backgroundColor: styles.secondaryColor
+    },
+    unsubscribeButtons: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 5,
+        marginRight: 15,
+        marginVertical: 5
     },
     image: {
         width: '100%',
