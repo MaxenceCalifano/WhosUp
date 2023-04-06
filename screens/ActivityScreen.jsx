@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
 import { Divider } from 'react-native-elements'
-import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, Entypo, AntDesign } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
 import { useUser } from "../UserContext";
@@ -11,6 +11,7 @@ import { useUser } from "../UserContext";
 function Activity({ route, navigation }) {
 
     const [participateMessage, setParticipateMessage] = useState()
+    const [isAttendee, setIsAttendee] = useState(false)
     const { user } = useUser()
 
     let { itemID } = route.params;
@@ -30,10 +31,12 @@ function Activity({ route, navigation }) {
             console.log("🚀 ~ file: ActivityScreen.jsx:29 ~ fetchData ~ data:", data)
             console.log(data[0].applicants)
             setItem(data[0])
-            /*Get the id of the current user and compare it with the id of the host of the activity */
+            /*Compare current user with the id of the host of the activity */
             if (user.id === data[0].host_id) {
                 //console.log('is host')
                 setIsHost(true)
+            } else if (data[0].applicants.length > 0) {
+                setIsAttendee(true)
             }
 
         }
@@ -80,8 +83,9 @@ function Activity({ route, navigation }) {
 
                     <Text><Ionicons name="people" size={24} color="black" /> {item.numberOfParticipants}</Text>
                     <View style={activityStyles.buttonsContainer}>
-                        <Pressable style={activityStyles.buttons} onPress={participate}>
+                        <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
                             <Text>Participer</Text>
+                            <Text> {isAttendee ? <AntDesign name="checkcircle" size={24} color="black" /> : ""}</Text>
                         </Pressable>
                         <Pressable style={activityStyles.buttons}>
                             <Text>Intéressé(e)</Text>
@@ -130,7 +134,13 @@ const activityStyles = StyleSheet.create({
         backgroundColor: styles.color,
         padding: 5,
         borderRadius: 5,
-        marginRight: 5
+        marginRight: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row"
+    },
+    validatedButton: {
+        backgroundColor: styles.secondaryColor
     },
     image: {
         width: '100%',
