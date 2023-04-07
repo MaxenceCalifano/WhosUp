@@ -38,9 +38,10 @@ function UserEventScreen() {
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:39 ~ fetchuserActivities ~ error:", error)
     }
 
-    const Activity = ({ item }) => (
+    const Activity = ({ item, isValidated }) => (
         <Pressable style={eventsScreenStyles.activityContainer} key={item.uid}>
             <Text style={eventsScreenStyles.activityTitle}>{item.activityTitle}</Text>
+            {isValidated ? "" : <Text>(En attente de validation par l'organisateur)</Text>}
             <Text>{item.activityDescription.slice(0, 40)}</Text>
             <View style={eventsScreenStyles.dateAndParticipants}>
                 <Text><Ionicons name="time-sharp" size={24} color="black" /> {item.date}</Text>
@@ -61,10 +62,10 @@ function UserEventScreen() {
             <Text>Mes événements</Text>
             <Divider />
             <Text>J'organise</Text>
-            {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} />) : <></>}
+            {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} isValidated />) : <></>}
             <Divider />
             <Text>Je participe</Text>
-            {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} />) : <></>}
+            {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated={item.isValidated} />) : <></>}
             <Divider />
         </View>
     );
@@ -79,7 +80,7 @@ const eventsScreenStyles = StyleSheet.create({
     activityContainer: {
         backgroundColor: 'white',
         padding: 10,
-        borderRadius: 15,
+        borderRadius: 5,
         elevation: 5,
         marginVertical: 10
     },
