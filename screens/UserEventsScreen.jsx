@@ -10,6 +10,7 @@ function UserEventScreen() {
 
     const { user } = useUser()
     const [hostActivities, setHostActivities] = useState([])
+    const [userActivities, setUserActivities] = useState([])
 
     const fetchHostActivites = async () => {
         const { data, error } = await supabase
@@ -18,10 +19,23 @@ function UserEventScreen() {
             .eq('host_id', user.id)
 
         if (data) {
-            console.log("🚀 ~ file: UserEventsScreen.jsx:17 ~ fetchHostActivites ~ data:", data)
+            //console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ data:", data)
             setHostActivities(data)
         }
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ error:", error)
+    }
+
+    const fetchUserActivities = async () => {
+        const { data, error } = await supabase
+            .from('applicants')
+            .select(`*,
+                    activities(*)`)
+            .eq('user_id', user.id)
+
+        if (data) {
+            setUserActivities(data)
+        }
+        if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:39 ~ fetchuserActivities ~ error:", error)
     }
 
     const Activity = ({ item }) => (
@@ -37,6 +51,7 @@ function UserEventScreen() {
 
     useEffect(() => {
         fetchHostActivites()
+        fetchUserActivities()
     }, [])
 
 
@@ -49,11 +64,9 @@ function UserEventScreen() {
             {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} />) : <></>}
             <Divider />
             <Text>Je participe</Text>
+            {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} />) : <></>}
             <Divider />
         </View>
-        /**
-         * Charger toutes les activités auquels participe l'utilisateur et celles dont il est
-         */
     );
 }
 
@@ -67,7 +80,8 @@ const eventsScreenStyles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 15,
-        elevation: 10
+        elevation: 5,
+        marginVertical: 10
     },
     activityTitle: {
         fontSize: 18,
