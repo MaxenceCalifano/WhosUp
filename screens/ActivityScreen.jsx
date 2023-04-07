@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5, Entypo, AntDesign, Feather } from '@expo/vector
 import { supabase } from '../config/supabase'
 import styles from "../styles";
 import { useUser } from "../UserContext";
+import { Button } from "react-native";
 
 
 
@@ -25,12 +26,11 @@ function Activity({ route, navigation }) {
         const { data, error } = await supabase
             .from('activities')
             .select(`*,
-                    applicants(user_id, username)`)
+                    applicants(user_id, username,uid)`)
             .eq('uid', itemID)
 
         if (data) {
             console.log("🚀 ~ file: ActivityScreen.jsx:29 ~ fetchData ~ data:", data)
-            console.log(data[0].applicants)
             setItem(data[0])
             /*Compare current user with the id of the host of the activity */
             if (user.id === data[0].host_id) {
@@ -44,6 +44,27 @@ function Activity({ route, navigation }) {
         if (error) console.log(error)
     }
 
+    const validateAttendee = async (userId, uid) => {
+        const { status, error } = await supabase
+            .from('attendees')
+            .insert({ activity_id: itemID, user_id: userId })
+
+        if (status === 201) {
+            console.log("🚀 ~ file: ActivityScreen.jsx:56 ~ validateAttendee ~ data:", status)
+
+            const { error } = await supabase
+                .from('applicants')
+                .delete()
+                .eq('uid', uid)
+
+            if (error) console.log("🚀 ~ file: ActivityScreen.jsx:61 ~ validateAttendee ~ error:", error)
+        }
+
+        if (error) console.log("🚀 ~ file: ActivityScreen.jsx:57 ~ validateAttendee ~ error:", error)
+    }
+
+
+
     useEffect(() => {
         fetchData()
     }, []);
@@ -51,8 +72,12 @@ function Activity({ route, navigation }) {
     // Returns applicants
     const Applicants = () => {
         if (item) {
-            console.log('ligne 50', item.applicants)
-            return item.applicants.map((applicant) => <Text key={applicant.user_id}>{applicant.username}</Text>)
+            return item.applicants.map((applicant) => (
+                <View style={{ flexDirection: 'row', alignItems: "center" }}>
+                    <Text key={applicant.user_id}>{applicant.username}</Text>
+                    <Button title="Valider" onPress={() => validateAttendee(applicant.user_id, applicant.uid)} />
+                </View>
+            ))
         }
     }
 
@@ -158,7 +183,6 @@ function Activity({ route, navigation }) {
         )
     }
 }
-
 
 const activityStyles = StyleSheet.create({
     container: {
