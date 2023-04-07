@@ -6,7 +6,7 @@ import { useUser } from "../UserContext";
 import { Ionicons } from '@expo/vector-icons';
 
 
-function UserEventScreen() {
+function UserEventScreen({ navigation }) {
 
     const { user } = useUser()
     const [hostActivities, setHostActivities] = useState([])
@@ -39,7 +39,11 @@ function UserEventScreen() {
     }
 
     const Activity = ({ item, isValidated }) => (
-        <Pressable style={eventsScreenStyles.activityContainer} key={item.uid}>
+        <Pressable
+            style={eventsScreenStyles.activityContainer}
+            key={item.uid}
+            onPress={() => navigation.navigate('Activité', { itemID: item.uid })}>
+
             <Text style={eventsScreenStyles.activityTitle}>{item.activityTitle}</Text>
             {isValidated ? "" : <Text>(En attente de validation par l'organisateur)</Text>}
             <Text>{item.activityDescription.slice(0, 40)}</Text>
