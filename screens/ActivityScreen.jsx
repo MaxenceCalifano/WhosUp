@@ -73,8 +73,8 @@ function Activity({ route, navigation }) {
     const Applicants = () => {
         if (item) {
             return item.applicants.map((applicant) => (
-                <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                    <Text key={applicant.user_id}>{applicant.username}</Text>
+                <View key={applicant.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
+                    <Text>{applicant.username}</Text>
                     <Button title="Valider" onPress={() => validateAttendee(applicant.user_id, applicant.uid)} />
                 </View>
             ))
