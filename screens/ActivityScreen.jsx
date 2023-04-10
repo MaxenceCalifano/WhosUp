@@ -99,11 +99,11 @@ function Activity({ route, navigation }) {
 
     const Unsubscribe = () => (
         <View style={{ flexDirection: "row" }}>
-            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(127, 220, 103, 1)' }]} onPress={() => unsubscribe()}>
+            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(214, 61, 57, 1)' }]} onPress={() => unsubscribe()}>
                 <Text>Oui</Text>
                 <AntDesign name="check" size={24} color="black" />
             </Pressable>
-            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(214, 61, 57, 1)' }]} onPress={() => { setIsUnsubscribing(false); setParticipateMessage("") }}>
+            <Pressable style={[activityStyles.unsubscribeButtons, { backgroundColor: 'rgba(127, 220, 103, 1)' }]} onPress={() => { setIsUnsubscribing(false); setParticipateMessage("") }}>
                 <Text>Non</Text>
                 <Feather name="x-circle" size={24} color="black" />
             </Pressable>
