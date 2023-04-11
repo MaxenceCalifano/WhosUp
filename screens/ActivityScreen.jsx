@@ -12,7 +12,6 @@ import { Button } from "react-native";
 function Activity({ route, navigation }) {
 
     const [participateMessage, setParticipateMessage] = useState()
-    const [validateUserMessage, setValidateUserMessage] = useState()
     const [isAttendee, setIsAttendee] = useState(false)
     const { user } = useUser()
     const [item, setItem] = useState(null)
@@ -44,16 +43,20 @@ function Activity({ route, navigation }) {
         if (error) console.log(error)
     }
 
-    const validateAttendee = async (userId, username) => {
+    function validateAttendee(userId) {
+        return new Promise(async (resolve, reject) => {
 
-        const { status, error } = await supabase
-            .from('applicants')
-            .update({ is_validated: true })
-            .eq('user_id', userId)
-            .eq('activity_id', item.uid)
+            const { status, error } = await supabase
+                .from('applicants')
+                .update({ is_validated: true })
+                .eq('user_id', userId)
+                .eq('activity_id', item.uid)
 
-        if (status === 204) setValidateUserMessage(`Vous avez bien validé la participation de ${username}`)
-        if (error) console.log("🚀 ~ file: ActivityScreen.jsx:57 ~ validateAttendee ~ error:", error)
+            if (status === 204) {
+                resolve()
+            }
+            if (error) console.log("🚀 ~ file: ActivityScreen.jsx:57 ~ validateAttendee ~ error:", error)
+        })
     }
 
     useEffect(() => {
@@ -68,7 +71,10 @@ function Activity({ route, navigation }) {
         return (
             <View key={user.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
                 <Text>{user.username}</Text>
-                {isValidated ? <></> : <Button title="Valider" onPress={() => validateAttendee(user.user_id)} />}
+                {isValidated ? <></> : <Button title="Valider" onPress={() => {
+                    validateAttendee(user.user_id)
+                        .then(() => setIsValidated(true))
+                }} />}
                 <Text>{validateUserMessage}</Text>
             </View>
         )
