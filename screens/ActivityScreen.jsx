@@ -61,17 +61,17 @@ function Activity({ route, navigation }) {
     }, []);
 
     // Component that returns applicants
-    const Applicants = () => {
-        console.log(item)
-        if (item) {
-            return item.applicants.map((applicant) => (
-                <View key={applicant.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
-                    <Text>{applicant.username}</Text>
-                    <Button title="Valider" onPress={() => validateAttendee(applicant.user_id, applicant.username)} />
-                    <Text>{validateUserMessage}</Text>
-                </View>
-            ))
-        }
+    const Applicant = ({ user }) => {
+        const [isValidated, setIsValidated] = useState(user.is_validated)
+        const [validateUserMessage, setValidateUserMessage] = useState()
+
+        return (
+            <View key={user.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
+                <Text>{user.username}</Text>
+                {isValidated ? <></> : <Button title="Valider" onPress={() => validateAttendee(user.user_id)} />}
+                <Text>{validateUserMessage}</Text>
+            </View>
+        )
     }
 
     const unsubscribe = async () => {
@@ -161,7 +161,8 @@ function Activity({ route, navigation }) {
                         <View style={activityStyles.applicantsList}>
                             <Divider />
                             <Text style={{ fontWeight: '500', fontSize: 15 }}>Personnes souhaitant participer à votre activité:</Text>
-                            <Applicants />
+                            {item.applicants.map(applicant => <Applicant user={applicant} />)}
+
                         </View>
                         : <></>}
                 </View>
