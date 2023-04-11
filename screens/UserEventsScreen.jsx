@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { supabase } from '../config/supabase'
 import { useUser } from "../UserContext";
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 function UserEventScreen({ navigation }) {
@@ -67,11 +68,13 @@ function UserEventScreen({ navigation }) {
         </Pressable>
     )
 
-    useEffect(() => {
-        fetchHostActivites()
-        fetchUserActivities()
-        fetchAttendeeActivities()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchHostActivites()
+            fetchUserActivities()
+            fetchAttendeeActivities()
+
+        }, []))
 
 
 
