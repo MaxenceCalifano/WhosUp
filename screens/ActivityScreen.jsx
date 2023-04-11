@@ -11,6 +11,7 @@ function Activity({ route, navigation }) {
 
     const [participateMessage, setParticipateMessage] = useState()
     const [isAttendee, setIsAttendee] = useState(false)
+    const [attendees, setAttendees] = useState(0)
     const { user } = useUser()
     const [item, setItem] = useState(null)
     const [isHost, setIsHost] = useState(false)
@@ -27,8 +28,9 @@ function Activity({ route, navigation }) {
             .eq('uid', itemID)
 
         if (data) {
-            console.log("🚀 ~ file: ActivityScreen.jsx:31 ~ fetchData ~ data:", data[0].applicants)
             setItem(data[0])
+            const validatedAttendees = data[0].applicants.filter(elem => elem.is_validated)
+            setAttendees(validatedAttendees)
             /*Compare current user with the id of the host of the activity */
             if (user.id === data[0].host_id) {
                 //console.log('is host')
@@ -162,7 +164,7 @@ function Activity({ route, navigation }) {
                     <Text style={activityStyles.title}>{item.activityTitle}</Text>
                     <Text><FontAwesome5 name="clock" size={24} color="black" /> {item.date}</Text>
 
-                    <Text><Ionicons name="people" size={24} color="black" />/{item.numberOfParticipants}</Text>
+                    <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.numberOfParticipants}</Text>
                     <View style={activityStyles.buttonsContainer}>
                         <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
                             <Text>Participer</Text>
