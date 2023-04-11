@@ -5,8 +5,6 @@ import { Ionicons, FontAwesome5, Entypo, AntDesign, Feather } from '@expo/vector
 import { supabase } from '../config/supabase'
 import styles from "../styles";
 import { useUser } from "../UserContext";
-import { Button } from "react-native";
-
 
 
 function Activity({ route, navigation }) {
@@ -55,7 +53,7 @@ function Activity({ route, navigation }) {
             if (status === 204) {
                 resolve()
             }
-            if (error) console.log("🚀 ~ file: ActivityScreen.jsx:57 ~ validateAttendee ~ error:", error)
+            if (error) reject(error)
         })
     }
 
@@ -71,10 +69,27 @@ function Activity({ route, navigation }) {
         return (
             <View key={user.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
                 <Text>{user.username}</Text>
-                {isValidated ? <></> : <Button title="Valider" onPress={() => {
-                    validateAttendee(user.user_id)
-                        .then(() => setIsValidated(true))
-                }} />}
+                {isValidated ?
+                    <View>
+                        <Pressable>
+                            <Feather name="x-circle" size={24} color="black" />
+                        </Pressable>
+                    </View>
+                    :
+                    <View style={{ flexDirection: "row" }}>
+                        <Pressable onPress={() => {
+                            validateAttendee(user.user_id)
+                                .then(() => setIsValidated(true))
+                                .catch(error => {
+                                    console.log(error)
+                                    setValidateUserMessage("Une erreur est survenue")
+                                })
+                        }}>
+                            <AntDesign name="checkcircle" size={24} color="black" />
+                        </Pressable>
+                        <Text>(en attente de votre validation)</Text>
+                    </View>
+                }
                 <Text>{validateUserMessage}</Text>
             </View>
         )
