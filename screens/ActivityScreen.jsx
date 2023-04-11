@@ -12,6 +12,7 @@ import { Button } from "react-native";
 function Activity({ route, navigation }) {
 
     const [participateMessage, setParticipateMessage] = useState()
+    const [validateUserMessage, setValidateUserMessage] = useState()
     const [isAttendee, setIsAttendee] = useState(false)
     const { user } = useUser()
     const [item, setItem] = useState(null)
@@ -26,11 +27,10 @@ function Activity({ route, navigation }) {
         const { data, error } = await supabase
             .from('activities')
             .select(`*,
-                    applicants(user_id, username,uid)`)
+                    applicants(user_id, username, is_validated)`)
             .eq('uid', itemID)
 
         if (data) {
-            console.log("🚀 ~ file: ActivityScreen.jsx:29 ~ fetchData ~ data:", data)
             setItem(data[0])
             /*Compare current user with the id of the host of the activity */
             if (user.id === data[0].host_id) {
@@ -44,38 +44,31 @@ function Activity({ route, navigation }) {
         if (error) console.log(error)
     }
 
-    const validateAttendee = async (userId, uid) => {
+    const validateAttendee = async (userId, username) => {
+
         const { status, error } = await supabase
-            .from('attendees')
-            .insert({ activity_id: itemID, user_id: userId })
+            .from('applicants')
+            .update({ is_validated: true })
+            .eq('user_id', userId)
+            .eq('activity_id', item.uid)
 
-        if (status === 201) {
-            console.log("🚀 ~ file: ActivityScreen.jsx:56 ~ validateAttendee ~ data:", status)
-
-            const { error } = await supabase
-                .from('applicants')
-                .delete()
-                .eq('uid', uid)
-
-            if (error) console.log("🚀 ~ file: ActivityScreen.jsx:61 ~ validateAttendee ~ error:", error)
-        }
-
+        if (status === 204) setValidateUserMessage(`Vous avez bien validé la participation de ${username}`)
         if (error) console.log("🚀 ~ file: ActivityScreen.jsx:57 ~ validateAttendee ~ error:", error)
     }
-
-
 
     useEffect(() => {
         fetchData()
     }, []);
 
-    // Returns applicants
+    // Component that returns applicants
     const Applicants = () => {
+        console.log(item)
         if (item) {
             return item.applicants.map((applicant) => (
                 <View key={applicant.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
                     <Text>{applicant.username}</Text>
-                    <Button title="Valider" onPress={() => validateAttendee(applicant.user_id, applicant.uid)} />
+                    <Button title="Valider" onPress={() => validateAttendee(applicant.user_id, applicant.username)} />
+                    <Text>{validateUserMessage}</Text>
                 </View>
             ))
         }
