@@ -11,8 +11,7 @@ function UserEventScreen({ navigation }) {
 
     const { user } = useUser()
     const [hostActivities, setHostActivities] = useState([])
-    const [participationNotConfirmed, setParticipationNotConfirmed] = useState([])
-    const [participationConfirmed, setParticipationConfirmed] = useState([])
+    const [userActivities, setUserActivities] = useState([])
 
     const fetchHostActivites = async () => {
         const { data, error } = await supabase
@@ -35,21 +34,9 @@ function UserEventScreen({ navigation }) {
             .eq('user_id', user.id)
 
         if (data) {
-            setParticipationNotConfirmed(data)
+            setUserActivities(data)
         }
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:39 ~ fetchuserActivities ~ error:", error)
-    }
-    const fetchAttendeeActivities = async () => {
-        const { data, error } = await supabase
-            .from('attendees')
-            .select(`*,
-                    activities(*)`)
-            .eq('user_id', user.id)
-
-        if (data) {
-            setParticipationConfirmed(data)
-        }
-        if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:51 ~ fetchuserActivities ~ error:", error)
     }
 
     const Activity = ({ item, isValidated }) => (
@@ -72,8 +59,6 @@ function UserEventScreen({ navigation }) {
         React.useCallback(() => {
             fetchHostActivites()
             fetchUserActivities()
-            fetchAttendeeActivities()
-
         }, []))
 
 
@@ -86,8 +71,7 @@ function UserEventScreen({ navigation }) {
             {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} isValidated />) : <></>}
             <Divider />
             <Text>Je participe</Text>
-            {participationNotConfirmed.length > 0 ? participationNotConfirmed.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated={false} />) : <></>}
-            {participationConfirmed.length > 0 ? participationConfirmed.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated />) : <></>}
+            {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated={item.activities.isValidated} />) : <></>}
             <Divider />
         </View>
     );
