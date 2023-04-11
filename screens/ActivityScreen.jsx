@@ -19,7 +19,6 @@ function Activity({ route, navigation }) {
     let { itemID } = route.params;
     //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
 
-
     const fetchData = async () => {
         const { data, error } = await supabase
             .from('activities')
@@ -28,12 +27,15 @@ function Activity({ route, navigation }) {
             .eq('uid', itemID)
 
         if (data) {
+            console.log("🚀 ~ file: ActivityScreen.jsx:31 ~ fetchData ~ data:", data[0].applicants)
             setItem(data[0])
             /*Compare current user with the id of the host of the activity */
             if (user.id === data[0].host_id) {
                 //console.log('is host')
                 setIsHost(true)
-            } else if (data[0].applicants.length > 0) {
+
+                // Check if the current user is included in the applicants array
+            } else if (data[0].applicants.some(applicant => applicant.user_id === user.id)) {
                 setIsAttendee(true)
             }
 
@@ -160,7 +162,7 @@ function Activity({ route, navigation }) {
                     <Text style={activityStyles.title}>{item.activityTitle}</Text>
                     <Text><FontAwesome5 name="clock" size={24} color="black" /> {item.date}</Text>
 
-                    <Text><Ionicons name="people" size={24} color="black" /> {item.numberOfParticipants}</Text>
+                    <Text><Ionicons name="people" size={24} color="black" />/{item.numberOfParticipants}</Text>
                     <View style={activityStyles.buttonsContainer}>
                         <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
                             <Text>Participer</Text>
