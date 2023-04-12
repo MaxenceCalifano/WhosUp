@@ -11,6 +11,9 @@ import CoordinateInput from "../components/CoordinateInput";
 import styles from "../styles";
 import dayjs from "dayjs";
 
+const customParseFormat = require('dayjs/plugin/customParseFormat')
+dayjs.extend(customParseFormat)
+
 
 export default function AddEventScreen({ navigation }) {
 
@@ -25,7 +28,8 @@ export default function AddEventScreen({ navigation }) {
     const [activityTitle, setActivityTitle] = useState();
     const [activityDescription, setActivityDescription] = useState();
     const [selectedActivityType, setSelectedActivityType] = useState('apéro');
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(dayjs());
+    //const [day, setDay] = useState();
     const [location, setLocation] = useState({ latitude: '', longitude: '' })
 
     const [selectedIndex, setSelectedIndex] = useState()
@@ -36,16 +40,21 @@ export default function AddEventScreen({ navigation }) {
     const [place, setPlace] = useState('') // Used to display the place selected by the google place picker
 
     /* Related with date picker*/
+    let day;
+
     const onTimeChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setDate(currentDate);
+        const currentDate = selectedDate.toString().slice(16, 25);
+        const fullDate = dayjs(day + ' ' + currentDate, "YYYY-MM-DD HHmm")
+        setDate(fullDate);
     }
 
     const onDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
+        const getDateString = dayjs(selectedDate).format()
+        const getDayString = getDateString.toString().split('T')[0]
+        day = getDayString
 
         DateTimePickerAndroid.open({
-            value: date,
+            value: new Date(),
             onChange: onTimeChange,
             mode: 'time',
             is24Hour: true,
@@ -56,7 +65,7 @@ export default function AddEventScreen({ navigation }) {
     const showPicker = () => {
 
         DateTimePickerAndroid.open({
-            value: date,
+            value: new Date(),
             onChange: onDateChange,
             mode: 'date',
             is24Hour: true,
