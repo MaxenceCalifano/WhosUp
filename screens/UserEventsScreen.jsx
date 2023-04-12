@@ -50,7 +50,6 @@ function UserEventScreen({ navigation }) {
             <Text>{item.activityDescription.slice(0, 40)}</Text>
             <View style={eventsScreenStyles.dateAndParticipants}>
                 <Text><Ionicons name="time-sharp" size={24} color="black" /> {item.date}</Text>
-                <Text><Ionicons name="people" size={24} color="black" /> 0/{item.numberOfParticipants}</Text>
             </View>
         </Pressable>
     )
