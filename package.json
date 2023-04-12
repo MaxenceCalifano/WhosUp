@@ -20,6 +20,7 @@
     "@rneui/base": "^4.0.0-rc.6",
     "@rneui/themed": "^4.0.0-rc.6",
     "@supabase/supabase-js": "^2.8.0",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.1",
     "expo": "^48.0.0",
     "expo-application": "~4.2.2",
