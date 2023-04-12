@@ -1,14 +1,10 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
+import dayjs from 'dayjs';
 
 function ActivityCard({ index, activity, navigation }) {
-    /* let thumbnail;
-    if (item.activityType = "randonée") thumbnail = require('../assets/hiking_thumbnail.jpg')
-    if (item.activityType = "jeux de société") thumbnail = require('../assets/tablegame_thumbnail.jpg') 
-     navigation.navigate('Activité')
-    */
+
     const thumbnail = activity.activitytype = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
-    //console.log(activity, 'item dans activity card')
     return (
         <Pressable style={styles.card}
             onPress={() => navigation.navigate('Activité', { itemID: activity.uid })}>
@@ -23,7 +19,8 @@ function ActivityCard({ index, activity, navigation }) {
                         <Ionicons name="time-sharp" size={24} color="black" />
                         <View>
                             {/* <Text>{activity.date.slice(4, 10)}</Text> */}
-                            <Text>{activity.date.slice(11, activity.date.length)}</Text>
+                            <Text>{dayjs(activity.date).format('DD MMM, YYYY')}</Text>
+                            <Text>{dayjs(activity.date).format('h:mm A')}</Text>
                             <Text>{activity.activityType}</Text>
                         </View>
                     </View>
