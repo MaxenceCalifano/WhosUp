@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5, Entypo, AntDesign, Feather } from '@expo/vector
 import { supabase } from '../config/supabase'
 import styles from "../styles";
 import { useUser } from "../UserContext";
+import dayjs from "dayjs";
 
 
 function Activity({ route, navigation }) {
@@ -169,7 +170,7 @@ function Activity({ route, navigation }) {
                 <View style={activityStyles.dataContainer} >
 
                     <Text style={activityStyles.title}>{item.activityTitle}</Text>
-                    <Text><FontAwesome5 name="clock" size={24} color="black" /> {item.date}</Text>
+                    <Text><FontAwesome5 name="clock" size={24} color="black" />{dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
 
                     <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.numberOfParticipants}</Text>
                     <View style={activityStyles.buttonsContainer}>

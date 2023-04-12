@@ -9,6 +9,7 @@ import { supabase } from '../config/supabase'
 import CoordinateInput from "../components/CoordinateInput";
 
 import styles from "../styles";
+import dayjs from "dayjs";
 
 
 export default function AddEventScreen({ navigation }) {
@@ -42,6 +43,7 @@ export default function AddEventScreen({ navigation }) {
 
     const onDateChange = (event, selectedDate) => {
         const currentDate = selectedDate;
+
         DateTimePickerAndroid.open({
             value: date,
             onChange: onTimeChange,
@@ -64,7 +66,6 @@ export default function AddEventScreen({ navigation }) {
 
     const createNewActivity = async () => {
         setLoading(true)
-
         const { error, status } = await supabase
             .from('activities')
             .insert({
@@ -73,7 +74,7 @@ export default function AddEventScreen({ navigation }) {
                 activityDescription: activityDescription,
                 activityType: selectedActivityType,
                 numberOfParticipants: people,
-                date: date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':')),
+                date: date,
                 location: location
             })
 

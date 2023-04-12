@@ -5,7 +5,7 @@ import { supabase } from '../config/supabase'
 import { useUser } from "../UserContext";
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-
+import dayjs from "dayjs";
 
 function UserEventScreen({ navigation }) {
 
@@ -49,7 +49,7 @@ function UserEventScreen({ navigation }) {
             {isValidated ? "" : <Text>(En attente de validation par l'organisateur)</Text>}
             <Text>{item.activityDescription.slice(0, 40)}</Text>
             <View style={eventsScreenStyles.dateAndParticipants}>
-                <Text><Ionicons name="time-sharp" size={24} color="black" /> {item.date}</Text>
+                <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
             </View>
         </Pressable>
     )
