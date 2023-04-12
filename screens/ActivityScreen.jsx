@@ -50,7 +50,7 @@ function Activity({ route, navigation }) {
 
             const { status, error } = await supabase
                 .from('applicants')
-                .update({ is_validated: true })
+                .update({ is_validated: !user.is_validated })
                 .eq('user_id', userId)
                 .eq('activity_id', item.uid)
 
@@ -75,7 +75,14 @@ function Activity({ route, navigation }) {
                 <Text>{user.username}</Text>
                 {isValidated ?
                     <View>
-                        <Pressable>
+                        <Pressable onPress={() => {
+                            validateAttendee(user.user_id)
+                                .then(() => setIsValidated(false))
+                                .catch(error => {
+                                    console.log(error)
+                                    setValidateUserMessage("Une erreur est survenue")
+                                })
+                        }}>
                             <Feather name="x-circle" size={24} color="black" />
                         </Pressable>
                     </View>
@@ -186,7 +193,7 @@ function Activity({ route, navigation }) {
                         <View style={activityStyles.applicantsList}>
                             <Divider />
                             <Text style={{ fontWeight: '500', fontSize: 15 }}>Personnes souhaitant participer à votre activité:</Text>
-                            {item.applicants.map(applicant => <Applicant user={applicant} />)}
+                            {item.applicants.map(applicant => <Applicant key={applicant.id} user={applicant} />)}
 
                         </View>
                         : <></>}
