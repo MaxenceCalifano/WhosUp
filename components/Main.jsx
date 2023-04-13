@@ -4,13 +4,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import mainStyles from '../styles';
 
-import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, AntDesign } from '@expo/vector-icons';
 
 import UserProfile from '../screens/UserProfile';
 import AddEventScreen from '../screens/AddEventScreen';
 import UserEventScreen from '../screens/UserEventsScreen';
 import Map from './Map';
+import Chats from '../screens/ChatListScreen';
 
 export default function Main() {
 
@@ -32,14 +32,6 @@ export default function Main() {
                 ),
                 headerShown: false
             }} />
-            <Tab.Screen name="+" component={AddEventScreen} options={{
-                title: 'Créer une activité',
-                tabBarIcon: ({ focused, color, size }) => (
-                    focused ?
-                        <AntDesign name="pluscircle" size={24} color={mainStyles.color} />
-                        : <AntDesign name="pluscircle" size={24} color="black" />
-                )
-            }} />
             <Tab.Screen name="Calendrier" component={UserEventScreen} options={{
                 title: 'Mes événements',
                 tabBarIcon: ({ focused, color, size }) => (
@@ -48,7 +40,23 @@ export default function Main() {
                         : <FontAwesome name="calendar-o" size={24} color={mainStyles.input.color} />
                 )
             }} />
+            <Tab.Screen name="+" component={AddEventScreen} options={{
+                title: 'Créer une activité',
+                tabBarIcon: ({ focused, color, size }) => (
+                    focused ?
+                        <AntDesign name="pluscircle" size={24} color={mainStyles.color} />
+                        : <AntDesign name="pluscircle" size={24} color="black" />
+                )
+            }} />
 
+            <Tab.Screen name="Chat" component={Chats} options={{
+                title: 'Chat',
+                tabBarIcon: ({ focused, color, size }) => (
+                    focused ?
+                        <Ionicons name="chatbox-ellipses" size={24} color="black" />
+                        : <Ionicons name="chatbox-ellipses-outline" size={24} color="black" />
+                )
+            }} />
             <Tab.Screen name="Profil" component={UserProfile} options={{
                 title: 'Profil',
                 tabBarIcon: ({ focused, color, size }) => (
