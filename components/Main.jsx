@@ -10,7 +10,7 @@ import UserProfile from '../screens/UserProfile';
 import AddEventScreen from '../screens/AddEventScreen';
 import UserEventScreen from '../screens/UserEventsScreen';
 import Map from './Map';
-import Chats from '../screens/ChatListScreen';
+import ChatListScreen from '../screens/ChatListScreen';
 
 export default function Main() {
 
@@ -49,8 +49,8 @@ export default function Main() {
                 )
             }} />
 
-            <Tab.Screen name="Chat" component={Chats} options={{
-                title: 'Chat',
+            <Tab.Screen name="Chats" component={ChatListScreen} options={{
+                title: 'Chats',
                 tabBarIcon: ({ focused, color, size }) => (
                     focused ?
                         <Ionicons name="chatbox-ellipses" size={24} color="black" />

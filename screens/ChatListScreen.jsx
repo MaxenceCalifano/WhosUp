@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import ChatRoomListItem from "../components/ChatRoomListItem";
-function Chats() {
+function ChatListScreen({ navigation }) {
     return (
         <View style={chatStyles.container}>
-            <ChatRoomListItem />
-            <ChatRoomListItem />
-            <ChatRoomListItem />
-            <ChatRoomListItem />
+            <ChatRoomListItem navigation={navigation} />
+            <ChatRoomListItem navigation={navigation} />
+            <ChatRoomListItem navigation={navigation} />
+            <ChatRoomListItem navigation={navigation} />
         </View>
     );
 }
@@ -16,4 +16,4 @@ const chatStyles = StyleSheet.create({
         paddingHorizontal: 10,
     }
 })
-export default Chat;
+export default ChatListScreen;

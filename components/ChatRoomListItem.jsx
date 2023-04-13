@@ -1,9 +1,11 @@
+import React from "react";
 import { StyleSheet, View, Text, Image } from 'react-native';
 import dayjs from "dayjs";
+import { Pressable } from 'react-native';
 
-function ChatRoomListItem() {
+function ChatRoomListItem({ navigation }) {
     return (
-        <View style={chatItemStyles.container}>
+        <Pressable style={chatItemStyles.container} onPress={() => navigation.navigate('Chat')}>
             <Image style={chatItemStyles.userAvatar} source={require('../assets/AvatarMaker.png')} />
             <View style={chatItemStyles.textContent}>
                 <Text style={chatItemStyles.textContent_username}>Jean Michel</Text>
@@ -12,7 +14,7 @@ function ChatRoomListItem() {
 
             <Text>{dayjs().hour()}:{dayjs().minute()} AM</Text>
 
-        </View>
+        </Pressable>
     );
 }
 const chatItemStyles = StyleSheet.create({
