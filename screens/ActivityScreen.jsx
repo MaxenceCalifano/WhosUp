@@ -46,12 +46,12 @@ function Activity({ route, navigation }) {
         if (error) console.log(error)
     }
 
-    function validateAttendee(userId) {
+    function validateAttendee(userId, isValidated) {
         return new Promise(async (resolve, reject) => {
 
             const { status, error } = await supabase
                 .from('applicants')
-                .update({ is_validated: !user.is_validated })
+                .update({ is_validated: isValidated })
                 .eq('user_id', userId)
                 .eq('activity_id', item.uid)
 
@@ -77,7 +77,7 @@ function Activity({ route, navigation }) {
                 {isValidated ?
                     <View>
                         <Pressable onPress={() => {
-                            validateAttendee(user.user_id)
+                            validateAttendee(user.user_id, false)
                                 .then(() => setIsValidated(false))
                                 .catch(error => {
                                     console.log(error)
@@ -90,7 +90,7 @@ function Activity({ route, navigation }) {
                     :
                     <View style={{ flexDirection: "row" }}>
                         <Pressable onPress={() => {
-                            validateAttendee(user.user_id)
+                            validateAttendee(user.user_id, true)
                                 .then(() => setIsValidated(true))
                                 .catch(error => {
                                     console.log(error)
@@ -102,6 +102,7 @@ function Activity({ route, navigation }) {
                         <Text>(en attente de votre validation)</Text>
                     </View>
                 }
+                <Ionicons name="chatbox-ellipses" size={24} color="black" />
                 <Text>{validateUserMessage}</Text>
             </View>
         )
