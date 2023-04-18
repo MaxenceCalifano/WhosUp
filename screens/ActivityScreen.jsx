@@ -67,17 +67,17 @@ function Activity({ route, navigation }) {
     }, []);
 
     // Component that returns applicants
-    const Applicant = ({ user }) => {
-        const [isValidated, setIsValidated] = useState(user.is_validated)
+    const Applicant = ({ applicant }) => {
+        const [isValidated, setIsValidated] = useState(applicant.is_validated)
         const [validateUserMessage, setValidateUserMessage] = useState()
 
         return (
-            <View key={user.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
-                <Text>{user.username}</Text>
+            <View key={applicant.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
+                <Text>{applicant.username}</Text>
                 {isValidated ?
                     <View>
                         <Pressable onPress={() => {
-                            validateAttendee(user.user_id, false)
+                            validateAttendee(applicant.user_id, false)
                                 .then(() => setIsValidated(false))
                                 .catch(error => {
                                     console.log(error)
@@ -90,7 +90,7 @@ function Activity({ route, navigation }) {
                     :
                     <View style={{ flexDirection: "row" }}>
                         <Pressable onPress={() => {
-                            validateAttendee(user.user_id, true)
+                            validateAttendee(applicant.user_id, true)
                                 .then(() => setIsValidated(true))
                                 .catch(error => {
                                     console.log(error)
@@ -102,7 +102,31 @@ function Activity({ route, navigation }) {
                         <Text>(en attente de votre validation)</Text>
                     </View>
                 }
-                <Ionicons name="chatbox-ellipses" size={24} color="black" />
+                <Pressable onPress={async () => {
+                    console.log(user.id, applicant.user_id)
+
+
+                    const { data, error } = await supabase
+                        .from('chat_rooms_users')
+                        .select('*')
+                        .eq('room_id', "1952faec-9516-449e-b7e7-933a35305bf8")
+
+
+
+                    //on veut match where profiles contient et user.id et appalicant.user_id
+
+                    if (data) console.log(data)
+
+                }}>
+                    <Ionicons name="chatbox-ellipses" size={24} color="black" />
+                </Pressable>
+                {
+                    /**
+                     * Fetch chat_rooms where users_ids === host_id, applicant_id
+                        * if doesn''t exit create new one
+                        * if exists navigate to chat screen with the chat_room id
+                     */
+                }
                 <Text>{validateUserMessage}</Text>
             </View>
         )
@@ -195,7 +219,7 @@ function Activity({ route, navigation }) {
                         <View style={activityStyles.applicantsList}>
                             <Divider />
                             <Text style={{ fontWeight: '500', fontSize: 15 }}>Personnes souhaitant participer à votre activité:</Text>
-                            {item.applicants.map(applicant => <Applicant key={applicant.id} user={applicant} />)}
+                            {item.applicants.map(applicant => <Applicant key={applicant.user_id} applicant={applicant} />)}
 
                         </View>
                         : <></>}

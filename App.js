@@ -24,7 +24,7 @@ export default function App() {
   
   const Container = () => {
     const {user} = useUser()
-   // console.log("🚀 ~ file: App.js:27 ~ Container ~ user:", user)
+    console.log("🚀 ~ file: App.js:27 ~ Container ~ user:", user)
     const {session} = useUser()
     //console.log("🚀 ~ file: App.js:28 ~ Container ~ session:", session)
     

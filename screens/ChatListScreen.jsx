@@ -1,5 +1,9 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import ChatRoomListItem from "../components/ChatRoomListItem";
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState, useEffect } from "react";
+import { supabase } from '../config/supabase'
+import { useUser } from "../UserContext";
 
 const data = [
     {
@@ -28,14 +32,64 @@ const data = [
     },
 ]
 function ChatListScreen({ navigation }) {
+    const { user } = useUser()
+    const [chatUsers, setChatUsers] = useState([])
+
+    useEffect(() => {
+        console.log('chatUsers', chatUsers)
+
+    }, [chatUsers])
+
+    //fetch all the ids of the chatrooms of the logged in user
+    const fetchChatroomsIds = async () => {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select(`
+                        id,
+                        chat_rooms (
+                        id
+                        )
+                    `)
+            .eq('id', user.id)
+
+        if (data) console.log(data[0])
+    }
+
+    const fetchChatUser = async () => {
+
+        let { data: chat_rooms_profiles, error } = await supabase
+            .from('chat_rooms_profiles')
+            .select(`user_id,
+                     profiles (
+                        username
+                     )        
+            `)
+            .eq('room_id', "1952faec-9516-449e-b7e7-933a35305bf8")
+
+        if (chat_rooms_profiles) {
+            chat_rooms_profiles.forEach(item => {
+                if (item.user_id !== user.id) setChatUsers(prevState => [...prevState, item])
+            })
+
+        }
+    }
+
+
+    useFocusEffect(
+        useCallback(() => {
+            setChatUsers([])
+            fetchChatroomsIds()
+            fetchChatUser()
+        }, []))
+
     return (
         <View style={chatStyles.container}>
             <FlatList
-                data={data}
+                data={chatUsers}
                 renderItem={item => <ChatRoomListItem
                     navigation={navigation}
                     item={item.item}
-                    keyExtractor={item => item.id} />}
+                    keyExtractor={item => item.user_id} />}
             />
         </View>
     );

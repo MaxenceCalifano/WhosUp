@@ -4,12 +4,12 @@ import dayjs from "dayjs";
 import { Pressable } from 'react-native';
 
 function ChatRoomListItem({ navigation, item }) {
-    console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item)
+
     return (
         <Pressable style={chatItemStyles.container} onPress={() => navigation.navigate('Chat')}>
             <Image style={chatItemStyles.userAvatar} source={item.avatarUri} />
             <View style={chatItemStyles.textContent}>
-                <Text style={chatItemStyles.textContent_username}>{item.username}</Text>
+                <Text style={chatItemStyles.textContent_username}>{item.profiles.username}</Text>
                 <Text style={chatItemStyles.textContent_lastMessage}>{item.content}</Text>
             </View>
 
