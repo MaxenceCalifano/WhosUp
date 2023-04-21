@@ -12,6 +12,17 @@ function Chat({ route }) {
 
     const fetchMessages = async () => {
 
+        supabase.channel('custom-all-channel')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'messages' },
+                (payload) => {
+                    console.log('Change received!', payload)
+                    setMessages(prevState => [...prevState, payload.new])
+                }
+            )
+            .subscribe()
+
         const { data, error } = await supabase
             .from('messages')
             .select()
