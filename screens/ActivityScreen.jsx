@@ -107,15 +107,27 @@ function Activity({ route, navigation }) {
 
 
                     const { data, error } = await supabase
-                        .from('chat_rooms_users')
-                        .select('*')
-                        .eq('room_id', "1952faec-9516-449e-b7e7-933a35305bf8")
+                        .from('chat_rooms_profiles')
+                        .select()
+                        .in('user_id', [user.id, applicant.user_id])
 
+                    //We fetched all the chats of the users, now we want to match the chat they have in common :
+                    if (data) {
+                        const filteredArr = data.filter(obj => {
+                            const roomId = obj.room_id;
+                            return data.some(otherObj => otherObj !== obj && otherObj.room_id === roomId);
+                        });
 
+                        if (filteredArr.length > 0) {
+                            navigation.navigate('Chat', { chatId: filteredArr[0].room_id })
+                        }
+                        if (filteredArr.length < 1) {
+                            //Will create a new chat between the 2 users
+                            navigation.navigate('Chat')
+                        }
 
-                    //on veut match where profiles contient et user.id et appalicant.user_id
-
-                    if (data) console.log(data)
+                    }
+                    if (error) console.log(error)
 
                 }}>
                     <Ionicons name="chatbox-ellipses" size={24} color="black" />
