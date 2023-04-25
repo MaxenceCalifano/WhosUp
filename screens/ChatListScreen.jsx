@@ -34,6 +34,7 @@ const data = [
 function ChatListScreen({ navigation }) {
     const { user } = useUser()
     const [chatUsers, setChatUsers] = useState([])
+    const [chatRooms, setChatRooms] = useState([])
 
     useEffect(() => {
         console.log('chatUsers', chatUsers)
@@ -52,10 +53,15 @@ function ChatListScreen({ navigation }) {
                     `)
             .eq('id', user.id)
 
-        if (data) console.log(data[0])
+        if (data) {
+            const chat_rooms = data[0].chat_rooms
+            console.log('ligne 55 chatListScreen', data[0].chat_rooms)
+            setChatRooms(data[0].chat_rooms)
+            chat_rooms.forEach(room => fetchChatUser(room.id))
+        }
     }
 
-    const fetchChatUser = async () => {
+    const fetchChatUser = async (room) => {
 
         let { data: chat_rooms_profiles, error } = await supabase
             .from('chat_rooms_profiles')
@@ -64,14 +70,16 @@ function ChatListScreen({ navigation }) {
                         username
                      )        
             `)
-            .eq('room_id', "1952faec-9516-449e-b7e7-933a35305bf8")
+            .eq('room_id', room)
 
         if (chat_rooms_profiles) {
             chat_rooms_profiles.forEach(item => {
-                if (item.user_id !== user.id) setChatUsers(prevState => [...prevState, item])
+                console.log("🚀 ~ file: ChatListScreen.jsx:77 ~ fetchChatUser ~ item:", item)
+                if (item.user_id !== user.id) setChatUsers(prevState => [...prevState, { item, roomId: room }])
             })
 
         }
+        if (error) console.warn(error)
     }
 
 
@@ -79,7 +87,6 @@ function ChatListScreen({ navigation }) {
         useCallback(() => {
             setChatUsers([])
             fetchChatroomsIds()
-            fetchChatUser()
         }, []))
 
     return (

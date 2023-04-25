@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 function Chat({ route }) {
 
-    let roomId = route.params.chatId
+    let roomId = route.params.roomId
     console.log("🚀 ~ file: ChatScreen.jsx:6 ~ Chat ~ roomId:", roomId)
     const [messages, setMessages] = useState([])
 
