@@ -13,7 +13,6 @@ function Chat({ route, navigation }) {
     let roomId = route.params.roomId
     let username = route.params.username
     const { user } = useUser()
-    console.log("🚀 ~ file: ChatScreen.jsx:6 ~ Chat ~ roomId:", roomId)
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
@@ -26,7 +25,7 @@ function Chat({ route, navigation }) {
                 'postgres_changes',
                 { event: '*', schema: 'public', table: 'messages' },
                 (payload) => {
-                    console.log('Change received!', payload)
+                    //console.log('Change received!', payload)
                     setMessages(prevState => [...prevState, payload.new])
                 }
             )
@@ -38,7 +37,6 @@ function Chat({ route, navigation }) {
             .eq('chat_room_id', roomId)
 
         if (data) {
-            console.log('messages', data)
             setMessages(data)
             setIsLoading(false)
         }
@@ -46,11 +44,23 @@ function Chat({ route, navigation }) {
     }
 
     const postMessage = async () => {
-        const { error } = await supabase
+        /**
+         * Post the message, then add his id to the chat_room table to know that this the last message
+         */
+        supabase
             .from('messages')
             .insert({ content: message, chat_room_id: roomId, user_id: user.id })
+            .select()
+            .then(res => {
+                console.log(res.data)
+                supabase
+                    .from('chat_rooms')
+                    .update({ last_message_id: res.data[0].id })
+                    .eq('id', res.data[0].chat_room_id)
+                    .then(response => console.log(response))
+                    .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:75 ~ postMessage ~ error:", error))
+            })
 
-        if (error) console.log(error)
     }
     useEffect(() => {
         navigation.setOptions({ title: username })
