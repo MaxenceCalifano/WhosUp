@@ -60,6 +60,7 @@ function Chat({ route, navigation }) {
                     .then(response => console.log(response))
                     .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:75 ~ postMessage ~ error:", error))
             })
+            .catch(error => console.log(error))
 
     }
     useEffect(() => {
