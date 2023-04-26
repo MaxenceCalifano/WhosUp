@@ -45,7 +45,7 @@ function Chat({ route, navigation }) {
     const postMessage = async () => {
         const { error } = await supabase
             .from('messages')
-            .insert({ content: message, chat_room_id: roomId, user_id: "78a36907-bf45-4d67-9ad1-a9e700cbdf2b" })
+            .insert({ content: message, chat_room_id: roomId, user_id: user.id })
 
         if (error) console.log(error)
     }
@@ -55,7 +55,7 @@ function Chat({ route, navigation }) {
     }, [])
     return (
         <View style={chatStyles.main}>
-            {
+            {messages.length > 0 ?
                 messages.map(message => <View key={message.id}
                     style={message.user_id === user.id ?
                         [chatStyles.message, chatStyles.ownerMessage]
@@ -65,6 +65,9 @@ function Chat({ route, navigation }) {
                     <Text style={chatStyles.messageTime}>{dayjs(message.created_at).format('HH:mm')}</Text>
                 </View>
                 )
+                : <View style={{ height: '100%', justifyContent: 'center' }}>
+                    <Text style={{ width: '70%', alignSelf: 'center', padding: 10, backgroundColor: styles.tertiaryColor, borderRadius: 15 }}>Cette discussion ne contient aucun message, écrivez quelque chose à {username}</Text>
+                </View>
             }
             <View style={chatStyles.send}>
                 <TextInput
