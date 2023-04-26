@@ -119,11 +119,27 @@ function Activity({ route, navigation }) {
                         });
 
                         if (filteredArr.length > 0) {
-                            navigation.navigate('Chat', { chatId: filteredArr[0].room_id })
+                            navigation.navigate('Chat', { roomId: filteredArr[0].room_id, username: applicant.username })
                         }
                         if (filteredArr.length < 1) {
                             //Will create a new chat between the 2 users
-                            navigation.navigate('Chat')
+                            console.log('no room')
+
+                            const { data, error } = await supabase
+                                .from('chat_rooms')
+                                .insert({})
+                                .select()
+                            if (data) {
+                                const { status, error } = await supabase
+                                    .from('chat_rooms_profiles')
+                                    .insert([
+                                        { room_id: data[0].id, user_id: user.id },
+                                        { room_id: data[0].id, user_id: applicant.user_id },
+                                    ])
+                                if (status === 201) navigation.navigate('Chat', { roomId: data[0].id, username: applicant.username })
+                                if (error) console.log(error)
+                            }
+                            if (error) console.log('ligne 135', error)
                         }
 
                     }
