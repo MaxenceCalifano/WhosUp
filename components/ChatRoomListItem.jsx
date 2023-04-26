@@ -4,20 +4,23 @@ import dayjs from "dayjs";
 import { Pressable } from 'react-native';
 
 function ChatRoomListItem({ navigation, item }) {
-    console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item.roomId)
+    //console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item.lastMessage)
+    const { roomId } = item
+    const { profiles } = item.item
+    const lastMessage = item.lastMessage
 
     return (
         <Pressable style={chatItemStyles.container} onPress={() => navigation.navigate('Chat', {
-            roomId: item.roomId,
-            username: item.item.profiles.username
+            roomId,
+            username: profiles.username
         })}>
             <Image style={chatItemStyles.userAvatar} source={item.avatarUri} />
             <View style={chatItemStyles.textContent}>
-                <Text style={chatItemStyles.textContent_username}>{item.item.profiles.username}</Text>
-                <Text style={chatItemStyles.textContent_lastMessage}>{item.item.content}</Text>
+                <Text style={chatItemStyles.textContent_username}>{profiles.username}</Text>
+                <Text style={chatItemStyles.textContent_lastMessage}>{lastMessage.content}</Text>
             </View>
 
-            <Text>{dayjs().hour()}:{dayjs().minute()} AM</Text>
+            <Text>{dayjs(lastMessage.created_at).format('HH:mm')}</Text>
 
         </Pressable>
     );

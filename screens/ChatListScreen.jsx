@@ -10,7 +10,7 @@ import styles from "../styles";
 function ChatListScreen({ navigation }) {
     const { user } = useUser()
     const [chatUsers, setChatUsers] = useState([])
-    const [chatRooms, setChatRooms] = useState([])
+    // const [chatRooms, setChatRooms] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -26,19 +26,21 @@ function ChatListScreen({ navigation }) {
             .select(`
                         id,
                         chat_rooms (
-                        id
+                        id,
+                        last_message_id
                         )
                     `)
             .eq('id', user.id)
 
         if (data) {
+            //console.log("🚀 ~ file: ChatListScreen.jsx:36 ~ fetchChatroomsIds ~ data:", data)
             const chat_rooms = data[0].chat_rooms
-            setChatRooms(data[0].chat_rooms)
-            chat_rooms.forEach(room => fetchChatUser(room.id))
+            // setChatRooms(data[0].chat_rooms)
+            chat_rooms.forEach(room => fetchRoomData(room.id, room.last_message_id))
         }
     }
 
-    const fetchChatUser = async (room) => {
+    const fetchRoomData = async (room, lastMessageId) => {
 
         let { data: chat_rooms_profiles, error } = await supabase
             .from('chat_rooms_profiles')
@@ -50,8 +52,17 @@ function ChatListScreen({ navigation }) {
             .eq('room_id', room)
 
         if (chat_rooms_profiles) {
-            chat_rooms_profiles.forEach(item => {
-                if (item.user_id !== user.id) setChatUsers(prevState => [...prevState, { item, roomId: room }])
+            chat_rooms_profiles.forEach(async item => {
+                if (item.user_id !== user.id) {
+                    //Fetch last message
+                    let { data, error } = await supabase
+                        .from('messages')
+                        .select()
+                        .eq('id', lastMessageId)
+                    if (data) console.log('ici', data)
+                    if (error) console.log(error)
+                    setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0] }])
+                }
             })
             setIsLoading(false)
         }
