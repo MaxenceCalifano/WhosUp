@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TextInput, FlatList } from 'react-native';
 import { useEffect } from 'react';
 import { supabase } from '../config/supabase'
 import { useState } from 'react';
@@ -60,8 +60,7 @@ function Chat({ route, navigation }) {
                     .then(response => console.log(response))
                     .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:75 ~ postMessage ~ error:", error))
             })
-            .catch(error => console.log(error))
-
+            .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:64 ~ postMessage ~ error:", error))
     }
     useEffect(() => {
         navigation.setOptions({ title: username })
@@ -73,15 +72,18 @@ function Chat({ route, navigation }) {
                 isLoading ? <></>
                     :
                     messages.length > 0 ?
-                        messages.map(message => <View key={message.id}
-                            style={message.user_id === user.id ?
-                                [chatStyles.message, chatStyles.ownerMessage]
-                                : [chatStyles.message, chatStyles.contactMessage]
-                            }>
-                            <Text>{message.content}</Text>
-                            <Text style={chatStyles.messageTime}>{dayjs(message.created_at).format('HH:mm')}</Text>
-                        </View>
-                        )
+                        <FlatList
+                            renderItem={(message) => <View key={message.item.id}
+                                style={message.item.user_id === user.id ?
+                                    [chatStyles.message, chatStyles.ownerMessage]
+                                    : [chatStyles.message, chatStyles.contactMessage]
+                                }>
+                                <Text>{message.item.content}</Text>
+                                <Text style={chatStyles.messageTime}>{dayjs(message.item.created_at).format('HH:mm')}</Text>
+                            </View>
+                            }
+                            data={messages} />
+                        //messages.map(message => )
                         : <View style={{ height: '100%', justifyContent: 'center' }}>
                             <Text style={{ width: '70%', alignSelf: 'center', padding: 10, backgroundColor: styles.tertiaryColor, borderRadius: 15 }}>Cette discussion ne contient aucun message, écrivez quelque chose à {username}</Text>
                         </View>
