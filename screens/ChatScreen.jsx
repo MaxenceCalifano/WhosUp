@@ -16,6 +16,8 @@ function Chat({ route, navigation }) {
     console.log("🚀 ~ file: ChatScreen.jsx:6 ~ Chat ~ roomId:", roomId)
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
+
 
     const fetchMessages = async () => {
 
@@ -38,6 +40,7 @@ function Chat({ route, navigation }) {
         if (data) {
             console.log('messages', data)
             setMessages(data)
+            setIsLoading(false)
         }
         if (error) console.log(error)
     }
@@ -55,20 +58,24 @@ function Chat({ route, navigation }) {
     }, [])
     return (
         <View style={chatStyles.main}>
-            {messages.length > 0 ?
-                messages.map(message => <View key={message.id}
-                    style={message.user_id === user.id ?
-                        [chatStyles.message, chatStyles.ownerMessage]
-                        : [chatStyles.message, chatStyles.contactMessage]
-                    }>
-                    <Text>{message.content}</Text>
-                    <Text style={chatStyles.messageTime}>{dayjs(message.created_at).format('HH:mm')}</Text>
-                </View>
-                )
-                : <View style={{ height: '100%', justifyContent: 'center' }}>
-                    <Text style={{ width: '70%', alignSelf: 'center', padding: 10, backgroundColor: styles.tertiaryColor, borderRadius: 15 }}>Cette discussion ne contient aucun message, écrivez quelque chose à {username}</Text>
-                </View>
+            {
+                isLoading ? <></>
+                    :
+                    messages.length > 0 ?
+                        messages.map(message => <View key={message.id}
+                            style={message.user_id === user.id ?
+                                [chatStyles.message, chatStyles.ownerMessage]
+                                : [chatStyles.message, chatStyles.contactMessage]
+                            }>
+                            <Text>{message.content}</Text>
+                            <Text style={chatStyles.messageTime}>{dayjs(message.created_at).format('HH:mm')}</Text>
+                        </View>
+                        )
+                        : <View style={{ height: '100%', justifyContent: 'center' }}>
+                            <Text style={{ width: '70%', alignSelf: 'center', padding: 10, backgroundColor: styles.tertiaryColor, borderRadius: 15 }}>Cette discussion ne contient aucun message, écrivez quelque chose à {username}</Text>
+                        </View>
             }
+
             <View style={chatStyles.send}>
                 <TextInput
                     style={chatStyles.messageInput}
