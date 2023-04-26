@@ -38,7 +38,6 @@ function Chat({ route, navigation }) {
         if (data) {
             console.log('messages', data)
             setMessages(data)
-            console.log(dayjs(data[0].created_at).format('h:mm'))
         }
         if (error) console.log(error)
     }
@@ -57,11 +56,14 @@ function Chat({ route, navigation }) {
     return (
         <View style={chatStyles.main}>
             {
-                messages.map(message => < Text key={message.id}
+                messages.map(message => <View key={message.id}
                     style={message.user_id === user.id ?
                         [chatStyles.message, chatStyles.ownerMessage]
                         : [chatStyles.message, chatStyles.contactMessage]
-                    }>{message.content}</Text>
+                    }>
+                    <Text>{message.content}</Text>
+                    <Text style={chatStyles.messageTime}>{dayjs(message.created_at).format('HH:mm')}</Text>
+                </View>
                 )
             }
             <View style={chatStyles.send}>
@@ -108,17 +110,22 @@ const chatStyles = StyleSheet.create({
         padding: 10,
         marginVertical: 10,
         borderRadius: 15,
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        display: 'flex',
     },
     ownerMessage: {
         alignSelf: 'flex-end',
-        backgroundColor: styles.color,
-        color: 'white'
+        backgroundColor: styles.tertiaryColor,
     },
     contactMessage: {
         alignSelf: 'flex-start',
         backgroundColor: 'white'
     },
+    messageTime: {
+        alignSelf: 'flex-end',
+        color: "#4A4A4A",
+        fontSize: 10,
+    }
 })
 
 export default Chat;
