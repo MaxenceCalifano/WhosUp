@@ -7,12 +7,14 @@ function ChatRoomListItem({ navigation, item }) {
     //console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item.lastMessage)
     const { roomId } = item
     const { profiles } = item.item
+    console.log("🚀 ~ file: ChatRoomListItem.jsx:10 ~ ChatRoomListItem ~ profiles:", profiles)
     const lastMessage = item.lastMessage
 
     return (
         <Pressable style={chatItemStyles.container} onPress={() => navigation.navigate('Chat', {
             roomId,
-            username: profiles.username
+            username: profiles.username,
+            contactPublicKey: profiles.public_key
         })}>
             <Image style={chatItemStyles.userAvatar} source={item.avatarUri} />
             <View style={chatItemStyles.textContent}>

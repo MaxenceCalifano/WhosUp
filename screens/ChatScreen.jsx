@@ -6,17 +6,32 @@ import { Ionicons } from '@expo/vector-icons';
 import { useUser } from "../UserContext";
 import dayjs from "dayjs";
 
+import { generateKeyPair, encrypt, decrypt } from '../crypto';
+import { box } from "tweetnacl";
+
 import styles from "../styles";
 
 function Chat({ route, navigation }) {
 
     let roomId = route.params.roomId
     let username = route.params.username
+    let contactPublicKey = route.params.contactPublicKey
+    console.log("🚀 ~ file: ChatScreen.jsx:19 ~ Chat ~ contactPublicKey:", contactPublicKey)
     const { user } = useUser()
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
 
+    //console.log(generateKeyPair())
+
+    const obj = { hello: 'world' };
+    const pairA = generateKeyPair();
+    const pairB = generateKeyPair();
+    const sharedA = box.before(pairB.publicKey, pairA.secretKey);
+    const sharedB = box.before(pairA.publicKey, pairB.secretKey);
+    const encrypted = encrypt(sharedA, obj);
+    const decrypted = decrypt(sharedB, encrypted);
+    //console.log(obj, encrypted, decrypted);
 
     const fetchMessages = async () => {
 

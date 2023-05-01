@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Pressable, TextInput, Button } from 'react-native'
+import { StyleSheet, View, Text, Pressable, TextInput, Button, Alert } from 'react-native'
 import styles from "../styles";
 import { supabase } from '../config/supabase'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { generateKeyPair } from '../crypto';
 
 export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -20,16 +20,22 @@ export default function SignUpScreen({ navigation }) {
 
         if (error) console.log(error)//setSubmitMessage(error.message)
         if (data.session !== null) {
-            const storeData = async (value) => {
+            const keyPair = generateKeyPair()
+            console.log("🚀 ~ file: SignUpScreen.jsx:25 ~ signUpWithEmail ~ keyPair:", keyPair)
+            const { error } = await supabase
+                .from('profiles')
+                .update({ public_key: keyPair.publicKey })
+                .eq('id', data.session.user.id)
+
+            if (error) return Alert.alert('An error has occured')
+            const multiset = async () => {
                 try {
-                    await AsyncStorage.setItem('welcomeScreenSeen', value)
+                    AsyncStorage.multiSet([['welcomeScreenSeen', false], 'private_key', keyPair.secretKey])
                 } catch (e) {
                     console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ storeData ~ e:", e)
-                    // saving error
-
                 }
             }
-            storeData("false")
+            multiset()
         }
         //setLoading(false)
     }

@@ -46,7 +46,8 @@ function ChatListScreen({ navigation }) {
             .from('chat_rooms_profiles')
             .select(`user_id,
                      profiles (
-                        username
+                        username,
+                        public_key
                      )        
             `)
             .eq('room_id', room)
