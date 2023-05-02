@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import dayjs from "dayjs";
 import { Pressable } from 'react-native';
+import { Image } from 'expo-image';
 
 function ChatRoomListItem({ navigation, item }) {
     //console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item.lastMessage)
@@ -14,7 +15,13 @@ function ChatRoomListItem({ navigation, item }) {
             roomId,
             username: profiles.username
         })}>
-            <Image style={chatItemStyles.userAvatar} source={item.avatarUri} />
+            {/* <Image style={chatItemStyles.userAvatar} source={{ uri: `https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${item.avatar_url}` }} /> */}
+            <Image
+                style={chatItemStyles.userAvatar}
+                source={`https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${profiles.avatar_url}`}
+                contentFit="cover"
+                transition={1000}
+            />
             <View style={chatItemStyles.textContent}>
                 <Text style={chatItemStyles.textContent_username}>{profiles.username}</Text>
                 <Text style={chatItemStyles.textContent_lastMessage}>{lastMessage.content}</Text>

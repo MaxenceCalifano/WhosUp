@@ -14,7 +14,7 @@ function ChatListScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        console.log('chatUsers', chatUsers)
+        console.log('chatUsers', chatUsers[0])
 
     }, [chatUsers])
 
@@ -46,7 +46,8 @@ function ChatListScreen({ navigation }) {
             .from('chat_rooms_profiles')
             .select(`user_id,
                      profiles (
-                        username
+                        username,
+                        avatar_url
                      )        
             `)
             .eq('room_id', room)
