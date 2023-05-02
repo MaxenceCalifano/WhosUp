@@ -1,5 +1,6 @@
 import { getRandomBytes } from "expo-random";
 import { box, setPRNG } from "tweetnacl";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { decode as decodeUTF8, encode as encodeUTF8 } from "@stablelib/utf8";
 import {
@@ -55,3 +56,11 @@ export const encrypt = (
     const base64DecryptedMessage = decodeUTF8(decrypted);
     return JSON.parse(base64DecryptedMessage);
   };
+
+  export const getMySecretKey = async () => {
+    const keyString = await AsyncStorage.getItem(private_key);
+    if (!keyString) {
+      console.log('no key')
+      return;
+    }
+  }

@@ -14,7 +14,7 @@ function ChatListScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        console.log('chatUsers', chatUsers)
+        //console.log('chatUsers', chatUsers)
 
     }, [chatUsers])
 
@@ -60,7 +60,7 @@ function ChatListScreen({ navigation }) {
                         .from('messages')
                         .select()
                         .eq('id', lastMessageId)
-                    if (data) console.log('ici', data)
+                    // if (data) console.log('ici', data)
                     if (error) console.log(error)
                     setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0] }])
                 }

@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useUser } from "../UserContext";
 import dayjs from "dayjs";
 
-import { generateKeyPair, encrypt, decrypt } from '../crypto';
+import { generateKeyPair, encrypt, decrypt, getMySecretKey } from '../crypto';
 import { box } from "tweetnacl";
 
 import styles from "../styles";
@@ -16,15 +16,16 @@ function Chat({ route, navigation }) {
     let roomId = route.params.roomId
     let username = route.params.username
     let contactPublicKey = route.params.contactPublicKey
-    console.log("🚀 ~ file: ChatScreen.jsx:19 ~ Chat ~ contactPublicKey:", contactPublicKey)
+    //   console.log("🚀 ~ file: ChatScreen.jsx:19 ~ Chat ~ contactPublicKey:", contactPublicKey)
     const { user } = useUser()
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
 
     //console.log(generateKeyPair())
-
+    const secretKey = getMySecretKey()
     const obj = { hello: 'world' };
+    console.log("🚀 ~ file: ChatScreen.jsx:28 ~ Chat ~ secretKey:", secretKey)
     const pairA = generateKeyPair();
     const pairB = generateKeyPair();
     const sharedA = box.before(pairB.publicKey, pairA.secretKey);

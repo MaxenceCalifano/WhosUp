@@ -7,7 +7,7 @@ function ChatRoomListItem({ navigation, item }) {
     //console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item.lastMessage)
     const { roomId } = item
     const { profiles } = item.item
-    console.log("🚀 ~ file: ChatRoomListItem.jsx:10 ~ ChatRoomListItem ~ profiles:", profiles)
+    //console.log("🚀 ~ file: ChatRoomListItem.jsx:10 ~ ChatRoomListItem ~ profiles:", profiles)
     const lastMessage = item.lastMessage
 
     return (

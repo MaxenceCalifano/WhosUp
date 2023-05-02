@@ -53,6 +53,8 @@ export default function Map({ navigation }) {
         //console.log('display configure account')
         try {
             const value = await AsyncStorage.getItem("welcomeScreenSeen")
+            console.log("🚀 ~ file: Map.jsx:56 ~ displayConfigureAccount ~ value:", value)
+
             if (value === 'false') {
                 // value previously stored
                 //console.log('navigate')

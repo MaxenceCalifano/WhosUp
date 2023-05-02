@@ -30,7 +30,9 @@ export default function SignUpScreen({ navigation }) {
             if (error) return Alert.alert('An error has occured')
             const multiset = async () => {
                 try {
-                    AsyncStorage.multiSet([['welcomeScreenSeen', false], 'private_key', keyPair.secretKey])
+                    const secretKeyString = JSON.stringify(keyPair.secretKey)
+                    console.log("🚀 ~ file: SignUpScreen.jsx:34 ~ multiset ~ secretKeyString:", secretKeyString)
+                    AsyncStorage.multiSet([['welcomeScreenSeen', "false"], ['private_key', secretKeyString]])
                 } catch (e) {
                     console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ storeData ~ e:", e)
                 }
