@@ -53,7 +53,7 @@ export default function Map({ navigation }) {
         //console.log('display configure account')
         try {
             const value = await AsyncStorage.getItem("welcomeScreenSeen")
-            if (value === 'false') {
+            if (value === 'true') {
                 // value previously stored
                 //console.log('navigate')
                 navigation.navigate("Configurer le compte")
