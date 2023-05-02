@@ -38,25 +38,33 @@ export default function ConfigureAccountScreen({ navigation }) {
             console.log(result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1])
             // const filePath = `${Math.random()}.${fileExt}`
             setPhoto({
-                uri: result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1],
+                name: result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1],
+                uri: result.assets[0].uri,
                 base64: result.assets[0].base64
             });
         }
     }
 
     const updateAccount = async () => {
+        let contentType;
+        if (photo.name.split('.')[1] === 'jpeg' || photo.name.split('.')[1] === 'jpg') {
+            contentType = 'image/jpg'
+        }
+        if (photo.name.split('.')[1] === 'png') {
+            contentType = 'image/png'
+        }
         await supabase
             .storage
             .from('avatars')
-            .upload(photo.uri, decode(photo.base64), {
-                contentType: 'image/jpg'
+            .upload(photo.name, decode(photo.base64), {
+                contentType: contentType
             })
             .then(async res => {
                 console.log("🚀 ~ file: ConfigureAccount.jsx:85 ~ updateAccount ~ res:", res)
                 if (res.error) console.log(res.error)
                 const { error, status } = await supabase
                     .from('profiles')
-                    .update({ username: name })
+                    .update({ username: name, avatar_url: res.data.path })
                     .eq('id', userId)
 
                 if (error) {
