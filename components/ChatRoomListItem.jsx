@@ -13,9 +13,11 @@ function ChatRoomListItem({ navigation, item }) {
     return (
         <Pressable style={chatItemStyles.container} onPress={() => navigation.navigate('Chat', {
             roomId,
-            username: profiles.username
+            profile: {
+                username: profiles.username,
+                avatarUrl: profiles.avatar_url
+            }
         })}>
-            {/* <Image style={chatItemStyles.userAvatar} source={{ uri: `https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${item.avatar_url}` }} /> */}
             <Image
                 style={chatItemStyles.userAvatar}
                 source={`https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${profiles.avatar_url}`}

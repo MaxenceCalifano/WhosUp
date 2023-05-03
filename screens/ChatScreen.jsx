@@ -11,7 +11,8 @@ import styles from "../styles";
 function Chat({ route, navigation }) {
 
     let roomId = route.params.roomId
-    let username = route.params.username
+    let username = route.params.profile.username
+    let avatarUrl = route.params.profile.avatarUrl
     const { user } = useUser()
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
