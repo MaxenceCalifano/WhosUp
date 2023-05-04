@@ -56,7 +56,7 @@ function ChatListScreen({ navigation }) {
             chat_rooms_profiles.forEach(async item => {
                 //Don't fetch last message if conversation hasn't messages
                 console.log(lastMessageId)
-                if (lastMessageId === null) setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas encore de message" }])
+                if (lastMessageId === null) setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas de message" }])
                 else {
                     if (item.user_id !== user.id) {
                         //Fetch last message
