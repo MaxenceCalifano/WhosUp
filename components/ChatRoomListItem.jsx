@@ -26,7 +26,7 @@ function ChatRoomListItem({ navigation, item }) {
             />
             <View style={chatItemStyles.textContent}>
                 <Text style={chatItemStyles.textContent_username}>{profiles.username}</Text>
-                <Text style={chatItemStyles.textContent_lastMessage}>{lastMessage.content}</Text>
+                <Text style={chatItemStyles.textContent_lastMessage}>{lastMessage}</Text>
             </View>
 
             <Text>{dayjs(lastMessage.created_at).format('HH:mm')}</Text>

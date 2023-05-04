@@ -14,7 +14,7 @@ function ChatListScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        // console.log('chatUsers', chatUsers[0])
+        console.log('chatUsers', chatUsers[2])
 
     }, [chatUsers])
 
@@ -54,19 +54,24 @@ function ChatListScreen({ navigation }) {
 
         if (chat_rooms_profiles) {
             chat_rooms_profiles.forEach(async item => {
-                if (item.user_id !== user.id) {
-                    //Fetch last message
-                    let { data, error } = await supabase
-                        .from('messages')
-                        .select()
-                        .eq('id', lastMessageId)
-                    if (error) console.log('ligne 63', error)
-                    if (data) {
-                        console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data)
-                        data.length > 0 ? setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0] }])
-                            : setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas encore de message" }])
+                //Don't fetch last message if conversation hasn't messages
+                console.log(lastMessageId)
+                if (lastMessageId === null) setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas encore de message" }])
+                else {
+                    if (item.user_id !== user.id) {
+                        //Fetch last message
+                        let { data, error } = await supabase
+                            .from('messages')
+                            .select()
+                            .eq('id', lastMessageId)
+                        if (data) {
+                            console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data[0].content)
+                            setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0].content }])
+                        }
+                        if (error) console.log('ligne 63', error)
                     }
                 }
+
             })
             setIsLoading(false)
         }
