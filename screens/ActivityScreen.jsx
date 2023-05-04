@@ -119,7 +119,7 @@ function Activity({ route, navigation }) {
                         });
 
                         if (filteredArr.length > 0) {
-                            navigation.navigate('Chat', { roomId: filteredArr[0].room_id, username: applicant.username })
+                            navigation.navigate('Chat', { roomId: filteredArr[0].room_id, profile: { username: applicant.username } })
                         }
                         if (filteredArr.length < 1) {
                             //Will create a new chat between the 2 users
@@ -136,7 +136,7 @@ function Activity({ route, navigation }) {
                                         { room_id: data[0].id, user_id: user.id },
                                         { room_id: data[0].id, user_id: applicant.user_id },
                                     ])
-                                if (status === 201) navigation.navigate('Chat', { roomId: data[0].id, username: applicant.username })
+                                if (status === 201) navigation.navigate('Chat', { roomId: data[0].id, profile: { username: applicant.username } })
                                 if (error) console.log(error)
                             }
                             if (error) console.log('ligne 135', error)

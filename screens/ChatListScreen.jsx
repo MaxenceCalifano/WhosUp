@@ -20,7 +20,7 @@ function ChatListScreen({ navigation }) {
 
     //fetch all the ids of the chatrooms of the logged in user
     const fetchChatroomsIds = async () => {
-        setIsLoading(true)
+        if (chatUsers.length === 0) setIsLoading(true)
         const { data, error } = await supabase
             .from('profiles')
             .select(`
