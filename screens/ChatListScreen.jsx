@@ -14,7 +14,7 @@ function ChatListScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        console.log('chatUsers', chatUsers[0])
+        // console.log('chatUsers', chatUsers[0])
 
     }, [chatUsers])
 
@@ -60,9 +60,12 @@ function ChatListScreen({ navigation }) {
                         .from('messages')
                         .select()
                         .eq('id', lastMessageId)
-                    if (data) console.log('ici', data)
-                    if (error) console.log(error)
-                    setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0] }])
+                    if (error) console.log('ligne 63', error)
+                    if (data) {
+                        console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data)
+                        data.length > 0 ? setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0] }])
+                            : setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas encore de message" }])
+                    }
                 }
             })
             setIsLoading(false)
