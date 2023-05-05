@@ -56,21 +56,21 @@ function ChatListScreen({ navigation }) {
             chat_rooms_profiles.forEach(async item => {
                 //Don't fetch last message if conversation hasn't messages
                 console.log(lastMessageId)
-                if (lastMessageId === null && item.user_id !== user.id) setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas de message" }])
-                else {
-                    if (item.user_id !== user.id) {
-                        //Fetch last message
-                        let { data, error } = await supabase
-                            .from('messages')
-                            .select()
-                            .eq('id', lastMessageId)
-                        if (data) {
-                            console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data[0].content)
-                            setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0].content }])
-                        }
-                        if (error) console.log('ligne 63', error)
+                // if (lastMessageId === null && item.user_id !== user.id) setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas de message" }])
+                //   else {
+                if (item.user_id !== user.id && lastMessageId !== null) {
+                    //Fetch last message
+                    let { data, error } = await supabase
+                        .from('messages')
+                        .select()
+                        .eq('id', lastMessageId)
+                    if (data) {
+                        console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data[0].content)
+                        setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0].content }])
                     }
+                    if (error) console.log('ligne 63', error)
                 }
+                //   }
 
             })
             setIsLoading(false)
