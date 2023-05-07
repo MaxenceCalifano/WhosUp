@@ -23,27 +23,6 @@ export default function Map({ navigation }) {
     const [activities, setActivities] = useState()
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
 
-    const fetchData = async () => {
-        const minimalLatitude = location.latitude - location.latitudeDelta / 2
-        const maximalLatitude = location.latitude + location.latitudeDelta / 2
-        const minimalLongitude = location.longitude - location.longitudeDelta / 2
-        const maximalLongitude = location.longitude + location.longitudeDelta / 2
-        const { data, error } = await supabase
-            .from('activities')
-            .select()
-            .lte("location -> latitude", maximalLatitude)
-            .gte("location -> latitude", minimalLatitude)
-            .lte("location -> longitude", maximalLongitude)
-            .gte("location -> longitude", minimalLongitude)
-
-        if (data) {
-            //data.forEach(data => console.log(typeof data.activityType))
-            setActivities(data)
-        }
-        if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
-        // console.log('ligne 40', activities)
-    }
-
     const edgeFetchActivities = async () => {
         const minimalLatitude = location.latitude - location.latitudeDelta / 2
         const maximalLatitude = location.latitude + location.latitudeDelta / 2
@@ -58,8 +37,8 @@ export default function Map({ navigation }) {
                 maximalLongitude: maximalLongitude
             },
         })
-        console.log('ligne 61', data)
-        console.log('ligne 62', error)
+        if (data) setActivities(data.data)
+        if (error) console.log("🚀 ~ file: Map.jsx:63 ~ edgeFetchActivities ~ error:", error)
     }
     const handleRegionChangeComplete = (mapRegion) => {
         //console.log(activities, 'ligne 44')
@@ -73,7 +52,6 @@ export default function Map({ navigation }) {
             const value = await AsyncStorage.getItem("welcomeScreenSeen")
             if (value === 'false') {
                 // value previously stored
-                //console.log('navigate')
                 navigation.navigate("Configurer le compte")
             }
         } catch (e) {
@@ -84,10 +62,7 @@ export default function Map({ navigation }) {
     displayConfigureAccount()
 
     useEffect(() => {
-
-        fetchData()
         edgeFetchActivities()
-        //console.log(activities, 'ligne 52')
     }, [])
 
 
@@ -140,7 +115,7 @@ export default function Map({ navigation }) {
                         <View style={styles.regionChangedButton_container}>
                             <Pressable onPress={() => {
                                 setShowSearchInthisArea(false)
-                                fetchData()
+                                edgeFetchActivities()
                             }} style={styles.regionChangedButton}>
                                 <Text><FontAwesome name="search" size={24} color="black" /> </Text><Text>Rechercher dans cette zone</Text>
                             </Pressable>

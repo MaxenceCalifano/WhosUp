@@ -36,7 +36,7 @@ export default function SignInScreen() {
                 visible={isLoading}
                 animationType="fade"
                 transparent={true}>
-                <ActivityIndicator />
+                <ActivityIndicator color={styles.color} size={"large"} />
             </Modal>
         </View>
     )

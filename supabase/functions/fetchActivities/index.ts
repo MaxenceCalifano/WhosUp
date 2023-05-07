@@ -24,8 +24,12 @@ serve(async (req: Request) => {
     // And we can run queries in the context of our authenticated user
     // Get parameters
     const { minimalLatitude, maximalLatitude, minimalLongitude, maximalLongitude } = await req.json()
-    //const { data: { user } } = await supabase.auth.getUser()
 
+    const getRandom = (min, max) => {
+      return Math.random() * (max - min) + min;
+    }
+
+    const delta = 0.006
 
     const { data, error } = await supabaseClient
       .from('activities')
@@ -34,7 +38,13 @@ serve(async (req: Request) => {
       .gte("location -> latitude", minimalLatitude)
       .lte("location -> longitude", maximalLongitude)
       .gte("location -> longitude", minimalLongitude)
+
+    data.forEach(element => {
+      element.location.latitude = getRandom(element.location.latitude - delta, element.location.latitude + delta)
+      element.location.longitude = getRandom(element.location.longitude - delta, element.location.longitude + delta)
+    });
     if (error) throw error
+    // Prendre chacun des éléments de data et modifier latitude et longitude de manière aléatoire dans une plage comprise entre x et y
 
     return new Response(JSON.stringify({ user, data }), {
       headers: { 'Content-Type': 'application/json' },
