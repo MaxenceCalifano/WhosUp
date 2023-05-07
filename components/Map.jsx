@@ -43,6 +43,24 @@ export default function Map({ navigation }) {
         if (error) console.log("🚀 ~ file: Map.jsx:34 ~ fetchData ~ error:", error)
         // console.log('ligne 40', activities)
     }
+
+    const edgeFetchActivities = async () => {
+        const minimalLatitude = location.latitude - location.latitudeDelta / 2
+        const maximalLatitude = location.latitude + location.latitudeDelta / 2
+        const minimalLongitude = location.longitude - location.longitudeDelta / 2
+        const maximalLongitude = location.longitude + location.longitudeDelta / 2
+
+        const { data, error } = await supabase.functions.invoke('fetchActivities', {
+            body: {
+                minimalLatitude: minimalLatitude,
+                maximalLatitude: maximalLatitude,
+                minimalLongitude: minimalLongitude,
+                maximalLongitude: maximalLongitude
+            },
+        })
+        console.log('ligne 61', data)
+        console.log('ligne 62', error)
+    }
     const handleRegionChangeComplete = (mapRegion) => {
         //console.log(activities, 'ligne 44')
         setLocation(mapRegion)
@@ -68,6 +86,7 @@ export default function Map({ navigation }) {
     useEffect(() => {
 
         fetchData()
+        edgeFetchActivities()
         //console.log(activities, 'ligne 52')
     }, [])
 

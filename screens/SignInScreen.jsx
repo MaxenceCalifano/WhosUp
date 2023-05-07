@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from '../styles';
-import { StyleSheet, View, TextInput, Pressable, Text } from 'react-native'
+import { StyleSheet, View, TextInput, Pressable, Text, ActivityIndicator, Modal } from 'react-native'
 import { supabase } from '../config/supabase'
 
 export default function SignInScreen() {
@@ -8,13 +8,15 @@ export default function SignInScreen() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
+    const [isLoading, setIsloading] = useState(false)
 
     const login = async () => {
+        setIsloading(true)
         const { error, data } = await supabase.auth.signInWithPassword({
             email: email,
             password: password
         })
-
+        if (data) setIsloading(false)
         if (error) {
             setErrorMessage(error.message)
         }
@@ -30,6 +32,12 @@ export default function SignInScreen() {
             </Pressable>
             <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end' }} >Mot de passe oublié ?</Text>
             <Text>{errorMessage}</Text>
+            <Modal
+                visible={isLoading}
+                animationType="fade"
+                transparent={true}>
+                <ActivityIndicator />
+            </Modal>
         </View>
     )
 }

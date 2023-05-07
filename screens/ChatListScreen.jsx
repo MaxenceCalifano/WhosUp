@@ -13,9 +13,18 @@ function ChatListScreen({ navigation }) {
     // const [chatRooms, setChatRooms] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
-        console.log('chatUsers', chatUsers[2])
+    const testEdgeFunction = async () => {
+        const { data, error } = await supabase.functions.invoke('hello-world', {
+            body: { name: 'Functions' },
+        })
 
+        console.log(data)
+    }
+
+    useEffect(() => {
+
+        //console.log('chatUsers', chatUsers[2])
+        testEdgeFunction()
     }, [chatUsers])
 
     //fetch all the ids of the chatrooms of the logged in user
