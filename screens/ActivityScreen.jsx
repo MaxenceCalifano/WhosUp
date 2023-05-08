@@ -31,7 +31,7 @@ function Activity({ route, navigation }) {
 
         if (data) {
             setItem(data[0])
-            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data[0])
+            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data[0].applicants)
             const validatedAttendees = data[0].applicants.filter(elem => elem.is_validated)
             setAttendees(validatedAttendees)
             /*Compare current user with the id of the host of the activity */
@@ -64,7 +64,18 @@ function Activity({ route, navigation }) {
         })
     }
 
+    const edgeFecthActivityCoordinate = async () => {
+        const { data, error } = await supabase.functions.invoke('fetchActivityCoordinate', {
+            body: {
+                activityId: itemID
+            },
+        })
+        if (data) console.log('edge: ', data)
+        if (error) console.log("🚀 ~ file: Map.jsx:63 ~ edgeFetchActivities ~ error:", error)
+    }
+
     useEffect(() => {
+        edgeFecthActivityCoordinate()
         fetchData()
     }, []);
 
