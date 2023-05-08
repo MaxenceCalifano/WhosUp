@@ -25,7 +25,7 @@ serve(async (req: Request) => {
     // Get parameters
     const { minimalLatitude, maximalLatitude, minimalLongitude, maximalLongitude } = await req.json()
 
-    const getRandom = (min, max) => {
+    const getRandom = (min: number, max: number) => {
       return Math.random() * (max - min) + min;
     }
 

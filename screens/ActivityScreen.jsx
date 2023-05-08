@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
-import { Divider } from 'react-native-elements'
+import { Divider } from 'react-native-elements';
+import MapView, { Marker } from 'react-native-maps';
 import { Ionicons, FontAwesome5, Entypo, AntDesign, Feather } from '@expo/vector-icons';
 import { supabase } from '../config/supabase'
 import styles from "../styles";
@@ -30,6 +31,7 @@ function Activity({ route, navigation }) {
 
         if (data) {
             setItem(data[0])
+            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data[0])
             const validatedAttendees = data[0].applicants.filter(elem => elem.is_validated)
             setAttendees(validatedAttendees)
             /*Compare current user with the id of the host of the activity */
@@ -148,13 +150,6 @@ function Activity({ route, navigation }) {
                 }}>
                     <Ionicons name="chatbox-ellipses" size={24} color="black" />
                 </Pressable>
-                {
-                    /**
-                     * Fetch chat_rooms where users_ids === host_id, applicant_id
-                        * if doesn''t exit create new one
-                        * if exists navigate to chat screen with the chat_room id
-                     */
-                }
                 <Text>{validateUserMessage}</Text>
             </View>
         )
@@ -251,6 +246,9 @@ function Activity({ route, navigation }) {
 
                         </View>
                         : <></>}
+                    <View style={activityStyles.mapContainer}>
+                        <MapView style={activityStyles.map}></MapView>
+                    </View>
                 </View>
 
             </View>
@@ -328,6 +326,14 @@ const activityStyles = StyleSheet.create({
     },
     applicantsList: {
         marginTop: 10
+    },
+    mapContainer: {
+        borderRadius: 5,
+        overflow: "hidden"
+    },
+    map: {
+        width: Dimensions.get('window').width - Dimensions.get('window').width * 100 / 10,
+        height: 200,
     }
 })
 export default Activity;

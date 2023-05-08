@@ -103,7 +103,6 @@ export default function Map({ navigation }) {
                         scrollAnimationDuration={1000}
                         onSnapToItem={(index, item) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
                         renderItem={({ index, item }) => (
-                            //console.log(index, item, 'ligne 94')
                             <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} activity={item} />
                         )}
                     />
