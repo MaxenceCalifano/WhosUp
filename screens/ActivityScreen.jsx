@@ -18,6 +18,7 @@ function Activity({ route, navigation }) {
     const [item, setItem] = useState(null)
     const [isHost, setIsHost] = useState(false)
     const [unsubscribing, setIsUnsubscribing] = useState(false)
+    const [region, setRegion] = useState({ latitude: 40.4167754, longitude: -3.7037902, latitudeDelta: 0.05, longitudeDelta: 0.05 })
 
     let { itemID } = route.params;
     //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
@@ -70,7 +71,7 @@ function Activity({ route, navigation }) {
                 activityId: itemID
             },
         })
-        if (data) console.log('edge: ', data)
+        if (data) setRegion({ latitude: data.data.latitude, longitude: data.data.longitude })
         if (error) console.log("🚀 ~ file: Map.jsx:63 ~ edgeFetchActivities ~ error:", error)
     }
 
@@ -258,7 +259,13 @@ function Activity({ route, navigation }) {
                         </View>
                         : <></>}
                     <View style={activityStyles.mapContainer}>
-                        <MapView style={activityStyles.map}></MapView>
+                        <MapView style={activityStyles.map} region={{ ...region, latitudeDelta: 0.05, longitudeDelta: 0.05 }}>
+                            {item ? < Marker
+                                coordinate={region}
+                                title={item.activityTitle}
+                                description={"Ceci est la localisation approximative du lieu, vous pourrez voir les coordonnées lorsque votre participation aura été validée par l'organisateur"}
+                            /> : <></>}
+                        </MapView>
                     </View>
                 </View>
 
@@ -339,7 +346,7 @@ const activityStyles = StyleSheet.create({
         marginTop: 10
     },
     mapContainer: {
-        borderRadius: 5,
+        borderRadius: 15,
         overflow: "hidden"
     },
     map: {
