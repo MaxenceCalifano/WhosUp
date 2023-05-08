@@ -28,37 +28,31 @@ serve(async (req: Request) => {
     const getRandom = (min: number, max: number) => {
       return Math.random() * (max - min) + min;
     }
-
+    // How much we'll modify the coords
     const delta = 0.006
 
     const { data, error } = await supabaseClient
       .from('activities')
       .select(`*,
-      applicants(user_id, is_validated)`)
+              applicants(user_id, is_validated)`)
       .eq('uid', activityId)
 
     if (data) {
-      // User is the owner
-      if (data[0].host_id === user.id) {
-        return new Response(JSON.stringify({ user, data: data[0].location }), {
-          headers: { 'Content-Type': 'application/json' },
-          status: 200,
-        })
-      }
-      const isUserisApplicant = data[0].applicants.filter(elem => elem.user_id === user.id)
-      if (isUserisApplicant.lenght > 0) {
-        //The user is an applicant
-        if (isUserisApplicant.is_validated) {
-          //the user is validated attendee
-          return new Response(JSON.stringify({ user, data: data[0].location }), {
-            headers: { 'Content-Type': 'application/json' },
-            status: 200,
-          })
-        }
-        if (!isUserisApplicant.is_validated) {
+
+      //Check if the user is an applicant
+      const isUserIsApplicant = data[0].applicants.filter(elem => elem.user_id === user.id)
+      console.log("🚀 ~ file: index.ts:44 ~ serve ~ isUserIsApplicant:", isUserIsApplicant)
+      if (isUserIsApplicant.length > 0) {
+        if (!isUserIsApplicant[0].is_validated) {
+          //User is not validated
           data[0].location.latitude = getRandom(data[0].location.latitude - delta, data[0].location.latitude + delta)
           data[0].location.longitude = getRandom(data[0].location.longitude - delta, data[0].location.longitude + delta)
         }
+      }
+      if (isUserIsApplicant.length === 0) {
+        //User has not ask to participate
+        data[0].location.latitude = getRandom(data[0].location.latitude - delta, data[0].location.latitude + delta)
+        data[0].location.longitude = getRandom(data[0].location.longitude - delta, data[0].location.longitude + delta)
       }
 
 
@@ -69,7 +63,7 @@ serve(async (req: Request) => {
 
     if (error) throw error
 
-    return new Response(JSON.stringify({ user, data: data[0].location }), {
+    return new Response(JSON.stringify({ data: data[0].location }), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     })

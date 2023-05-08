@@ -31,7 +31,7 @@ function Activity({ route, navigation }) {
 
         if (data) {
             setItem(data[0])
-            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data[0].applicants)
+            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data[0].location)
             const validatedAttendees = data[0].applicants.filter(elem => elem.is_validated)
             setAttendees(validatedAttendees)
             /*Compare current user with the id of the host of the activity */
