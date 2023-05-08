@@ -38,10 +38,17 @@ serve(async (req: Request) => {
       .eq('uid', activityId)
 
     if (data) {
-
+      console.log(user.id, data[0].host_id)
+      if (user.id === data[0].host_id) {
+        console.log('user is the host')
+        return new Response(JSON.stringify({ data: data[0].location }), {
+          headers: { 'Content-Type': 'application/json' },
+          status: 200,
+        })
+      }
       //Check if the user is an applicant
       const isUserIsApplicant = data[0].applicants.filter(elem => elem.user_id === user.id)
-      console.log("🚀 ~ file: index.ts:44 ~ serve ~ isUserIsApplicant:", isUserIsApplicant)
+      console.log("🚀 ~ file: index.ts:50 ~ serve ~ isUserIsApplicant:", isUserIsApplicant)
       if (isUserIsApplicant.length > 0) {
         if (!isUserIsApplicant[0].is_validated) {
           //User is not validated
