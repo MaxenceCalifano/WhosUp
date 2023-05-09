@@ -5,25 +5,19 @@ serve(async (req: Request) => {
   try {
     // Create a Supabase client with the Auth context of the logged in user.
     const SUPABASE_URL = "https://iwjnycngtfhluxibxjmd.supabase.co";
-    const SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3am55Y25ndGZobHV4aWJ4am1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk5ODk4MTgsImV4cCI6MTk5NTU2NTgxOH0.90phy6l_GPfDt8_3nHFZmEnQqN6PMDke_o_LRW2YpN4";
+    const SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3am55Y25ndGZobHV4aWJ4am1kIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3OTk4OTgxOCwiZXhwIjoxOTk1NTY1ODE4fQ.kQvDw-X-Wg1ODuqRuGEwRp71xZ2ezoa1wrFBiDcVgd0";
 
     const supabaseClient = createClient(
       // Supabase API URL - env var exported by default.
       SUPABASE_URL,
       // Supabase API ANON KEY - env var exported by default.
       SERVICE_KEY,
-      // Create client with Auth context of the user that called the function.
-      // This way row-level-security (RLS) policies are applied.
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
     )
-    // Now we can get the session or user object
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
 
     // And we can run queries in the context of our authenticated user
     // Get parameters
-    const { activityId } = await req.json()
+    const { activityId, user } = await req.json()
+    console.log("🚀 ~ file: index.ts:21 ~ serve ~ user:", user)
 
     const getRandom = (min: number, max: number) => {
       return Math.random() * (max - min) + min;
@@ -34,14 +28,14 @@ serve(async (req: Request) => {
     const { data, error } = await supabaseClient
       .from('activities')
       .select(`*,
-              applicants(user_id, is_validated)`)
+              applicants(user_id, username, is_validated)`)
       .eq('uid', activityId)
 
     if (data) {
-      console.log(user.id, data[0].host_id)
+
       if (user.id === data[0].host_id) {
         console.log('user is the host')
-        return new Response(JSON.stringify({ data: data[0].location }), {
+        return new Response(JSON.stringify({ data: data[0] }), {
           headers: { 'Content-Type': 'application/json' },
           status: 200,
         })
@@ -70,7 +64,7 @@ serve(async (req: Request) => {
 
     if (error) throw error
 
-    return new Response(JSON.stringify({ data: data[0].location }), {
+    return new Response(JSON.stringify({ data: data[0] }), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     })

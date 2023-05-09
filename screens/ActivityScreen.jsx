@@ -23,32 +23,6 @@ function Activity({ route, navigation }) {
     let { itemID } = route.params;
     //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
 
-    const fetchData = async () => {
-        const { data, error } = await supabase
-            .from('activities')
-            .select(`*,
-                    applicants(user_id, username, is_validated)`)
-            .eq('uid', itemID)
-
-        if (data) {
-            setItem(data[0])
-            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data[0].location)
-            const validatedAttendees = data[0].applicants.filter(elem => elem.is_validated)
-            setAttendees(validatedAttendees)
-            /*Compare current user with the id of the host of the activity */
-            if (user.id === data[0].host_id) {
-                //console.log('is host')
-                setIsHost(true)
-
-                // Check if the current user is included in the applicants array
-            } else if (data[0].applicants.some(applicant => applicant.user_id === user.id)) {
-                setIsAttendee(true)
-            }
-
-        }
-        if (error) console.log(error)
-    }
-
     function validateAttendee(userId, isValidated) {
         return new Promise(async (resolve, reject) => {
 
@@ -65,19 +39,35 @@ function Activity({ route, navigation }) {
         })
     }
 
-    const edgeFecthActivityCoordinate = async () => {
+    const edgeFecthActivity = async () => {
         const { data, error } = await supabase.functions.invoke('fetchActivityCoordinate', {
             body: {
-                activityId: itemID
+                activityId: itemID,
+                user: user
             },
         })
-        if (data) setRegion({ latitude: data.data.latitude, longitude: data.data.longitude })
+        if (data) {
+            console.log('edge data', data.data.applicants)
+            setItem(data.data)
+            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data.data.location)
+            const validatedAttendees = data.data.applicants.filter(elem => elem.is_validated)
+            setAttendees(validatedAttendees)
+            /*Compare current user with the id of the host of the activity */
+            if (user.id === data.data.host_id) {
+                //console.log('is host')
+                setIsHost(true)
+
+                // Check if the current user is included in the applicants array
+            } else if (data.data.applicants.some(applicant => applicant.user_id === user.id)) {
+                setIsAttendee(true)
+            }
+            setRegion({ latitude: data.data.location.latitude, longitude: data.data.location.longitude })
+        }
         if (error) console.log("🚀 ~ file: Map.jsx:63 ~ edgeFetchActivities ~ error:", error)
     }
 
     useEffect(() => {
-        edgeFecthActivityCoordinate()
-        fetchData()
+        edgeFecthActivity()
         console.log(isAttendee)
     }, [isAttendee]);
 

@@ -5,7 +5,7 @@ serve(async (req: Request) => {
   try {
     // Create a Supabase client with the Auth context of the logged in user.
     const SUPABASE_URL = "https://iwjnycngtfhluxibxjmd.supabase.co";
-    const SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3am55Y25ndGZobHV4aWJ4am1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk5ODk4MTgsImV4cCI6MTk5NTU2NTgxOH0.90phy6l_GPfDt8_3nHFZmEnQqN6PMDke_o_LRW2YpN4";
+    const SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3am55Y25ndGZobHV4aWJ4am1kIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3OTk4OTgxOCwiZXhwIjoxOTk1NTY1ODE4fQ.kQvDw-X-Wg1ODuqRuGEwRp71xZ2ezoa1wrFBiDcVgd0";
 
     const supabaseClient = createClient(
       // Supabase API URL - env var exported by default.
@@ -14,12 +14,12 @@ serve(async (req: Request) => {
       SERVICE_KEY,
       // Create client with Auth context of the user that called the function.
       // This way your row-level-security (RLS) policies are applied.
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
+      //  { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
     )
-    // Now we can get the session or user object
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
+    /*     // Now we can get the session or user object
+        const {
+          data: { user },
+        } = await supabaseClient.auth.getUser() */
 
     // And we can run queries in the context of our authenticated user
     // Get parameters
@@ -46,7 +46,7 @@ serve(async (req: Request) => {
     if (error) throw error
     // Prendre chacun des éléments de data et modifier latitude et longitude de manière aléatoire dans une plage comprise entre x et y
 
-    return new Response(JSON.stringify({ user, data }), {
+    return new Response(JSON.stringify({ data }), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     })
