@@ -70,7 +70,7 @@ function UserEventScreen({ navigation }) {
             {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} isValidated />) : <></>}
             <Divider />
             <Text>Je participe</Text>
-            {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated={item.activities.isValidated} />) : <></>}
+            {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated={item.is_validated} />) : <></>}
             <Divider />
         </View>
     );

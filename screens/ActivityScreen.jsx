@@ -78,7 +78,8 @@ function Activity({ route, navigation }) {
     useEffect(() => {
         edgeFecthActivityCoordinate()
         fetchData()
-    }, []);
+        console.log(isAttendee)
+    }, [isAttendee]);
 
     // Component that returns applicants
     const Applicant = ({ applicant }) => {
@@ -260,11 +261,20 @@ function Activity({ route, navigation }) {
                         : <></>}
                     <View style={activityStyles.mapContainer}>
                         <MapView style={activityStyles.map} region={{ ...region, latitudeDelta: 0.05, longitudeDelta: 0.05 }}>
-                            {item ? < Marker
-                                coordinate={region}
-                                title={item.activityTitle}
-                                description={"Ceci est la localisation approximative du lieu, vous pourrez voir les coordonnées lorsque votre participation aura été validée par l'organisateur"}
-                            /> : <></>}
+                            {item ?
+                                isAttendee || isHost ?
+                                    < Marker
+                                        coordinate={region}
+                                        title={item.activityTitle}
+                                        description={`${region.latitude}, ${region.longitude}`}
+                                    />
+                                    :
+                                    < Marker
+                                        coordinate={region}
+                                        title={item.activityTitle}
+                                        description={"L'emplacement exact sera visible une fois votre participation validée"}
+                                    />
+                                : <></>}
                         </MapView>
                     </View>
                 </View>
