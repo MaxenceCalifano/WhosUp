@@ -13,18 +13,9 @@ function ChatListScreen({ navigation }) {
     // const [chatRooms, setChatRooms] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
-    const testEdgeFunction = async () => {
-        const { data, error } = await supabase.functions.invoke('hello-world', {
-            body: { name: 'Functions' },
-        })
-
-        console.log(data)
-    }
-
     useEffect(() => {
 
         //console.log('chatUsers', chatUsers[2])
-        testEdgeFunction()
     }, [chatUsers])
 
     //fetch all the ids of the chatrooms of the logged in user
@@ -74,8 +65,8 @@ function ChatListScreen({ navigation }) {
                         .select()
                         .eq('id', lastMessageId)
                     if (data) {
-                        console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data[0].content)
-                        setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: data[0].content }])
+                        console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data[0])
+                        setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: { content: data[0].content, createdAt: data[0].created_at } }])
                     }
                     if (error) console.log('ligne 63', error)
                 }
