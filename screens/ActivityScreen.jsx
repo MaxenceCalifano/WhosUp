@@ -19,6 +19,7 @@ function Activity({ route, navigation }) {
     const [isHost, setIsHost] = useState(false)
     const [unsubscribing, setIsUnsubscribing] = useState(false)
     const [region, setRegion] = useState({ latitude: 40.4167754, longitude: -3.7037902, latitudeDelta: 0.05, longitudeDelta: 0.05 })
+    //mettre marker icon dans un state
     let marker_icon;
 
     let { itemID } = route.params;

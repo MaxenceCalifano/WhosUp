@@ -12,10 +12,11 @@ function ChatListScreen({ navigation }) {
     const [chatUsers, setChatUsers] = useState([])
     // const [chatRooms, setChatRooms] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    let roomData = [];
 
     useEffect(() => {
 
-        //console.log('chatUsers', chatUsers[2])
+        // console.log('chatUsers', chatUsers)
     }, [chatUsers])
 
     //fetch all the ids of the chatrooms of the logged in user
@@ -35,8 +36,11 @@ function ChatListScreen({ navigation }) {
         if (data) {
             //console.log("🚀 ~ file: ChatListScreen.jsx:36 ~ fetchChatroomsIds ~ data:", data)
             const chat_rooms = data[0].chat_rooms
+            console.log("🚀 ~ file: ChatListScreen.jsx:39 ~ fetchChatroomsIds ~ chat_rooms:", chat_rooms)
             // setChatRooms(data[0].chat_rooms)
-            chat_rooms.forEach(room => fetchRoomData(room.id, room.last_message_id))
+            chat_rooms.forEach(async room => await fetchRoomData(room.id, room.last_message_id))
+            console.log('fin ici')
+            // roomData
         }
     }
 
@@ -53,36 +57,50 @@ function ChatListScreen({ navigation }) {
             .eq('room_id', room)
 
         if (chat_rooms_profiles) {
-            chat_rooms_profiles.forEach(async item => {
+            console.log("🚀 ~ file: ChatListScreen.jsx:59 ~ fetchRoomData ~ chat_rooms_profiles:", chat_rooms_profiles)
+            chat_rooms_profiles.forEach(item => {
                 //Don't fetch last message if conversation hasn't messages
-                console.log(lastMessageId)
+                //console.log(lastMessageId)
                 // if (lastMessageId === null && item.user_id !== user.id) setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: "Cette conversation n'a pas de message" }])
                 //   else {
                 if (item.user_id !== user.id && lastMessageId !== null) {
                     //Fetch last message
-                    let { data, error } = await supabase
+                    supabase
                         .from('messages')
                         .select()
                         .eq('id', lastMessageId)
+                        .then(res => console.log(res.data))
                     if (data) {
-                        console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data[0])
-                        setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: { content: data[0].content, createdAt: data[0].created_at } }])
+                        //console.log("🚀 ~ file: ChatListScreen.jsx:65 ~ fetchRoomData ~ data:", data[0])
+                        // setChatUsers(prevState => [...prevState, { item, roomId: room, lastMessage: { content: data[0].content, createdAt: data[0].created_at } }])
+                        new Promise((data, resolve) => {
+                            console.log('77: ', data)
+                            roomData.push({ item, roomId: room, lastMessage: { content: data[0].content, createdAt: data[0].created_at } })
+                        })
                     }
                     if (error) console.log('ligne 63', error)
                 }
                 //   }
 
             })
+
             setIsLoading(false)
         }
         if (error) console.warn(error)
+        // console.log("🚀 ~ file: ChatListScreen.jsx:73 ~ fetchRoomData ~ roomData:", roomData)
+
     }
 
-
+    const test = async () => {
+        fetchChatroomsIds().then(() => {
+            console.log('fini', roomData)
+            setChatUsers(roomData)
+        })
+    }
     useFocusEffect(
         useCallback(() => {
             setChatUsers([])
-            fetchChatroomsIds()
+            test()
         }, []))
 
     return (
