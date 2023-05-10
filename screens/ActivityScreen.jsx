@@ -221,10 +221,10 @@ function Activity({ route, navigation }) {
 
                     <View style={activityStyles.dataContainer} >
 
-                        <Text style={activityStyles.title}>{item.activityTitle}</Text>
+                        <Text style={activityStyles.title}>{item.activity_title}</Text>
                         <Text><FontAwesome5 name="clock" size={24} color="black" />{dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
 
-                        <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.numberOfParticipants}</Text>
+                        <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.number_of_participants}</Text>
                         <View style={activityStyles.buttonsContainer}>
                             <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
                                 <Text>Participer</Text>
@@ -241,7 +241,7 @@ function Activity({ route, navigation }) {
                         {unsubscribing ? <Unsubscribe /> : <></>}
 
                         <Text style={{ fontWeight: 'bold' }}>Description</Text>
-                        <Text>{item.activityDescription}</Text>
+                        <Text>{item.activity_description}</Text>
                         {item.applicants && isHost ?
                             <View style={activityStyles.applicantsList}>
                                 <Divider />
@@ -256,13 +256,13 @@ function Activity({ route, navigation }) {
                                     isAttendee || isHost ?
                                         < Marker
                                             coordinate={region}
-                                            title={item.activityTitle}
+                                            title={item.activity_title}
                                             description={`${region.latitude}, ${region.longitude}`}
                                         />
                                         :
                                         < Marker
                                             coordinate={region}
-                                            title={item.activityTitle}
+                                            title={item.activity_title}
                                             description={"L'emplacement exact sera visible une fois votre participation validée"}
                                         />
                                     : <></>}

@@ -20,7 +20,7 @@ function UserEventScreen({ navigation }) {
             .eq('host_id', user.id)
 
         if (data) {
-            //console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ data:", data)
+            console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ data:", data)
             setHostActivities(data)
         }
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ error:", error)
@@ -45,9 +45,9 @@ function UserEventScreen({ navigation }) {
             key={item.uid}
             onPress={() => navigation.navigate('Activité', { itemID: item.uid })}>
 
-            <Text style={eventsScreenStyles.activityTitle}>{item.activityTitle}</Text>
+            <Text style={eventsScreenStyles.activityTitle}>{item.activity_title}</Text>
             {isValidated ? "" : <Text>(En attente de validation par l'organisateur)</Text>}
-            <Text>{item.activityDescription.slice(0, 40)}</Text>
+            <Text>{item.activity_description.slice(0, 40)}</Text>
             <View style={eventsScreenStyles.dateAndParticipants}>
                 <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
             </View>

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 function ActivityCard({ index, activity, navigation }) {
 
-    const thumbnail = activity.activitytype = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
+    const thumbnail = activity.activity_type = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
     return (
         <Pressable style={styles.card}
             onPress={() => navigation.navigate('Activité', { itemID: activity.uid })}>
@@ -12,8 +12,8 @@ function ActivityCard({ index, activity, navigation }) {
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
                     <View>
-                        <Text>{activity.activityTitle}</Text>
-                        <Text>{activity.activityDescription.slice(0, 40)}</Text>
+                        <Text>{activity.activity_title}</Text>
+                        <Text>{activity.activity_description.slice(0, 40)}</Text>
                     </View>
                     <View style={styles.date}>
                         <Ionicons name="time-sharp" size={24} color="black" />
@@ -21,12 +21,12 @@ function ActivityCard({ index, activity, navigation }) {
                             {/* <Text>{activity.date.slice(4, 10)}</Text> */}
                             <Text>{dayjs(activity.date).format('DD MMM, YYYY')}</Text>
                             <Text>{dayjs(activity.date).format('h:mm A')}</Text>
-                            <Text>{activity.activityType}</Text>
+                            <Text>{activity.activity_type}</Text>
                         </View>
                     </View>
                 </View>
 
-                <Text><Ionicons name="people" size={24} color="black" />{activity.numberOfParticipants}</Text>
+                <Text><Ionicons name="people" size={24} color="black" />{activity.number_of_participants}</Text>
             </View>
         </Pressable>
     );

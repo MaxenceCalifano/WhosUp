@@ -78,15 +78,15 @@ export default function Map({ navigation }) {
                     {
                         activities ? activities.map((marker, index) => {
                             let markerIcon;
-                            if (marker.activityType === "apéro") { markerIcon = require('../assets/drink_icon.png') }
-                            if (marker.activityType === "randonée") { markerIcon = require('../assets/hike_icon.png') }
-                            if (marker.activityType === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
+                            if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon.png') }
+                            if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon.png') }
+                            if (marker.activity_type === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
                             return (
                                 < Marker
                                     key={index}
                                     coordinate={marker.location}
-                                    title={marker.activityTitle}
-                                    description={marker.activityType}
+                                    title={marker.activity_title}
+                                    description={marker.activity_type}
                                     image={markerIcon}
                                 />
                             )
