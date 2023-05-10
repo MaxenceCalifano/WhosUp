@@ -19,6 +19,7 @@ function Activity({ route, navigation }) {
     const [isHost, setIsHost] = useState(false)
     const [unsubscribing, setIsUnsubscribing] = useState(false)
     const [region, setRegion] = useState({ latitude: 40.4167754, longitude: -3.7037902, latitudeDelta: 0.05, longitudeDelta: 0.05 })
+    let marker_icon;
 
     let { itemID } = route.params;
     //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
@@ -68,8 +69,17 @@ function Activity({ route, navigation }) {
 
     useEffect(() => {
         edgeFecthActivity()
-        console.log(isAttendee)
-    }, [isAttendee]);
+    }, []);
+
+    useEffect(() => {
+        if (item) {
+            if (item.activity_type === "apéro") { marker_icon = require('../assets/drink_icon_approximate.png') }
+            if (item.activity_type === "randonée") { marker_icon = require('../assets/hike_icon_approximate.png') }
+            if (item.activity_type === "jeux de société") { marker_icon = require('../assets/game_icon_approximate.png') }
+        }
+        console.log('markerIcon', marker_icon)
+
+    }, [isAttendee, isHost, item]);
 
     // Component that returns applicants
     const Applicant = ({ applicant }) => {
@@ -258,12 +268,14 @@ function Activity({ route, navigation }) {
                                             coordinate={region}
                                             title={item.activity_title}
                                             description={`${region.latitude}, ${region.longitude}`}
+                                            image={marker_icon}
                                         />
                                         :
                                         < Marker
                                             coordinate={region}
                                             title={item.activity_title}
                                             description={"L'emplacement exact sera visible une fois votre participation validée"}
+                                            image={marker_icon}
                                         />
                                     : <></>}
                             </MapView>

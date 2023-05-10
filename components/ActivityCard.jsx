@@ -3,12 +3,12 @@ import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 
 function ActivityCard({ index, activity, navigation }) {
+    console.log("🚀 ~ file: ActivityCard.jsx:6 ~ ActivityCard ~ activity:", activity.activity_type === 'randonée')
 
-    const thumbnail = activity.activity_type = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
     return (
         <Pressable style={styles.card}
             onPress={() => navigation.navigate('Activité', { itemID: activity.uid })}>
-            <Image style={styles.image} source={thumbnail} />
+            <Image style={styles.image} source={activity.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : activity.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
                     <View>

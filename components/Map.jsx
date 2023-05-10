@@ -78,9 +78,9 @@ export default function Map({ navigation }) {
                     {
                         activities ? activities.map((marker, index) => {
                             let markerIcon;
-                            if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon.png') }
-                            if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon.png') }
-                            if (marker.activity_type === "jeux de société") { markerIcon = require('../assets/games_icon.png') }
+                            if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon_approximate.png') }
+                            if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon_approximate.png') }
+                            if (marker.activity_type === "jeux de société") { markerIcon = require('../assets/game_icon_approximate.png') }
                             return (
                                 < Marker
                                     key={index}
