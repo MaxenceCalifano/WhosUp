@@ -26,10 +26,12 @@ function ChatRoomListItem({ navigation, item }) {
             />
             <View style={chatItemStyles.textContent}>
                 <Text style={chatItemStyles.textContent_username}>{profiles.username}</Text>
-                <Text style={chatItemStyles.textContent_lastMessage}>{lastMessage}</Text>
+                <Text style={chatItemStyles.textContent_lastMessage}>{lastMessage.content}</Text>
             </View>
 
-            <Text>{dayjs(lastMessage.created_at).format('HH:mm')}</Text>
+            <Text>{dayjs().format('DD/MM') === dayjs(lastMessage.createdAt).format('DD/MM')
+                ? dayjs(lastMessage.createdAt).format('HH:mm')
+                : dayjs(lastMessage.createdAt).format('DD/MM')}</Text>
 
         </Pressable>
     );
