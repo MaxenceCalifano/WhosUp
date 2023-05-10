@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Image, Pressable, Dimensions, ScrollView } from "react-native";
 import { Divider } from 'react-native-elements';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons, FontAwesome5, Entypo, AntDesign, Feather } from '@expo/vector-icons';
@@ -213,63 +213,64 @@ function Activity({ route, navigation }) {
     if (item) {
         return (
             <View style={activityStyles.container}>
-                <Pressable style={activityStyles.backIcon} onPress={() => navigation.goBack()}>
-                    <Ionicons name="arrow-back-outline" size={24} color="black" />
-                </Pressable>
-                <Image style={activityStyles.image} source={require('../assets/hiking_thumbnail.jpg')} />
+                <ScrollView style={activityStyles.scrollView}>
+                    <Pressable style={activityStyles.backIcon} onPress={() => navigation.goBack()}>
+                        <Ionicons name="arrow-back-outline" size={24} color="black" />
+                    </Pressable>
+                    <Image style={activityStyles.image} source={require('../assets/hiking_thumbnail.jpg')} />
 
-                <View style={activityStyles.dataContainer} >
+                    <View style={activityStyles.dataContainer} >
 
-                    <Text style={activityStyles.title}>{item.activityTitle}</Text>
-                    <Text><FontAwesome5 name="clock" size={24} color="black" />{dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
+                        <Text style={activityStyles.title}>{item.activityTitle}</Text>
+                        <Text><FontAwesome5 name="clock" size={24} color="black" />{dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
 
-                    <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.numberOfParticipants}</Text>
-                    <View style={activityStyles.buttonsContainer}>
-                        <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
-                            <Text>Participer</Text>
-                            <Text> {isAttendee ? <AntDesign name="checkcircle" size={24} color="black" /> : ""}</Text>
-                        </Pressable>
-                        <Pressable style={activityStyles.buttons}>
-                            <Text>Intéressé(e)</Text>
-                        </Pressable>
-                        <Pressable style={activityStyles.buttons}>
-                            <Entypo name="dots-three-vertical" size={24} color="black" />
-                        </Pressable>
-                    </View>
-                    <Text>{participateMessage}</Text>
-                    {unsubscribing ? <Unsubscribe /> : <></>}
-
-                    <Text style={{ fontWeight: 'bold' }}>Description</Text>
-                    <Text>{item.activityDescription}</Text>
-                    {item.applicants && isHost ?
-                        <View style={activityStyles.applicantsList}>
-                            <Divider />
-                            <Text style={{ fontWeight: '500', fontSize: 15 }}>Personnes souhaitant participer à votre activité:</Text>
-                            {item.applicants.map(applicant => <Applicant key={applicant.user_id} applicant={applicant} />)}
-
+                        <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.numberOfParticipants}</Text>
+                        <View style={activityStyles.buttonsContainer}>
+                            <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
+                                <Text>Participer</Text>
+                                <Text> {isAttendee ? <AntDesign name="checkcircle" size={24} color="black" /> : ""}</Text>
+                            </Pressable>
+                            <Pressable style={activityStyles.buttons}>
+                                <Text>Intéressé(e)</Text>
+                            </Pressable>
+                            <Pressable style={activityStyles.buttons}>
+                                <Entypo name="dots-three-vertical" size={24} color="black" />
+                            </Pressable>
                         </View>
-                        : <></>}
-                    <View style={activityStyles.mapContainer}>
-                        <MapView style={activityStyles.map} region={{ ...region, latitudeDelta: 0.05, longitudeDelta: 0.05 }}>
-                            {item ?
-                                isAttendee || isHost ?
-                                    < Marker
-                                        coordinate={region}
-                                        title={item.activityTitle}
-                                        description={`${region.latitude}, ${region.longitude}`}
-                                    />
-                                    :
-                                    < Marker
-                                        coordinate={region}
-                                        title={item.activityTitle}
-                                        description={"L'emplacement exact sera visible une fois votre participation validée"}
-                                    />
-                                : <></>}
-                        </MapView>
-                    </View>
-                </View>
+                        <Text>{participateMessage}</Text>
+                        {unsubscribing ? <Unsubscribe /> : <></>}
 
-            </View>
+                        <Text style={{ fontWeight: 'bold' }}>Description</Text>
+                        <Text>{item.activityDescription}</Text>
+                        {item.applicants && isHost ?
+                            <View style={activityStyles.applicantsList}>
+                                <Divider />
+                                <Text style={{ fontWeight: '500', fontSize: 15 }}>Personnes souhaitant participer à votre activité:</Text>
+                                {item.applicants.map(applicant => <Applicant key={applicant.user_id} applicant={applicant} />)}
+
+                            </View>
+                            : <></>}
+                        <View style={activityStyles.mapContainer}>
+                            <MapView style={activityStyles.map} region={{ ...region, latitudeDelta: 0.05, longitudeDelta: 0.05 }}>
+                                {item ?
+                                    isAttendee || isHost ?
+                                        < Marker
+                                            coordinate={region}
+                                            title={item.activityTitle}
+                                            description={`${region.latitude}, ${region.longitude}`}
+                                        />
+                                        :
+                                        < Marker
+                                            coordinate={region}
+                                            title={item.activityTitle}
+                                            description={"L'emplacement exact sera visible une fois votre participation validée"}
+                                        />
+                                    : <></>}
+                            </MapView>
+                        </View>
+                    </View>
+                </ScrollView >
+            </View >
         )
     } else {
         return (
@@ -283,6 +284,12 @@ function Activity({ route, navigation }) {
 const activityStyles = StyleSheet.create({
     container: {
         // marginTop: 40
+        flex: 1,
+        height: Dimensions.get('window').height
+
+    },
+    scrollView: {
+        // flex: 1
     },
     header: {
         flexDirection: 'row',
@@ -314,7 +321,7 @@ const activityStyles = StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: '40%',
+        height: 200,
     },
     backIcon: {
         position: 'absolute',
