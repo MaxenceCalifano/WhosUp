@@ -25,11 +25,12 @@ serve(async (req: Request) => {
     // Get parameters
     const { minimalLatitude, maximalLatitude, minimalLongitude, maximalLongitude } = await req.json()
 
+
     const getRandom = (min: number, max: number) => {
       return Math.random() * (max - min) + min;
     }
 
-    const delta = 0.006
+    const obfuscateDelta = 0.006
 
     const { data, error } = await supabaseClient
       .from('activities')
@@ -40,8 +41,8 @@ serve(async (req: Request) => {
       .gte("location -> longitude", minimalLongitude)
 
     data.forEach(element => {
-      element.location.latitude = getRandom(element.location.latitude - delta, element.location.latitude + delta)
-      element.location.longitude = getRandom(element.location.longitude - delta, element.location.longitude + delta)
+      element.location.latitude = getRandom(element.location.latitude - obfuscateDelta, element.location.latitude + obfuscateDelta)
+      element.location.longitude = getRandom(element.location.longitude - obfuscateDelta, element.location.longitude + obfuscateDelta)
     });
     if (error) throw error
     // Prendre chacun des éléments de data et modifier latitude et longitude de manière aléatoire dans une plage comprise entre x et y

@@ -24,10 +24,12 @@ export default function Map({ navigation }) {
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
 
     const edgeFetchActivities = async () => {
-        const minimalLatitude = location.latitude - location.latitudeDelta / 2
-        const maximalLatitude = location.latitude + location.latitudeDelta / 2
-        const minimalLongitude = location.longitude - location.longitudeDelta / 2
-        const maximalLongitude = location.longitude + location.longitudeDelta / 2
+
+        //Arbitraries values to loads activities in a not too big perimeter
+        const minimalLatitude = location.latitude - 8
+        const maximalLatitude = location.latitude + 8
+        const minimalLongitude = location.longitude - 7.5
+        const maximalLongitude = location.longitude + 7.5
 
         const { data, error } = await supabase.functions.invoke('fetchActivities', {
             body: {
@@ -41,7 +43,7 @@ export default function Map({ navigation }) {
         if (error) console.log("🚀 ~ file: Map.jsx:63 ~ edgeFetchActivities ~ error:", error)
     }
     const handleRegionChangeComplete = (mapRegion) => {
-        //console.log(activities, 'ligne 44')
+        console.log(mapRegion)
         setLocation(mapRegion)
         setShowSearchInthisArea(true)
     }
