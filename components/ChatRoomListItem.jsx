@@ -5,33 +5,33 @@ import { Pressable } from 'react-native';
 import { Image } from 'expo-image';
 
 function ChatRoomListItem({ navigation, item }) {
-    //console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item.lastMessage)
-    const { roomId } = item
-    const { profiles } = item.item
-    const lastMessage = item.lastMessage
+    console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item)
+    /*  const { roomId } = item
+     const { profiles } = item.item
+     const lastMessage = item.lastMessage */
 
     return (
         <Pressable style={chatItemStyles.container} onPress={() => navigation.navigate('Chat', {
             roomId,
             profile: {
-                username: profiles.username,
-                avatarUrl: profiles.avatar_url
+                username: item.username,
+                avatarUrl: item.avatar_url
             }
         })}>
             <Image
                 style={chatItemStyles.userAvatar}
-                source={`https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${profiles.avatar_url}`}
+                source={`https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${item.avatar_url}`}
                 contentFit="cover"
                 transition={1000}
             />
             <View style={chatItemStyles.textContent}>
-                <Text style={chatItemStyles.textContent_username}>{profiles.username}</Text>
-                <Text style={chatItemStyles.textContent_lastMessage}>{lastMessage.content}</Text>
+                <Text style={chatItemStyles.textContent_username}>{item.username}</Text>
+                <Text style={chatItemStyles.textContent_lastMessage}>{item.content}</Text>
             </View>
 
-            <Text>{dayjs().format('DD/MM') === dayjs(lastMessage.createdAt).format('DD/MM')
-                ? dayjs(lastMessage.createdAt).format('HH:mm')
-                : dayjs(lastMessage.createdAt).format('DD/MM')}</Text>
+            <Text>{dayjs().format('DD/MM') === dayjs(item.created_at).format('DD/MM')
+                ? dayjs(item.created_at).format('HH:mm')
+                : dayjs(item.created_at).format('DD/MM')}</Text>
 
         </Pressable>
     );
