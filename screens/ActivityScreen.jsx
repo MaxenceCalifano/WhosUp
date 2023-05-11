@@ -234,7 +234,7 @@ function Activity({ route, navigation }) {
                     <Pressable style={activityStyles.backIcon} onPress={() => navigation.goBack()}>
                         <Ionicons name="arrow-back-outline" size={24} color="black" />
                     </Pressable>
-                    <Image style={activityStyles.image} source={require('../assets/hiking_thumbnail.jpg')} />
+                    <Image style={activityStyles.image} source={item.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : item.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
 
                     <View style={activityStyles.dataContainer} >
 
@@ -273,7 +273,7 @@ function Activity({ route, navigation }) {
 
                             <MapView style={activityStyles.map} region={{ ...region, latitudeDelta: 0.05, longitudeDelta: 0.05 }}>
                                 {item ?
-                                    isAttendee || isHost ?
+                                    currentUserIsValidated || isHost ?
                                         < Marker
                                             coordinate={region}
                                             title={item.activity_title}
