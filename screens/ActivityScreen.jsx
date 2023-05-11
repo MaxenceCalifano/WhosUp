@@ -14,6 +14,7 @@ function Activity({ route, navigation }) {
     const [participateMessage, setParticipateMessage] = useState()
     const [isAttendee, setIsAttendee] = useState(false)
     const [attendees, setAttendees] = useState(0)
+    const [notAttendees, setNotAttendees] = useState()
     const { user } = useUser()
     const [item, setItem] = useState(null)
     const [isHost, setIsHost] = useState(false)
@@ -52,6 +53,8 @@ function Activity({ route, navigation }) {
             setItem(data.data)
             const validatedAttendees = data.data.applicants.filter(elem => elem.is_validated)
             setAttendees(validatedAttendees)
+            const notValidatedAttendees = data.data.applicants.filter(elem => !elem.is_validated)
+            setNotAttendees(notValidatedAttendees)
             /*Compare current user with the id of the host of the activity */
             if (user.id === data.data.host_id) {
                 //console.log('is host')
@@ -95,7 +98,7 @@ function Activity({ route, navigation }) {
 
         return (
             <View key={applicant.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
-                <Text>{applicant.username}</Text>
+                <Text style={{ flex: 2, fontWeight: "bold" }}>{applicant.username}</Text>
                 {isValidated ?
                     <Pressable
                         style={[activityStyles.applicant_button, { backgroundColor: '#ff190c' }]}
@@ -123,7 +126,6 @@ function Activity({ route, navigation }) {
                             <Text style={{ color: 'white', marginRight: 4 }}>Valider</Text>
                             <AntDesign name="checkcircle" size={24} color="white" />
                         </Pressable>
-                        <Text>(en attente de votre validation)</Text>
                     </View>
                 }
                 <Pressable
@@ -277,7 +279,10 @@ function Activity({ route, navigation }) {
                             <View style={activityStyles.applicantsList}>
                                 <Divider />
                                 <Text style={{ fontWeight: '500', fontSize: 15 }}>Personnes souhaitant participer à votre activité:</Text>
-                                {item.applicants.map(applicant => <Applicant key={applicant.user_id} applicant={applicant} />)}
+                                <Text>En attente de votre validation :</Text>
+                                {notAttendees.map(applicant => <Applicant key={applicant.user_id} applicant={applicant} />)}
+                                <Text>Participant(e)s :</Text>
+                                {attendees.map(applicant => <Applicant key={applicant.user_id} applicant={applicant} />)}
 
                             </View>
                             : <></>}
