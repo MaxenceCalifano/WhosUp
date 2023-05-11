@@ -243,16 +243,19 @@ function Activity({ route, navigation }) {
 
                         <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.number_of_participants}</Text>
                         <View style={activityStyles.buttonsContainer}>
-                            <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
-                                <Text>Participer</Text>
-                                <Text> {isAttendee ? <AntDesign name="checkcircle" size={24} color="black" /> : ""}</Text>
-                            </Pressable>
-                            <Pressable style={activityStyles.buttons}>
+                            {
+                                isHost ? <Text>Vous êtes l'organisateur de cette activité</Text>
+                                    : <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
+                                        <Text>Participer</Text>
+                                        <Text> {isAttendee ? <AntDesign name="checkcircle" size={24} color="black" /> : ""}</Text>
+                                    </Pressable>
+                            }
+                            {/* <Pressable style={activityStyles.buttons}>
                                 <Text>Intéressé(e)</Text>
                             </Pressable>
                             <Pressable style={activityStyles.buttons}>
                                 <Entypo name="dots-three-vertical" size={24} color="black" />
-                            </Pressable>
+                            </Pressable> */}
                         </View>
                         <Text>{participateMessage}</Text>
                         {unsubscribing ? <Unsubscribe /> : <></>}
@@ -290,7 +293,7 @@ function Activity({ route, navigation }) {
                                     : <></>}
                             </MapView>
                         </View>
-                        {currentUserIsValidated ? <></> : <Text>L'emplacement exact vous sera communiquée lorsque votre participation sera validée</Text>}
+                        {currentUserIsValidated || isHost ? <></> : <Text>L'emplacement exact vous sera communiquée lorsque votre participation sera validée</Text>}
                     </View>
                 </ScrollView >
             </View >
