@@ -239,9 +239,15 @@ function Activity({ route, navigation }) {
                     <View style={activityStyles.dataContainer} >
 
                         <Text style={activityStyles.title}>{item.activity_title}</Text>
-                        <Text><FontAwesome5 name="clock" size={24} color="black" />{dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <FontAwesome5 style={{ marginHorizontal: 2 }} name="clock" size={24} color="black" />
+                            <Text>{dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
+                        </View>
 
-                        <Text><Ionicons name="people" size={24} color="black" />{attendees.length}/{item.number_of_participants}</Text>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Ionicons style={{ marginHorizontal: 2 }} name="people" size={24} color="black" />
+                            <Text>{attendees.length}/{item.number_of_participants}</Text>
+                        </View>
                         <View style={activityStyles.buttonsContainer}>
                             {
                                 isHost ? <Text>Vous êtes l'organisateur de cette activité</Text>
