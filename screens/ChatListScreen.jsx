@@ -1,7 +1,7 @@
 import { View, StyleSheet, FlatList, ActivityIndicator, Dimensions } from "react-native";
 import ChatRoomListItem from "../components/ChatRoomListItem";
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { supabase } from '../config/supabase'
 import { useUser } from "../UserContext";
 import styles from "../styles";

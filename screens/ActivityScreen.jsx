@@ -19,11 +19,10 @@ function Activity({ route, navigation }) {
     const [isHost, setIsHost] = useState(false)
     const [unsubscribing, setIsUnsubscribing] = useState(false)
     const [region, setRegion] = useState({ latitude: 40.4167754, longitude: -3.7037902, latitudeDelta: 0.05, longitudeDelta: 0.05 })
-    //mettre marker icon dans un state
-    let marker_icon;
+    const [marker, setMarker] = useState()
+    const [currentUserIsValidated, setCurrentUserIsValidated] = useState()
 
     let { itemID } = route.params;
-    //console.log("🚀 ~ file: ActivityScreen.jsx:14 ~ Activity ~ itemID:", itemID)
 
     function validateAttendee(userId, isValidated) {
         return new Promise(async (resolve, reject) => {
@@ -51,7 +50,6 @@ function Activity({ route, navigation }) {
         if (data) {
             console.log('edge data', data.data.applicants)
             setItem(data.data)
-            console.log("🚀 ~ file: ActivityScreen.jsx:34 ~ fetchData ~ data[0]):", data.data.location)
             const validatedAttendees = data.data.applicants.filter(elem => elem.is_validated)
             setAttendees(validatedAttendees)
             /*Compare current user with the id of the host of the activity */
@@ -60,7 +58,10 @@ function Activity({ route, navigation }) {
                 setIsHost(true)
 
                 // Check if the current user is included in the applicants array
-            } else if (data.data.applicants.some(applicant => applicant.user_id === user.id)) {
+            } else if (data.data.applicants.some(applicant => {
+                setCurrentUserIsValidated(applicant.is_validated)
+                return applicant.user_id === user.id
+            })) {
                 setIsAttendee(true)
             }
             setRegion({ latitude: data.data.location.latitude, longitude: data.data.location.longitude })
@@ -74,11 +75,16 @@ function Activity({ route, navigation }) {
 
     useEffect(() => {
         if (item) {
-            if (item.activity_type === "apéro") { marker_icon = require('../assets/drink_icon_approximate.png') }
-            if (item.activity_type === "randonée") { marker_icon = require('../assets/hike_icon_approximate.png') }
-            if (item.activity_type === "jeux de société") { marker_icon = require('../assets/game_icon_approximate.png') }
+            if (currentUserIsValidated || isHost) {
+                if (item.activity_type === "apéro") { setMarker(require('../assets/drink_icon.png')) }
+                if (item.activity_type === "randonée") { setMarker(require('../assets/hike_icon.png')) }
+                if (item.activity_type === "jeux de société") { setMarker(require('../assets/games_icon.png')) }
+            } else {
+                if (item.activity_type === "apéro") { setMarker(require('../assets/drink_icon_approximate.png')) }
+                if (item.activity_type === "randonée") { setMarker(require('../assets/hike_icon_approximate.png')) }
+                if (item.activity_type === "jeux de société") { setMarker(require('../assets/game_icon_approximate.png')) }
+            }
         }
-        console.log('markerIcon', marker_icon)
 
     }, [isAttendee, isHost, item]);
 
@@ -251,7 +257,7 @@ function Activity({ route, navigation }) {
                         <Text>{participateMessage}</Text>
                         {unsubscribing ? <Unsubscribe /> : <></>}
 
-                        <Text style={{ fontWeight: 'bold' }}>Description</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Description</Text>
                         <Text>{item.activity_description}</Text>
                         {item.applicants && isHost ?
                             <View style={activityStyles.applicantsList}>
@@ -261,7 +267,10 @@ function Activity({ route, navigation }) {
 
                             </View>
                             : <></>}
+                        <Divider />
+                        <Text style={activityStyles.location_title}>Emplacement :</Text>
                         <View style={activityStyles.mapContainer}>
+
                             <MapView style={activityStyles.map} region={{ ...region, latitudeDelta: 0.05, longitudeDelta: 0.05 }}>
                                 {item ?
                                     isAttendee || isHost ?
@@ -269,18 +278,19 @@ function Activity({ route, navigation }) {
                                             coordinate={region}
                                             title={item.activity_title}
                                             description={`${region.latitude}, ${region.longitude}`}
-                                            image={marker_icon}
+                                            image={marker}
                                         />
                                         :
                                         < Marker
                                             coordinate={region}
                                             title={item.activity_title}
                                             description={"L'emplacement exact sera visible une fois votre participation validée"}
-                                            image={marker_icon}
+                                            image={marker}
                                         />
                                     : <></>}
                             </MapView>
                         </View>
+                        {currentUserIsValidated ? <></> : <Text>L'emplacement exact vous sera communiquée lorsque votre participation sera validée</Text>}
                     </View>
                 </ScrollView >
             </View >
@@ -368,6 +378,11 @@ const activityStyles = StyleSheet.create({
     mapContainer: {
         borderRadius: 15,
         overflow: "hidden"
+    },
+    location_title: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginVertical: 2
     },
     map: {
         width: Dimensions.get('window').width - Dimensions.get('window').width * 100 / 10,
