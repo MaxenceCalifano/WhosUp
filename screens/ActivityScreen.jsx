@@ -97,8 +97,9 @@ function Activity({ route, navigation }) {
             <View key={applicant.user_id} style={{ flexDirection: 'row', alignItems: "center" }}>
                 <Text>{applicant.username}</Text>
                 {isValidated ?
-                    <View>
-                        <Pressable onPress={() => {
+                    <Pressable
+                        style={[activityStyles.applicant_button, { backgroundColor: '#ff190c' }]}
+                        onPress={() => {
                             validateAttendee(applicant.user_id, false)
                                 .then(() => setIsValidated(false))
                                 .catch(error => {
@@ -106,12 +107,12 @@ function Activity({ route, navigation }) {
                                     setValidateUserMessage("Une erreur est survenue")
                                 })
                         }}>
-                            <Feather name="x-circle" size={24} color="black" />
-                        </Pressable>
-                    </View>
+                        <Text style={{ color: 'white', marginRight: 4 }}>Retirer</Text>
+                        <Feather name="x-circle" size={24} color="white" />
+                    </Pressable>
                     :
-                    <View style={{ flexDirection: "row" }}>
-                        <Pressable onPress={() => {
+                    <View style={{ flexDirection: "row", alignItems: 'center' }}>
+                        <Pressable style={[activityStyles.applicant_button, { backgroundColor: "#7fdc67" }]} onPress={() => {
                             validateAttendee(applicant.user_id, true)
                                 .then(() => setIsValidated(true))
                                 .catch(error => {
@@ -119,56 +120,60 @@ function Activity({ route, navigation }) {
                                     setValidateUserMessage("Une erreur est survenue")
                                 })
                         }}>
-                            <AntDesign name="checkcircle" size={24} color="black" />
+                            <Text style={{ color: 'white', marginRight: 4 }}>Valider</Text>
+                            <AntDesign name="checkcircle" size={24} color="white" />
                         </Pressable>
                         <Text>(en attente de votre validation)</Text>
                     </View>
                 }
-                <Pressable onPress={async () => {
-                    console.log(user.id, applicant.user_id)
+                <Pressable
+                    style={[activityStyles.applicant_button, { backgroundColor: styles.color }]}
+                    onPress={async () => {
+                        console.log(user.id, applicant.user_id)
 
 
-                    const { data, error } = await supabase
-                        .from('chat_rooms_profiles')
-                        .select()
-                        .in('user_id', [user.id, applicant.user_id])
+                        const { data, error } = await supabase
+                            .from('chat_rooms_profiles')
+                            .select()
+                            .in('user_id', [user.id, applicant.user_id])
 
-                    //We fetched all the chats of the users, now we want to match the chat they have in common :
-                    if (data) {
-                        const filteredArr = data.filter(obj => {
-                            const roomId = obj.room_id;
-                            return data.some(otherObj => otherObj !== obj && otherObj.room_id === roomId);
-                        });
+                        //We fetched all the chats of the users, now we want to match the chat they have in common :
+                        if (data) {
+                            const filteredArr = data.filter(obj => {
+                                const roomId = obj.room_id;
+                                return data.some(otherObj => otherObj !== obj && otherObj.room_id === roomId);
+                            });
 
-                        if (filteredArr.length > 0) {
-                            navigation.navigate('Chat', { roomId: filteredArr[0].room_id, profile: { username: applicant.username } })
-                        }
-                        if (filteredArr.length < 1) {
-                            //Will create a new chat between the 2 users
-                            console.log('no room')
-
-                            const { data, error } = await supabase
-                                .from('chat_rooms')
-                                .insert({})
-                                .select()
-                            if (data) {
-                                const { status, error } = await supabase
-                                    .from('chat_rooms_profiles')
-                                    .insert([
-                                        { room_id: data[0].id, user_id: user.id },
-                                        { room_id: data[0].id, user_id: applicant.user_id },
-                                    ])
-                                if (status === 201) navigation.navigate('Chat', { roomId: data[0].id, profile: { username: applicant.username } })
-                                if (error) console.log(error)
+                            if (filteredArr.length > 0) {
+                                navigation.navigate('Chat', { roomId: filteredArr[0].room_id, profile: { username: applicant.username } })
                             }
-                            if (error) console.log('ligne 135', error)
+                            if (filteredArr.length < 1) {
+                                //Will create a new chat between the 2 users
+                                console.log('no room')
+
+                                const { data, error } = await supabase
+                                    .from('chat_rooms')
+                                    .insert({})
+                                    .select()
+                                if (data) {
+                                    const { status, error } = await supabase
+                                        .from('chat_rooms_profiles')
+                                        .insert([
+                                            { room_id: data[0].id, user_id: user.id },
+                                            { room_id: data[0].id, user_id: applicant.user_id },
+                                        ])
+                                    if (status === 201) navigation.navigate('Chat', { roomId: data[0].id, profile: { username: applicant.username } })
+                                    if (error) console.log(error)
+                                }
+                                if (error) console.log('ligne 135', error)
+                            }
+
                         }
+                        if (error) console.log(error)
 
-                    }
-                    if (error) console.log(error)
-
-                }}>
-                    <Ionicons name="chatbox-ellipses" size={24} color="black" />
+                    }}>
+                    <Text style={{ color: 'white', marginRight: 4 }}>Envoyer un message</Text>
+                    <Ionicons name="chatbox-ellipses" size={24} color="white" />
                 </Pressable>
                 <Text>{validateUserMessage}</Text>
             </View>
@@ -241,7 +246,7 @@ function Activity({ route, navigation }) {
                         <Text style={activityStyles.title}>{item.activity_title}</Text>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <FontAwesome5 style={{ marginHorizontal: 2 }} name="clock" size={24} color="black" />
-                            <Text>{dayjs(item.date).format('DD MMM, YYYY h:mm A')}</Text>
+                            <Text>{dayjs(item.date).format('DD MMM, YYYY HH:mm')}</Text>
                         </View>
 
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -340,7 +345,7 @@ const activityStyles = StyleSheet.create({
         flexDirection: "row"
     },
     validatedButton: {
-        backgroundColor: styles.secondaryColor
+        backgroundColor: styles.secondaryColor,
     },
     unsubscribeButtons: {
         flexDirection: "row",
@@ -380,6 +385,13 @@ const activityStyles = StyleSheet.create({
         display: "flex",
         justifyContent: 'center',
         height: Dimensions.get('window').height,
+    },
+    applicant_button: {
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 5,
+        borderRadius: 2,
+        margin: 2
     },
     applicantsList: {
         marginTop: 10
