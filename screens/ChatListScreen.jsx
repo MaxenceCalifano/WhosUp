@@ -13,11 +13,13 @@ function ChatListScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
 
     const fetchData = async () => {
+        setIsLoading(true)
         const { data, error } = await supabase.rpc('get_chats_data')
         let chatsArray = []
         if (data) {
             data.forEach(item => item.id !== user.id ? chatsArray.push(item) : "")
             setChatUsers(chatsArray)
+            setIsLoading(false)
         }
         if (error) console.log("🚀 ~ file: ChatListScreen.jsx:24 ~ fetchData ~ error:", error)
     }

@@ -6,13 +6,14 @@ import { Image } from 'expo-image';
 
 function ChatRoomListItem({ navigation, item }) {
     console.log("🚀 ~ file: ChatRoomListItem.jsx:7 ~ ChatRoomListItem ~ item:", item)
-    /*  const { roomId } = item
-     const { profiles } = item.item
+    const { chat_room_id } = item
+    console.log("🚀 ~ file: ChatRoomListItem.jsx:10 ~ ChatRoomListItem ~ roomId:", chat_room_id)
+    /* const { profiles } = item.item
      const lastMessage = item.lastMessage */
 
     return (
         <Pressable style={chatItemStyles.container} onPress={() => navigation.navigate('Chat', {
-            roomId,
+            chat_room_id,
             profile: {
                 username: item.username,
                 avatarUrl: item.avatar_url

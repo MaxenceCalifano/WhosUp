@@ -10,7 +10,8 @@ import styles from "../styles";
 
 function Chat({ route, navigation }) {
 
-    let roomId = route.params.roomId
+    let roomId = route.params.chat_room_id
+    console.log("🚀 ~ file: ChatScreen.jsx:14 ~ Chat ~ roomId:", roomId)
     let username = route.params.profile.username
     let avatarUrl = route.params.profile.avatarUrl
     const { user } = useUser()
@@ -41,7 +42,7 @@ function Chat({ route, navigation }) {
             setMessages(data)
             setIsLoading(false)
         }
-        if (error) console.log(error)
+        if (error) console.log("🚀 ~ file: ChatScreen.jsx:45 ~ fetchMessages ~ error:", error)
     }
 
     const postMessage = async () => {
@@ -106,6 +107,7 @@ const chatStyles = StyleSheet.create({
     main: {
         height: '100%',
         flexDirection: 'column',
+        paddingBottom: 60
     },
     send: {
         position: 'absolute',
