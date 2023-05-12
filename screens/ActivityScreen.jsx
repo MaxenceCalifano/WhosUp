@@ -247,7 +247,7 @@ function Activity({ route, navigation }) {
 
                         <Text style={activityStyles.title}>{item.activity_title}</Text>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <FontAwesome5 style={{ marginHorizontal: 2 }} name="clock" size={24} color="black" />
+                            <FontAwesome5 style={{ marginHorizontal: 4 }} name="clock" size={24} color="black" />
                             <Text>{dayjs(item.date).format('DD MMM, YYYY HH:mm')}</Text>
                         </View>
 

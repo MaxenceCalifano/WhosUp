@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { supabase } from '../config/supabase'
 import { useUser } from "../UserContext";
@@ -65,14 +65,17 @@ function UserEventScreen({ navigation }) {
 
     return (
         <View style={eventsScreenStyles.container}>
-            <Text>Mes événements</Text>
-            <Divider />
-            <Text>J'organise</Text>
-            {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} isValidated />) : <></>}
-            <Divider />
-            <Text>Je participe</Text>
-            {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated={item.is_validated} />) : <></>}
-            <Divider />
+            <ScrollView>
+                <Text>Mes événements</Text>
+                <Divider />
+                <Text>J'organise</Text>
+                {hostActivities.length > 0 ? hostActivities.map(item => <Activity key={item.uid} item={item} isValidated />) : <></>}
+                <Divider />
+                <Text>Je participe</Text>
+                {userActivities.length > 0 ? userActivities.map(item => <Activity key={item.activities.uid} item={item.activities} isValidated={item.is_validated} />) : <></>}
+                <Divider />
+            </ScrollView>
+
         </View>
     );
 }
@@ -81,7 +84,8 @@ export default UserEventScreen;
 
 const eventsScreenStyles = StyleSheet.create({
     container: {
-        padding: 10
+        padding: 10,
+        flex: 1
     },
     activityContainer: {
         backgroundColor: 'white',
