@@ -14,10 +14,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export default function Map({ navigation }) {
 
     const [location, setLocation] = useState({
-        "latitude": 1.4113178344796395,
-        "latitudeDelta": 114.87415842507339,
-        "longitude": 0.6542491167783702,
-        "longitudeDelta": 69.03412833809853
+        "latitude": 42.56896371693217,
+        "latitudeDelta": 38.061143345741286,
+        "longitude": 0.08388038724660962,
+        "longitudeDelta": 26.660386472940445
     });
 
     const [activities, setActivities] = useState()
@@ -74,6 +74,7 @@ export default function Map({ navigation }) {
                 <MapView
                     style={styles.map}
                     onRegionChangeComplete={handleRegionChangeComplete}
+                    region={location}
                 >
                     {
                         activities ? activities.map((marker, index) => {
