@@ -9,25 +9,45 @@ import UserLocation from "./UserLocation";
 export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLocation, location, setPlace }) {
 
     switch (selectedIndex) {
-        // User's position
         case 0:
+            // User's position
             return <UserLocation setLocation={setLocation} setPlace={setPlace} />
-        // Coordinate 
         case 1:
+            // Coordinate 
+            const regex = /[^0-9.-]/
+            const [errorMessage, setErrorMessage] = useState()
+
             return (
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }} >
-                    <View style={pageStyles.coordinateCard} >
-                        <Text style={pageStyles.labelColor}>Latitude</Text>
-                        <TextInput keyboardType="numeric" placeholder="43.15656" onChangeText={(value) => setLocation({ ...location, latitude: value })}></TextInput>
+                <View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }} >
+                        <View style={pageStyles.coordinateCard} >
+                            <Text style={pageStyles.labelColor}>Latitude</Text>
+                            <TextInput keyboardType="numeric" placeholder="43.15656" onChangeText={(value) => {
+                                if (regex.test(value)) setErrorMessage("Les coordonnées ne doivent inclure que des chiffres et un point")
+                                if (!regex.test(value)) {
+                                    setErrorMessage('')
+                                    if (value <= 90 && value >= -90) setLocation({ ...location, latitude: value })
+                                    else setErrorMessage("La latitude ne doit être inclue qu'entre -90 et 90 degrès")
+                                }
+                            }}></TextInput>
+                        </View>
+                        <View style={pageStyles.coordinateCard} >
+                            <Text style={pageStyles.labelColor}>Longitude</Text>
+                            <TextInput keyboardType="numeric" placeholder="43.15656" onChangeText={(value) => {
+                                if (regex.test(value)) setErrorMessage("Les coordonnées ne doivent inclure que des chiffres et un point")
+                                if (!regex.test(value)) {
+                                    setErrorMessage('')
+                                    if (value <= 180 && value >= -180) setLocation({ ...location, longitude: value })
+                                    else setErrorMessage("La longitude ne doit être inclue qu'entre -180 et 180 degrès")
+                                }
+                            }}></TextInput>
+                        </View>
                     </View>
-                    <View style={pageStyles.coordinateCard} >
-                        <Text style={pageStyles.labelColor}>Longitude</Text>
-                        <TextInput keyboardType="numeric" placeholder="43.15656" onChangeText={(value) => setLocation({ ...location, longitude: value })}></TextInput>
-                    </View>
+                    <Text>{errorMessage}</Text>
                 </View>
             )
-        // Place selected with Google maps
         case 2:
+            // Place selected with Google maps
             const [modalVisible, setModalVisible] = useState(true)
 
             return (
