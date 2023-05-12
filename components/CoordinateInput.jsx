@@ -9,9 +9,10 @@ import UserLocation from "./UserLocation";
 export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLocation, location, setPlace }) {
 
     switch (selectedIndex) {
+        // User's position
         case 0:
             return <UserLocation setLocation={setLocation} setPlace={setPlace} />
-
+        // Coordinate 
         case 1:
             return (
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }} >
@@ -25,6 +26,7 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                     </View>
                 </View>
             )
+        // Place selected with Google maps
         case 2:
             const [modalVisible, setModalVisible] = useState(true)
 

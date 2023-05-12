@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, Pressable, Dimensions, ActivityIndicator, Modal } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Pressable, Dimensions, ActivityIndicator, Modal, Alert } from 'react-native'
 import { Input, Slider, Icon, Divider } from 'react-native-elements'
 import { Button, ButtonGroup } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
@@ -30,7 +30,7 @@ export default function AddEventScreen({ navigation }) {
     const [selectedActivityType, setSelectedActivityType] = useState('apéro');
     const [date, setDate] = useState(dayjs());
     //const [day, setDay] = useState();
-    const [location, setLocation] = useState({ latitude: '', longitude: '' })
+    const [location, setLocation] = useState()
 
     const [selectedIndex, setSelectedIndex] = useState()
     const [loading, setLoading] = useState(false)
@@ -79,18 +79,22 @@ export default function AddEventScreen({ navigation }) {
             .from('activities')
             .insert({
                 host_id: hostId,
-                activityTitle: activityTitle,
-                activityDescription: activityDescription,
-                activityType: selectedActivityType,
-                numberOfParticipants: people,
+                activity_title: activityTitle,
+                activity_description: activityDescription,
+                activity_type: selectedActivityType,
+                number_of_participants: people,
                 date: date,
                 location: location
             })
 
         if (error) {
-            console.log(error)
+            console.log('AddEventScreen, ligne 91: ', error, status)
             setLoading(false)
-            if (status === 400) setResponseMessage("Une erreur est survenue, veuillez érifier les informations que vous avez renseignées")
+            if (error.code === "23502") {
+                Alert.alert("Veuillez renseigner tout les champs s'il vous plaît")
+                setResponseMessage("Veuillez renseigner tout les champs s'il vous plaît")
+            }
+            //if (status === 400) setResponseMessage("Une erreur est survenue, veuillez érifier les informations que vous avez renseignées")
             if (status === 401) setResponseMessage("Vous devez être connecté pour créer une activité")
             if (status >= 500) setResponseMessage("Le serveur ne répond pas, veuillez réessayer plus tard")
         }
