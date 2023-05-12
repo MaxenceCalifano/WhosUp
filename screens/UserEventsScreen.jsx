@@ -28,14 +28,14 @@ function UserEventScreen({ navigation }) {
     }
 
     const fetchUserActivities = async () => {
-        const { data, error } = await supabase
-            .from('applicants')
-            .select(`*,
-                    activities(*)`)
-            .eq('user_id', user.id)
+        const { data, error } = await supabase.functions.invoke('fetchUserActivities', {
+            body: {
+                userId: user.id
+            },
+        })
 
         if (data) {
-            setUserActivities(data)
+            setUserActivities(data.data)
         }
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:39 ~ fetchuserActivities ~ error:", error)
     }
