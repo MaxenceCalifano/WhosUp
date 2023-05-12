@@ -14,14 +14,15 @@ function UserEventScreen({ navigation }) {
     const [userActivities, setUserActivities] = useState([])
 
     const fetchHostActivites = async () => {
-        const { data, error } = await supabase
-            .from('activities')
-            .select()
-            .eq('host_id', user.id)
+        const { data, error } = await supabase.functions.invoke('fetchHostActivities', {
+            body: {
+                userId: user.id
+            },
+        })
 
         if (data) {
-            console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ data:", data)
-            setHostActivities(data)
+            console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ data:", data.data)
+            setHostActivities(data.data)
         }
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ error:", error)
     }
