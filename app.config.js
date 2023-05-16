@@ -5,10 +5,10 @@ export default {
     owner : 'velomarchand',
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: './assets/icon.png',
     userInterfaceStyle: "light",
     splash: {
-      image: "./assets/splash.png",
+      image: './assets/splash.png',
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
@@ -29,12 +29,12 @@ export default {
     android: {
       package: 'com.whosup.app',
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
+        foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: "#FFFFFF"
       },
     },
     web: {
-      favicon: "./assets/favicon.png"
+      favicon: './assets/favicon.png'
     }
   }
 }
