@@ -23,6 +23,13 @@ export default {
     ios: {
       supportsTablet: true
     },
+    android: {
+      package: 'com.whosup.app',
+      /* adaptiveIcon: {
+        foregroundImage: "./assets/adaptive-icon.png",
+        backgroundColor: "#FFFFFF"
+      }, */
+    },
     web: {
       favicon: './assets/favicon.png'
     }
@@ -32,11 +39,4 @@ export default {
     'assets/*',
     '***'
   ],
-  android: {
-    package: 'com.whosup.app',
-    adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
-      backgroundColor: "#FFFFFF"
-    },
-  },
 }
