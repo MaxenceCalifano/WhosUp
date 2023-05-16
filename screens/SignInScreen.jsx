@@ -35,8 +35,11 @@ export default function SignInScreen() {
             <Modal
                 visible={isLoading}
                 animationType="fade"
-                transparent={true}>
-                <ActivityIndicator color={styles.color} size={"large"} />
+                transparent={true}
+            >
+                <View style={styles.modal}>
+                    <ActivityIndicator color={style.color} size={"large"} />
+                </View>
             </Modal>
         </View>
     )
@@ -61,5 +64,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '100%',
         margin: 10,
+    },
+    modal: {
+        position: "absolute",
+        width: 200,
+        height: 200,
+        top: '50%',
+        left: '50%',
+        marginLeft: -100,
+        marginTop: -100,
+        borderRadius: 15,
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        display: "flex",
+        justifyContent: "center"
     }
 })
