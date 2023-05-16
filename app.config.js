@@ -12,6 +12,11 @@ export default {
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
+    extra: {
+      eas: {
+        projectId: "3e85fa30-fc15-4e46-805e-c1d768961bd7"
+      },
+    },
     updates: {
       fallbackToCacheTimeout: 0
     },
@@ -22,10 +27,11 @@ export default {
       supportsTablet: true
     },
     android: {
+      package: 'whosup',
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#FFFFFF"
-      }
+      },
     },
     web: {
       favicon: "./assets/favicon.png"
