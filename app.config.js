@@ -21,7 +21,7 @@ export default {
       fallbackToCacheTimeout: 0
     },
     assetBundlePatterns: [
-      "**/*"
+      "***"
     ],
     ios: {
       supportsTablet: true
