@@ -27,7 +27,7 @@ export default {
       supportsTablet: true
     },
     android: {
-      package: 'whosup',
+      package: 'com.whosup.app',
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#FFFFFF"
