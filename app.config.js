@@ -36,7 +36,7 @@ export default {
   },
   assetBundlePatterns: [
     "**/*",
-    'assets/*',
-    '***'
+   // 'assets/*',
+   // '***'
   ],
 }
