@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 
 function ActivityCard({ index, activity, navigation }) {
-    console.log("🚀 ~ file: ActivityCard.jsx:6 ~ ActivityCard ~ activity:", activity.activity_type === 'randonée')
+    // console.log("🚀 ~ file: ActivityCard.jsx:6 ~ ActivityCard ~ activity:", activity.activity_type === 'randonée')
 
     return (
         <Pressable style={styles.card}
