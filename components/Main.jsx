@@ -53,15 +53,15 @@ export default function Main() {
                 title: 'Chats',
                 tabBarIcon: ({ focused, color, size }) => (
                     focused ?
-                        <Ionicons name="chatbox-ellipses" size={24} color="black" />
-                        : <Ionicons name="chatbox-ellipses-outline" size={24} color="black" />
+                        <Ionicons name="chatbox-ellipses" size={24} color={mainStyles.color} />
+                        : <Ionicons name="chatbox-ellipses-outline" size={24} color="#454545" />
                 )
             }} />
             <Tab.Screen name="Profil" component={UserProfile} options={{
                 title: 'Profil',
                 tabBarIcon: ({ focused, color, size }) => (
                     focused ?
-                        <FontAwesome name="user" size={24} color="black" />
+                        <FontAwesome name="user" size={24} color={mainStyles.color} />
                         : <FontAwesome name="user-o" size={24} color="#454545" />
 
                 )
