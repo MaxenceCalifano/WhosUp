@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useUser } from "../UserContext";
 
 
 export default function Map({ navigation }) {
@@ -22,6 +23,7 @@ export default function Map({ navigation }) {
 
     const [activities, setActivities] = useState()
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
+    const { user } = useUser()
 
     const edgeFetchActivities = async () => {
 
@@ -52,16 +54,26 @@ export default function Map({ navigation }) {
         //console.log('display configure account')
         try {
             const value = await AsyncStorage.getItem("welcomeScreenSeen")
+            console.log("🚀 ~ file: Map.jsx:57 ~ displayConfigureAccount ~ value:", value)
+
             if (value === 'false') {
-                // value previously stored
-                navigation.navigate("Configurer le compte")
+                console.log('user', user.id)
+                let { data, error } = await supabase
+                    .from('profiles')
+                    .select('username, avatar_url')
+                    .eq('id', user.id)
+
+                console.log(data)
+                console.log(error)
+                data.avatar_url == null || data.username == null ? navigation.navigate("Configurer le compte")
+                    : ''
             }
         } catch (e) {
             // error reading value
             console.log(e)
         }
     }
-    // displayConfigureAccount()
+    displayConfigureAccount()
 
     useEffect(() => {
         edgeFetchActivities()
