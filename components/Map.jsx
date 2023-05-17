@@ -61,7 +61,7 @@ export default function Map({ navigation }) {
             console.log(e)
         }
     }
-    displayConfigureAccount()
+    // displayConfigureAccount()
 
     useEffect(() => {
         edgeFetchActivities()
@@ -73,6 +73,12 @@ export default function Map({ navigation }) {
             < View >
                 <MapView
                     style={styles.map}
+                    initialRegion={{
+                        "latitude": 42.56896371693217,
+                        "latitudeDelta": 38.061143345741286,
+                        "longitude": 0.08388038724660962,
+                        "longitudeDelta": 26.660386472940445
+                    }}
                     onRegionChangeComplete={handleRegionChangeComplete}
                     region={location}
                 >
