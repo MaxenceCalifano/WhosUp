@@ -10,7 +10,7 @@ import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useUser } from "../UserContext";
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function Map({ navigation }) {
 
@@ -82,7 +82,7 @@ export default function Map({ navigation }) {
 
     return (
         <GestureHandlerRootView>
-            < View >
+            < SafeAreaProvider style={styles.container} >
                 <MapView
                     style={styles.map}
                     initialRegion={{
@@ -142,13 +142,16 @@ export default function Map({ navigation }) {
                         </View>
                         : ''
                 }
-            </View >
+            </SafeAreaProvider >
         </GestureHandlerRootView>
 
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     map: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height
@@ -160,7 +163,7 @@ const styles = StyleSheet.create({
 
     carousel: {
         position: 'absolute',
-        bottom: 15,
+        bottom: 50,
         gap: 15
     },
     regionChangedButton_container: {
