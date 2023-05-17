@@ -65,7 +65,7 @@ export default function Map({ navigation }) {
 
                 console.log(data)
                 console.log(error)
-                data.avatar_url == null || data.username == null ? navigation.navigate("Configurer le compte")
+                data[0].avatar_url === null || data[0].username === null ? navigation.navigate("Configurer le compte")
                     : ''
             }
         } catch (e) {
