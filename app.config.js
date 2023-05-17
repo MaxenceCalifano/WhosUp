@@ -12,9 +12,6 @@ export default {
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
-    "updates": {
-      "url": "https://u.expo.dev/3e85fa30-fc15-4e46-805e-c1d768961bd7"
-    },
     runtimeVersion: {
       policy: "sdkVersion"
     },
@@ -24,7 +21,8 @@ export default {
       },
     },
     updates: {
-      fallbackToCacheTimeout: 0
+      fallbackToCacheTimeout: 0,
+      url: "https://u.expo.dev/3e85fa30-fc15-4e46-805e-c1d768961bd7"
     },
     ios: {
       supportsTablet: true
