@@ -142,85 +142,86 @@ export default function AddEventScreen({ navigation }) {
                     </View>
                     : <></>
                 }
+                <View style={{ height: Dimensions.get("screen").height, flex: 1, justifyContent: "space-between" }}>
+                    {/*Activity title*/}
+                    <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
 
-                {/*Activity title*/}
-                <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
-
-                {/*Number of antendees input*/}
-                <Text>Nombre de participants: {people}</Text>
-                <Slider
-                    value={people}
-                    onValueChange={setPeople}
-                    maximumValue={10}
-                    minimumValue={1}
-                    step={1}
-                    thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
-                    thumbProps={{
-                        children: (
-                            <Icon
-                                name="people"
-                                type="material"
-                                size={20}
-                                color="#757575"
-                                containerStyle={{ bottom: 0, right: 0 }}
-                            />
-                        )
-                    }}
-                />
-                <Divider />
-
-                {/*Activity type input */}
-                <Text style={{ marginTop: pageStyles.marginTop }}>Quel type d'activité proposez-vous ?</Text>
-                <Picker
-                    selectedValue={selectedActivityType}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedActivityType(itemValue)
-                    }>
-                    <Picker.Item icon={() => <Icon
-                        name="calendar"
-                        type="font-awesome"
-                        size={20}
-                        color="#454545"
-                        onPress={showPicker}
-
-                    />} label="jeux de société" value="jeux de société" />
-                    <Picker.Item label="apéro" value="apéro" />
-                    <Picker.Item label="randonée" value="randonée" />
-                </Picker>
-                <Divider />
-
-                {/*Calendar */}
-                <Pressable style={{ flexDirection: 'row', marginVertical: 20, paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
-                    <Icon
-                        name="calendar"
-                        type="font-awesome"
-                        size={20}
-                        color="#454545"
-                        onPress={showPicker}
+                    {/*Number of antendees input*/}
+                    <Text>Nombre de participants: {people}</Text>
+                    <Slider
+                        value={people}
+                        onValueChange={setPeople}
+                        maximumValue={10}
+                        minimumValue={1}
+                        step={1}
+                        thumbStyle={{ height: 30, width: 30, backgroundColor: styles.color, justifyContent: 'center' }}
+                        thumbProps={{
+                            children: (
+                                <Icon
+                                    name="people"
+                                    type="material"
+                                    size={20}
+                                    color="#757575"
+                                    containerStyle={{ bottom: 0, right: 0 }}
+                                />
+                            )
+                        }}
                     />
-                    <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
-                </Pressable>
-                <Divider />
+                    <Divider />
 
-                {/*Activity description*/}
-                <Text style={{ marginTop: pageStyles.marginTop }}>Description de l'activité</Text>
-                <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
-                <Divider />
+                    {/*Activity type input */}
+                    <Text style={{ marginTop: pageStyles.marginTop }}>Quel type d'activité proposez-vous ?</Text>
+                    <Picker
+                        selectedValue={selectedActivityType}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setSelectedActivityType(itemValue)
+                        }>
+                        <Picker.Item icon={() => <Icon
+                            name="calendar"
+                            type="font-awesome"
+                            size={20}
+                            color="#454545"
+                            onPress={showPicker}
 
-                {/*Place input*/}
-                <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
-                <ButtonGroup
-                    buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
-                    selectedIndex={selectedIndex}
-                    onPress={(value) => {
-                        setSelectedIndex(value);
-                    }}
-                    selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
-                />
-                <CoordinateInput setSelectedIndex={setSelectedIndex} selectedIndex={selectedIndex} setLocation={setLocation} location={location} setPlace={setPlace} />
+                        />} label="jeux de société" value="jeux de société" />
+                        <Picker.Item label="apéro" value="apéro" />
+                        <Picker.Item label="randonée" value="randonée" />
+                    </Picker>
+                    <Divider />
 
-                <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
-                <Text>{responseMessage}</Text>
+                    {/*Calendar */}
+                    <Pressable style={{ flexDirection: 'row', paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
+                        <Icon
+                            name="calendar"
+                            type="font-awesome"
+                            size={20}
+                            color="#454545"
+                            onPress={showPicker}
+                        />
+                        <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
+                    </Pressable>
+                    <Divider />
+
+                    {/*Activity description*/}
+                    <Text style={{ marginTop: pageStyles.marginTop }}>Description de l'activité</Text>
+                    <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
+                    <Divider />
+
+                    {/*Place input*/}
+                    <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
+                    <ButtonGroup
+                        buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
+                        selectedIndex={selectedIndex}
+                        onPress={(value) => {
+                            setSelectedIndex(value);
+                        }}
+                        selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
+                    />
+                    <CoordinateInput setSelectedIndex={setSelectedIndex} selectedIndex={selectedIndex} setLocation={setLocation} location={location} setPlace={setPlace} />
+
+                    <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
+                    <Text>{responseMessage}</Text>
+                </View>
             </ScrollView>
         </View>
         //   </ScrollView>
@@ -229,7 +230,7 @@ export default function AddEventScreen({ navigation }) {
 }
 const pageStyles = StyleSheet.create({
     backgroundColor: '#FFF',
-    marginTop: 80,
+    marginTop: 0,
     container: {
         backgroundColor: '#FFF',
         paddingHorizontal: 20,
