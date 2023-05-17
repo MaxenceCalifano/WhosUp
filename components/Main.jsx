@@ -33,7 +33,7 @@ export default function Main() {
                 headerShown: false
             }} />
             <Tab.Screen name="Calendrier" component={UserEventScreen} options={{
-                title: 'Mes événements',
+                title: 'Evénements',
                 tabBarIcon: ({ focused, color, size }) => (
                     focused ?
                         <FontAwesome name="calendar" size={24} color={mainStyles.color} />
