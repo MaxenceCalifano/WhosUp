@@ -85,7 +85,10 @@ export default function Map({ navigation }) {
             <MapView
                 style={styles.map}
 
-                //onRegionChangeComplete={handleRegionChangeComplete}
+                onRegionChangeComplete={(region, gesture) => {
+                    if (!gesture.isGesture) return
+                    handleRegionChangeComplete(region)
+                }}
                 region={location}
             >
                 {
@@ -113,7 +116,7 @@ export default function Map({ navigation }) {
                     loop={false}
                     width={Dimensions.get('window').width - 10}
                     height={150}
-                    autoPlay={true}
+                    autoPlay={false}
                     data={activities}
                     scrollAnimationDuration={1000}
                     onSnapToItem={(index, item) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
