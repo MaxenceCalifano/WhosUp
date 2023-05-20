@@ -10,7 +10,6 @@ import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useUser } from "../UserContext";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function Map({ navigation }) {
 
@@ -82,67 +81,62 @@ export default function Map({ navigation }) {
 
     return (
         <GestureHandlerRootView>
-            < SafeAreaProvider style={styles.container} >
-                <MapView
-                    style={styles.map}
-                    initialRegion={{
-                        "latitude": 42.56896371693217,
-                        "latitudeDelta": 38.061143345741286,
-                        "longitude": 0.08388038724660962,
-                        "longitudeDelta": 26.660386472940445
-                    }}
-                    onRegionChangeComplete={handleRegionChangeComplete}
-                    region={location}
-                >
-                    {
-                        activities ? activities.map((marker, index) => {
-                            let markerIcon;
-                            if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon_approximate.png') }
-                            if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon_approximate.png') }
-                            if (marker.activity_type === "jeux de société") { markerIcon = require('../assets/game_icon_approximate.png') }
-                            return (
-                                < Marker
-                                    key={index}
-                                    coordinate={marker.location}
-                                    title={marker.activity_title}
-                                    description={marker.activity_type}
-                                    image={markerIcon}
-                                />
-                            )
-                        }) : ""
-                    }
 
-                </ MapView>
-                <View style={styles.carouselContainer}>
-                    <Carousel
-                        style={styles.carousel}
-                        loop={false}
-                        width={Dimensions.get('window').width - 10}
-                        height={150}
-                        autoPlay={false}
-                        data={activities}
-                        scrollAnimationDuration={1000}
-                        onSnapToItem={(index, item) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
-                        renderItem={({ index, item }) => (
-                            <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} activity={item} />
-                        )}
-                    />
-                </View>
+            <MapView
+                style={styles.map}
 
+                //onRegionChangeComplete={handleRegionChangeComplete}
+                region={location}
+            >
                 {
-                    /* Search in this area button */
-                    showSearchIsthisArea ?
-                        <View style={styles.regionChangedButton_container}>
-                            <Pressable onPress={() => {
-                                setShowSearchInthisArea(false)
-                                edgeFetchActivities()
-                            }} style={styles.regionChangedButton}>
-                                <Text><FontAwesome name="search" size={24} color="black" /> </Text><Text>Rechercher dans cette zone</Text>
-                            </Pressable>
-                        </View>
-                        : ''
+                    activities ? activities.map((marker, index) => {
+                        let markerIcon;
+                        if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon_approximate.png') }
+                        if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon_approximate.png') }
+                        if (marker.activity_type === "jeux de société") { markerIcon = require('../assets/game_icon_approximate.png') }
+                        return (
+                            < Marker
+                                key={index}
+                                coordinate={marker.location}
+                                title={marker.activity_title}
+                                description={marker.activity_type}
+                                image={markerIcon}
+                            />
+                        )
+                    }) : ""
                 }
-            </SafeAreaProvider >
+
+            </ MapView>
+            <View style={styles.carouselContainer}>
+                <Carousel
+                    style={styles.carousel}
+                    loop={false}
+                    width={Dimensions.get('window').width - 10}
+                    height={150}
+                    autoPlay={true}
+                    data={activities}
+                    scrollAnimationDuration={1000}
+                    onSnapToItem={(index, item) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
+                    renderItem={({ index, item }) => (
+                        <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} activity={item} />
+                    )}
+                />
+            </View>
+
+            {
+                /* Search in this area button */
+                showSearchIsthisArea ?
+                    <View style={styles.regionChangedButton_container}>
+                        <Pressable onPress={() => {
+                            setShowSearchInthisArea(false)
+                            edgeFetchActivities()
+                        }} style={styles.regionChangedButton}>
+                            <Text><FontAwesome name="search" size={24} color="black" /> </Text><Text>Rechercher dans cette zone</Text>
+                        </Pressable>
+                    </View>
+                    : ''
+            }
+
         </GestureHandlerRootView>
 
     )
@@ -159,12 +153,13 @@ const styles = StyleSheet.create({
     carouselContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
+        zIndex: 2
     },
 
     carousel: {
         position: 'absolute',
         bottom: 50,
-        gap: 15
+        gap: 15,
     },
     regionChangedButton_container: {
         position: "absolute",
