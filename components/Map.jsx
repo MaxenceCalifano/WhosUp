@@ -156,14 +156,12 @@ const styles = StyleSheet.create({
     carouselContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        zIndex: 2
-    },
-
-    carousel: {
+        zIndex: 2,
         position: 'absolute',
-        bottom: 50,
+        bottom: 10,
         gap: 15,
     },
+
     regionChangedButton_container: {
         position: "absolute",
         width: "100%",
