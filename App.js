@@ -4,6 +4,7 @@ import { supabase } from './config/supabase';
 import AuthStack from './navigation/AuthStack';
 import UserStack from './navigation/UserStack';
 import { useUser, UserContextProvider } from './UserContext';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
 
@@ -34,6 +35,7 @@ export default function App() {
   
   return (
        <UserContextProvider>
+         <StatusBar style='dark' />
         <Container/>
        </UserContextProvider>
   );

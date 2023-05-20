@@ -27,6 +27,9 @@ export default {
     ios: {
       supportsTablet: true
     },
+    androidStatusBar: {
+      backgroundColor: "#F5DF4D",
+    },
     android: {
       package: 'com.whosup.app',
       adaptiveIcon: {

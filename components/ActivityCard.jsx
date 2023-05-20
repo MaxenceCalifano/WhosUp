@@ -20,7 +20,7 @@ function ActivityCard({ index, activity, navigation }) {
                         <View>
                             {/* <Text>{activity.date.slice(4, 10)}</Text> */}
                             <Text>{dayjs(activity.date).format('DD MMM, YYYY')}</Text>
-                            <Text>{dayjs(activity.date).format('h:mm A')}</Text>
+                            <Text>{dayjs(activity.date).format('HH:mm')}</Text>
                             <Text>{activity.activity_type}</Text>
                         </View>
                     </View>
