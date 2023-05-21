@@ -35,7 +35,7 @@ export default function App() {
   
   return (
        <UserContextProvider>
-         <StatusBar style='dark' />
+         <StatusBar style='auto' />
         <Container/>
        </UserContextProvider>
   );

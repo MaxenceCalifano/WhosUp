@@ -212,7 +212,7 @@ export default function AddEventScreen({ navigation }) {
                         {/*Place input*/}
                         <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
                         <ButtonGroup
-                            buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
+                            buttons={['Ma position', 'Coordonnées']}
                             selectedIndex={selectedIndex}
                             onPress={(value) => {
                                 setSelectedIndex(value);
