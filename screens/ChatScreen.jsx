@@ -66,6 +66,7 @@ function Chat({ route, navigation }) {
     }
     useEffect(() => {
         navigation.setOptions({ title: username })
+        console.log(dayjs().format('DD/MM'))
         fetchMessages()
     }, [])
     return (
@@ -81,7 +82,11 @@ function Chat({ route, navigation }) {
                                     : [chatStyles.message, chatStyles.contactMessage]
                                 }>
                                 <Text>{message.item.content}</Text>
-                                <Text style={chatStyles.messageTime}>{dayjs(message.item.created_at).format('HH:mm')}</Text>
+                                <Text style={chatStyles.messageTime}>
+                                    {dayjs().format('DD/MM') === dayjs(message.item.created_at).format('DD/MM')
+                                        ? dayjs(message.item.created_at).format('HH:mm')
+                                        : dayjs(message.item.created_at).format('DD/MM')}
+                                </Text>
                             </View>
                             }
                             data={messages} />
