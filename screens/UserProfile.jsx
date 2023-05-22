@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button } from 'react-native'
+import { Divider } from "react-native-elements";
+import { View, Text, Button, StyleSheet, TextInput } from 'react-native'
 import { supabase } from "../config/supabase";
 import { useUser } from "../UserContext";
+
+import styles from "../styles";
 
 export default function UserProfile() {
 
@@ -24,22 +27,42 @@ export default function UserProfile() {
     }, [])
 
     const [username, setUsername] = useState()
-    //const [user, setUser] = useState()
+    const [updatePassword, setUpdatePassword] = useState(false)
+    const [password, setPassword] = useState()
 
     return (
-        <View style={{ flex: 1 }}>
-            <Text>Page profile</Text>
-            <Text>Votre adresse e-mail:</Text>
-            <Text>{user.email}</Text>
-            <Text>Votre pseudo</Text>
-            <Text>{username}</Text>
+        <View style={{ flex: 1, padding: 10, gap: 15 }}>
+            <View>
+                <Text>Votre adresse e-mail:</Text>
+                <Text>{user.email}</Text>
+            </View>
+            <Divider />
+            <View>
+                <Text>Votre pseudo:</Text>
+                <Text>{username}</Text>
+            </View>
+            <Divider />
 
-            <Button onPress={async () => {
+            {
+                updatePassword ?
+                    <View style={{ flex: 1, gap: 15 }}>
+                        <TextInput secureTextEntry style={styles.input} placeholder="mot de passe" onChangeText={(value) => setPassword(value)} />
+                        <Button color={styles.secondaryColor} title="valider" />
+                        <Button color={'red'} title="annuler" onPress={() => setUpdatePassword(false)} />
+                    </View>
+                    : <Button color={styles.tertiaryColor} onPress={() => setUpdatePassword(true)} title="Changer de mot de passe" />
+            }
 
+            <Button color={styles.tertiaryColor} onPress={async () => {
                 const { error } = await supabase.auth.signOut()
-
             }
             } title="Se déconnecter" />
         </View>
     );
 }
+
+const profileStyles = StyleSheet.create({
+    signout_button: {
+
+    }
+})
