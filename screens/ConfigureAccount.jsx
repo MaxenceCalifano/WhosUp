@@ -35,7 +35,6 @@ export default function ConfigureAccountScreen({ navigation }) {
         })
 
         if (!result.cancelled) {
-            console.log(result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1])
             // const filePath = `${Math.random()}.${fileExt}`
             setPhoto({
                 name: result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1],

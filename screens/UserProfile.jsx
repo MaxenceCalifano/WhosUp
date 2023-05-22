@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Divider } from "react-native-elements";
-import { View, Text, Button, StyleSheet, TextInput } from 'react-native'
+import { View, Text, Button, StyleSheet, TextInput, Pressable } from 'react-native'
 import { supabase } from "../config/supabase";
 import { useUser } from "../UserContext";
+import { Image } from 'expo-image';
+import * as ImagePicker from 'expo-image-picker';
+
 
 import styles from "../styles";
 
@@ -13,11 +16,12 @@ export default function UserProfile() {
     const fetchProfile = async () => {
         let { data: profiles, error } = await supabase
             .from('profiles')
-            .select('username')
+            .select('username, avatar_url')
             .eq('id', user.id)
 
         if (profiles) {
             setUsername(profiles[0].username)
+            setAvatar(profiles[0].avatar_url)
         }
         if (error) console.log("🚀 ~ file: UserProfile.jsx:24 ~ fetchUser ~ error:", error)
     }
@@ -40,12 +44,31 @@ export default function UserProfile() {
             }
         }
     }
+    const imagePicker = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            base64: true,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1
+        })
+
+        if (!result.canceled) {
+            // const filePath = `${Math.random()}.${fileExt}`
+            setNewPhoto({
+                name: result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1],
+                uri: result.assets[0].uri,
+                base64: result.assets[0].base64
+            });
+        }
+    }
 
     useEffect(() => {
         fetchProfile()
     }, [])
 
     const [username, setUsername] = useState()
+    const [avatar, setAvatar] = useState()
     const [newPassword, setUpdatePassword] = useState(false)
     const [password, setPassword] = useState()
     const [repeatedPassword, setRepeatedPassword] = useState()
@@ -55,15 +78,29 @@ export default function UserProfile() {
     return (
         <View style={{ flex: 1, padding: 10, gap: 15 }}>
             <View>
-                <Text>Votre adresse e-mail:</Text>
+                <Text>Adresse e-mail:</Text>
                 <Text>{user.email}</Text>
             </View>
             <Divider />
             <View>
-                <Text>Votre pseudo:</Text>
+                <Text>Pseudo:</Text>
                 <Text>{username}</Text>
             </View>
             <Divider />
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <Text>Photo de profil</Text>
+                <Pressable onPress={imagePicker}>
+                    <Text style={{ fontWeight: "bold", color: '#3879d4' }}>Modifier</Text>
+                </Pressable>
+            </View>
+            <Image
+                style={profileStyles.userAvatar}
+                source={`https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${avatar}`}
+                contentFit="cover"
+                transition={1000}
+            />
+
+
 
             {
                 newPassword ?
@@ -88,5 +125,11 @@ export default function UserProfile() {
 const profileStyles = StyleSheet.create({
     signout_button: {
 
-    }
+    },
+    userAvatar: {
+        borderRadius: 50,
+        width: 70,
+        height: 70,
+        alignSelf: "center"
+    },
 })
