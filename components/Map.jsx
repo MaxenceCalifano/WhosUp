@@ -121,7 +121,7 @@ export default function Map({ navigation }) {
                     scrollAnimationDuration={1000}
                     onSnapToItem={(index, item) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
                     renderItem={({ index, item }) => (
-                        <ActivityCard navigation={navigation} style={{ flex: 1, marginHorizontal: "2.5%" }} index={index} activity={item} />
+                        <ActivityCard navigation={navigation} index={index} activity={item} />
                     )}
                 />
             </View>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: 2,
         position: 'absolute',
-        bottom: 10,
+        bottom: 15,
         gap: 15,
     },
 

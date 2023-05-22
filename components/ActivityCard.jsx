@@ -34,12 +34,12 @@ function ActivityCard({ index, activity, navigation }) {
 
 const styles = StyleSheet.create({
     card: {
-        // padding: 10,
+        marginLeft: "2.5%",
+        // flex: 1,
         flexDirection: 'row',
-        width: '100%',
         borderRadius: 20,
-        //height: 400,
         backgroundColor: 'white',
+        height: 100
     },
     image: {
         height: '100%',
