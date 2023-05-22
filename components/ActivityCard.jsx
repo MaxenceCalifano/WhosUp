@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 
 function ActivityCard({ index, activity, navigation }) {
@@ -12,17 +12,14 @@ function ActivityCard({ index, activity, navigation }) {
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
                     <View>
-                        <Text>{activity.activity_title}</Text>
+                        <Text style={styles.activityTitle}>{activity.activity_title}</Text>
                         <Text>{activity.activity_description.slice(0, 40)}</Text>
                     </View>
-                    <View style={styles.date}>
-                        <Ionicons name="time-sharp" size={24} color="black" />
-                        <View>
-                            {/* <Text>{activity.date.slice(4, 10)}</Text> */}
-                            <Text>{dayjs(activity.date).format('DD MMM, YYYY')}</Text>
-                            <Text>{dayjs(activity.date).format('HH:mm')}</Text>
-                            <Text>{activity.activity_type}</Text>
-                        </View>
+                    <View>
+                        {/* <Text>{activity.date.slice(4, 10)}</Text> */}
+                        <Text><FontAwesome5 name="calendar-day" size={24} color="black" /> {dayjs(activity.date).format('DD MMM, YYYY')}</Text>
+                        <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(activity.date).format('HH:mm')}</Text>
+                        <Text>{activity.activity_type}</Text>
                     </View>
                 </View>
 
@@ -47,15 +44,18 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 15,
         borderBottomLeftRadius: 15,
     },
+    activityTitle: {
+        fontWeight: 'bold'
+    },
     textContent: {
         padding: 7,
-        flexWrap: 'nowrap'
     },
     firstColumn: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '50%',
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        gap: 10,
     },
     date: {
         display: 'flex',
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         backgroundColor: '#FFFF',
         borderRadius: 5,
-        alignItems: 'center'
+        alignItems: 'center',
+        textAlign: 'right'
     }
 });
 
