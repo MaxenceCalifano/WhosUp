@@ -46,6 +46,68 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                     <Text>{errorMessage}</Text>
                 </View>
             )
+        case 2:
+            // Place selected with Google maps
+            const [modalVisible, setModalVisible] = useState(true)
+
+            return (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}>
+
+                    <View style={{ flex: 1, backgroundColor: 'rgba(200, 200, 200, 0.5)' }}>
+                        {/**Input and closing button */}
+                        <View style={{ flexDirection: 'row', alignItems: "flex-start", margin: 10 }}>
+                            <GooglePlacesAutocomplete
+                                fetchDetails
+                                suppressDefaultStyles={true}
+                                enablePoweredByContainer={false}
+                                placeholder='Rechercher'
+                                styles={{
+                                    textInput: {
+                                        borderBottomRightRadius: 0,
+                                        borderTopRightRadius: 0,
+                                        backgroundColor: 'white',
+                                        height: 50,
+                                        padding: 10
+                                    },
+                                    container: {
+                                        flex: 1,
+                                    },
+                                    listView: {
+                                        backgroundColor: "white",
+                                        width: Dimensions.get('window').width - 20,
+                                        padding: 10
+                                    }
+                                }}
+                                onPress={(data, details = null) => {
+                                    setModalVisible(false)
+                                    // Get coordinate of theplace selecter by user
+                                    setLocation({ latitude: details.geometry.location.lat, longitude: details.geometry.location.lng })
+                                    console.log("🚀 ~ file: CoordinateInput.jsx:66 ~ CoordinateInput ~ details.geometry.location:", details.geometry.location)
+                                    //Get the name of the place selected by user
+                                    setPlace(data.description)
+                                }}
+                                query={{
+                                    key: 'AIzaSyCFqiJdXcKGbazXuBJayQHSau6sdZN0fMw',
+                                    language: 'fr',
+                                }}
+                            />
+                            <Pressable
+                                style={{ width: '10%', backgroundColor: 'white' }}
+                                onPress={() => {
+                                    setModalVisible(!modalVisible)
+                                    setSelectedIndex()
+                                }
+                                }
+                            >
+                                <Text style={{ textAlign: 'center', textAlignVertical: 'center', height: 50 }}>X</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </Modal >
+            )
         default:
             return <></>
     }
