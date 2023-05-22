@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: 20,
         backgroundColor: 'white',
-        height: 100
+        minHeight: 100
     },
     image: {
         height: '100%',
