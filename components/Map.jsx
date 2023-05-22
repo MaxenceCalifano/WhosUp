@@ -65,7 +65,7 @@ export default function Map({ navigation }) {
                 console.log(data)
                 console.log(error)
                 data[0].avatar_url === null || data[0].username === null ? navigation.navigate("Configurer le compte")
-                    : ''
+                    : await AsyncStorage.setItem('welcomeScreenSeen', "true")
             }
         } catch (e) {
             // error reading value
