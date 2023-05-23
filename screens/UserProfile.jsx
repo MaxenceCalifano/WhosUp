@@ -126,12 +126,21 @@ export default function UserProfile() {
                     <Text style={{ fontWeight: "bold", color: '#3879d4' }}>Modifier</Text>
                 </Pressable>
             </View>
-            <Image
-                style={profileStyles.userAvatar}
-                source={`https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${avatar}`}
-                contentFit="cover"
-                transition={1000}
-            />
+            {
+                photo ? <Image
+                    style={profileStyles.userAvatar}
+                    source={{ uri: photo.uri }}
+                    contentFit="cover"
+                    transition={1000}
+                />
+                    : <Image
+                        style={profileStyles.userAvatar}
+                        source={`https://iwjnycngtfhluxibxjmd.supabase.co/storage/v1/object/public/avatars/${avatar}`}
+                        contentFit="cover"
+                        transition={1000}
+                    />
+            }
+
 
 
 
