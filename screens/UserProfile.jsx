@@ -54,13 +54,44 @@ export default function UserProfile() {
         })
 
         if (!result.canceled) {
-            // const filePath = `${Math.random()}.${fileExt}`
             setNewPhoto({
                 name: result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1],
                 uri: result.assets[0].uri,
                 base64: result.assets[0].base64
             });
         }
+    }
+
+    const updateAvatar = async () => {
+        let contentType;
+        if (photo.name.split('.')[1] === 'jpeg' || photo.name.split('.')[1] === 'jpg') {
+            contentType = 'image/jpg'
+        }
+        if (photo.name.split('.')[1] === 'png') {
+            contentType = 'image/png'
+        }
+        await supabase
+            .storage
+            .from('avatars')
+            .upload(photo.name, decode(photo.base64), {
+                contentType: contentType
+            })
+            .then(async res => {
+                console.log("🚀 ~ file: ConfigureAccount.jsx:85 ~ updateAccount ~ res:", res)
+                if (res.error) console.log(res.error)
+                const { error, status } = await supabase
+                    .from('profiles')
+                    .update({ avatar_url: res.data.path })
+                    .eq('id', user.id)
+
+                if (error) {
+                    console.log(error)
+                    setResponseMessage(error.message)
+                }
+                if (status === 204) {
+                    setResponseMessage("Votre photo de profil a bien été modifiée")
+                }
+            })
     }
 
     useEffect(() => {
@@ -74,6 +105,8 @@ export default function UserProfile() {
     const [repeatedPassword, setRepeatedPassword] = useState()
     const [errorMessage, setErrorMessage] = useState()
     const [validationMessage, setValidationMessage] = useState()
+    const [photo, setNewPhoto] = useState()
+    const [responseMessage, setResponseMessage] = useState()
 
     return (
         <View style={{ flex: 1, padding: 10, gap: 15 }}>
@@ -114,6 +147,8 @@ export default function UserProfile() {
                     : <Button color={styles.tertiaryColor} onPress={() => setUpdatePassword(true)} title="Changer de mot de passe" />
             }
             {validationMessage ? <Text>{validationMessage}</Text> : ""}
+            {responseMessage ? <Text>{responseMessage}</Text> : ""}
+            {photo ? <Button title="changer de photo" onPress={updateAvatar} /> : <></>}
             <Button color={styles.tertiaryColor} onPress={async () => {
                 const { error } = await supabase.auth.signOut()
             }
