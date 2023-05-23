@@ -88,9 +88,9 @@ export default function UserProfile() {
 
                 if (error) {
                     console.log(error)
-                    setResponseMessage(error.message)
+                    setResponseMessage("erreur", error.message)
                 }
-                if (status === 204) {
+                if (status) {
                     setResponseMessage("Votre photo de profil a bien été modifiée")
                 }
             })
