@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Divider } from "react-native-elements";
 import { View, Text, Button, StyleSheet, TextInput, Pressable } from 'react-native'
+import { decode } from 'base64-arraybuffer'
 import { supabase } from "../config/supabase";
 import { useUser } from "../UserContext";
 import { Image } from 'expo-image';
@@ -45,6 +46,7 @@ export default function UserProfile() {
         }
     }
     const imagePicker = async () => {
+        setUpdatingPhoto(true)
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             base64: true,
@@ -52,7 +54,7 @@ export default function UserProfile() {
             aspect: [1, 1],
             quality: 1
         })
-
+        if (result.canceled) setUpdatingPhoto(false)
         if (!result.canceled) {
             setNewPhoto({
                 name: result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1],
@@ -63,7 +65,6 @@ export default function UserProfile() {
     }
 
     const updateAvatar = async () => {
-        setResponseMessage("test")
 
         let contentType;
         if (photo.name.split('.')[1] === 'jpeg' || photo.name.split('.')[1] === 'jpg') {
@@ -88,10 +89,11 @@ export default function UserProfile() {
 
                 if (error) {
                     console.log(error)
-                    setResponseMessage("erreur", error.message)
+                    setResponseMessage("Une erreur est survenue")
                 }
                 if (status) {
                     setResponseMessage("Votre photo de profil a bien été modifiée")
+                    setUpdatingPhoto(false)
                 }
             })
     }
@@ -108,6 +110,7 @@ export default function UserProfile() {
     const [errorMessage, setErrorMessage] = useState()
     const [validationMessage, setValidationMessage] = useState()
     const [photo, setNewPhoto] = useState()
+    const [updatingPhoto, setUpdatingPhoto] = useState(false)
     const [responseMessage, setResponseMessage] = useState()
 
     return (
@@ -145,7 +148,8 @@ export default function UserProfile() {
 
 
 
-
+            {updatingPhoto ? <Button title="changer de photo" color={styles.color} onPress={updateAvatar} /> : <></>}
+            {responseMessage ? <Text>{responseMessage}</Text> : ""}
             {
                 newPassword ?
                     <View style={{ flex: 1, gap: 15 }}>
@@ -158,8 +162,6 @@ export default function UserProfile() {
                     : <Button color={styles.tertiaryColor} onPress={() => setUpdatePassword(true)} title="Changer de mot de passe" />
             }
             {validationMessage ? <Text>{validationMessage}</Text> : ""}
-            {responseMessage ? <Text>{responseMessage}</Text> : ""}
-            {photo ? <Button title="changer de photo" onPress={updateAvatar} /> : <></>}
             <Button color={styles.tertiaryColor} onPress={async () => {
                 const { error } = await supabase.auth.signOut()
             }
