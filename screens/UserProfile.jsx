@@ -63,6 +63,8 @@ export default function UserProfile() {
     }
 
     const updateAvatar = async () => {
+        setResponseMessage("test")
+
         let contentType;
         if (photo.name.split('.')[1] === 'jpeg' || photo.name.split('.')[1] === 'jpg') {
             contentType = 'image/jpg'
