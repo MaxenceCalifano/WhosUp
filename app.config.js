@@ -10,7 +10,7 @@ export default {
     splash: {
       image: './assets/splash.png',
       resizeMode: "contain",
-      backgroundColor: "#ffffff"
+      backgroundColor: "#F5DF4D"
     },
     runtimeVersion: {
       policy: "sdkVersion"
