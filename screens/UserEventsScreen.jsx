@@ -21,7 +21,7 @@ function UserEventScreen({ navigation }) {
         })
 
         if (data) {
-            console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ data:", data.data)
+            //console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ data:", data.data)
             setHostActivities(data.data)
         }
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:21 ~ fetchHostActivites ~ error:", error)

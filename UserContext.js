@@ -14,7 +14,7 @@ export const UserContext = createContext({
       const session = await supabase.auth.getSession()
       
       setSession(session)
-      setUser(session.user)
+      setUser(session.data.session.user)
       
       const{data:authListener}= supabase.auth.onAuthStateChange((event, session) => {
         
@@ -27,7 +27,7 @@ export const UserContext = createContext({
         } 
         else {
             setSession(session)
-            setUser(session.user)
+            setUser(session.data.session.user)
         }
         
       })
