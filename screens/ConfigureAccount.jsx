@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TextInput, Text, Pressable, Image, Button, Alert } from 'react-native';
+import { Divider } from "react-native-elements";
 import * as ImagePicker from 'expo-image-picker';
 import { decode } from 'base64-arraybuffer'
 import styles from "../styles";
@@ -34,7 +35,7 @@ export default function ConfigureAccountScreen({ navigation }) {
             quality: 1
         })
 
-        if (!result.cancelled) {
+        if (!result.canceled) {
             // const filePath = `${Math.random()}.${fileExt}`
             setPhoto({
                 name: result.assets[0].uri.split('/')[result.assets[0].uri.split('/').length - 1],
@@ -45,6 +46,9 @@ export default function ConfigureAccountScreen({ navigation }) {
     }
 
     const updateAccount = async () => {
+        if (name === undefined || photo === undefined) {
+            return setResponseMessage("Vous devez renseigner un pseudo et choisir une image de profil")
+        }
         let contentType;
         if (photo.name.split('.')[1] === 'jpeg' || photo.name.split('.')[1] === 'jpg') {
             contentType = 'image/jpg'
@@ -87,21 +91,22 @@ export default function ConfigureAccountScreen({ navigation }) {
     }
     return (
         <View style={styles.authContainer}>
-            <Text>Configurer le profile</Text>
-            <TextInput placeholder="pseudo" value={name} onChangeText={(value) => setName(value)} />
-            <Pressable style={[styles.button, { backgroundColor: 'rgba(54,54,54, 0.7)' }]} onPress={() => imagePicker()}>
-                <Text>Choisir une photo</Text>
-            </ Pressable>
+            <Text style={{ fontWeight: 'bold', fontSize: 25, color: "#454545" }}>Configurer le profil :</Text>
+            <Text>Choisir un pseudo :</Text>
+            <TextInput style={{ backgroundColor: '#f0f0f0', padding: 5, borderRadius: 5 }} placeholder="pseudo" value={name} onChangeText={(value) => setName(value)} />
+            <Divider color="white" inset insetType="middle" />
+            <Button color='rgba(54,54,54, 0.7)' title="choisir une photo" onPress={() => imagePicker()} />
+            <Divider color="white" inset insetType="middle" />
             {photo &&
-                <View>
+                <View style={{ alignItems: "center", width: 200, alignSelf: "center" }}>
                     <Image source={{ uri: photo.uri }} style={{ width: 200, height: 200 }} />
                     <Pressable style={accountStyles.imageButton} onPress={() => setPhoto(null)}>
                         <Text style={{ color: '#FFF', alignSelf: 'center' }}>X</Text>
                     </Pressable>
                 </View>
             }
-            <Button title='valider' onPress={() => updateAccount()} />
-
+            <Button color='#454545' title='valider' onPress={() => updateAccount()} />
+            <Text style={{ fontWeight: 'bold' }}>{responseMessage}</Text>
         </View>
     )
 }
@@ -112,5 +117,7 @@ const accountStyles = StyleSheet.create({
         borderRadius: 50,
         width: 20,
         position: 'absolute',
+        right: -10,
+        top: -10,
     }
 })

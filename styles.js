@@ -25,5 +25,6 @@ export default StyleSheet.create({
         alignItems: 'stretch',
         backgroundColor: '#F5DF4D',
         padding: 10,
+        gap: 20
     }
 })
