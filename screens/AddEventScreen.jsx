@@ -104,7 +104,7 @@ export default function AddEventScreen({ navigation }) {
             setIsSuccess(true)
             setLoading(false)
             setTimeout(() => {
-                setIsSuccess(true)
+                setIsSuccess(false)
                 navigation.navigate("Calendrier")
             }, 5000)
         }
