@@ -6,6 +6,7 @@ import Main from '../components/Main'
 import ConfigureAccount from '../screens/ConfigureAccount'
 import Activity from "../screens/ActivityScreen";
 import Chat from "../screens/ChatScreen";
+import UpdateEventScreen from "../screens/UpdateEventScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function UserStack() {
                     <Stack.Screen name='Activité' component={Activity} options={{ headerShown: false }} />
                     <Stack.Screen name='Configurer le compte' component={ConfigureAccount} />
                     <Stack.Screen name='Chat' component={Chat} />
+                    <Stack.Screen name="Modifier l'activité" component={UpdateEventScreen} />
                 </Stack.Group>
             </Stack.Navigator>
         </NavigationContainer>

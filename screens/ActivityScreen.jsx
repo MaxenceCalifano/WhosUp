@@ -246,6 +246,7 @@ function Activity({ route, navigation }) {
                     <View style={activityStyles.dataContainer} >
 
                         <Text style={activityStyles.title}>{item.activity_title}</Text>
+                        {isHost ? <Pressable onPress={() => navigation.navigate("Modifier l'activité", { activity: item })}><Text>Modifier</Text></Pressable> : <></>}
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <FontAwesome5 style={{ marginHorizontal: 4 }} name="clock" size={24} color="black" />
                             <Text>{dayjs(item.date).format('DD MMM, YYYY HH:mm')}</Text>
