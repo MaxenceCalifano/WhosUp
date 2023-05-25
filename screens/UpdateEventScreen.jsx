@@ -19,7 +19,6 @@ dayjs.extend(customParseFormat)
 export default function UpdateEventScreen({ navigation, route }) {
 
     const activity = route.params.activity
-    console.log("🚀 ~ file: UpdateEventScreen.jsx:22 ~ UpdateEventScreen ~ activity:", dayjs(activity.date).format("DD/MM/YYYY, h:mm"))
 
     /* All event informations */
     const [people, setPeople] = useState(activity.number_of_participants);
@@ -194,7 +193,7 @@ export default function UpdateEventScreen({ navigation, route }) {
                                 color="#454545"
                                 onPress={showPicker}
                             />
-                            <Text>{dayjs(date).format("DD/MM/YYYY, h:mm")}</Text>
+                            <Text>{dayjs(date).format("DD/MM/YYYY, H:mm")}</Text>
                         </Pressable>
                         <Divider />
 

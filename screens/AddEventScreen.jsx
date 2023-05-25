@@ -195,7 +195,7 @@ export default function AddEventScreen({ navigation }) {
                         <Divider />
 
                         {/*Calendar */}
-                        <Pressable style={{ flexDirection: 'row', paddingHorizontal: 0 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
+                        <Pressable style={{ flexDirection: 'row', paddingHorizontal: 0, gap: 5 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
                             <Icon
                                 name="calendar"
                                 type="font-awesome"
@@ -203,7 +203,7 @@ export default function AddEventScreen({ navigation }) {
                                 color="#454545"
                                 onPress={showPicker}
                             />
-                            <Text> {' '} {date.toLocaleString().slice(0, date.toLocaleString().lastIndexOf(':'))}</Text>
+                            <Text>{dayjs(date).format("DD/MM/YYYY, H:mm")}</Text>
                         </Pressable>
                         <Divider />
 
