@@ -103,6 +103,7 @@ export default function Map({ navigation }) {
                                 title={marker.activity_title}
                                 description={marker.activity_type}
                                 image={markerIcon}
+                                tracksViewChanges={false}
                             />
                         )
                     }) : ""
