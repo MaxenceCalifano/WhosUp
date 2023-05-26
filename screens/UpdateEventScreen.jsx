@@ -19,6 +19,7 @@ dayjs.extend(customParseFormat)
 export default function UpdateEventScreen({ navigation, route }) {
 
     const activity = route.params.activity
+    console.log("🚀 ~ file: UpdateEventScreen.jsx:22 ~ UpdateEventScreen ~ activity:", activity)
 
     /* All event informations */
     const [people, setPeople] = useState(activity.number_of_participants);
@@ -69,12 +70,12 @@ export default function UpdateEventScreen({ navigation, route }) {
     }
     /* End of date picker dependencies */
 
-    const createNewActivity = async () => {
+    const updateActivity = async () => {
         setLoading(true)
+
         const { error, status } = await supabase
             .from('activities')
-            .insert({
-                host_id: hostId,
+            .update({
                 activity_title: activityTitle,
                 activity_description: activityDescription,
                 activity_type: selectedActivityType,
@@ -82,9 +83,11 @@ export default function UpdateEventScreen({ navigation, route }) {
                 date: date,
                 location: location
             })
+            .eq('uid', activity.uid)
+
 
         if (error) {
-            console.log('AddEventScreen, ligne 91: ', error, status)
+            console.log('UpdateEventScreen, ligne 91: ', error)
             setLoading(false)
             if (error.code === "23502") {
                 Alert.alert("Veuillez renseigner tout les champs s'il vous plaît")
@@ -94,8 +97,9 @@ export default function UpdateEventScreen({ navigation, route }) {
             if (status === 401) setResponseMessage("Vous devez être connecté pour créer une activité")
             if (status >= 500) setResponseMessage("Le serveur ne répond pas, veuillez réessayer plus tard")
         }
-        // TO DO créer une modale qui s'affiche quelques secondes puis rediriger vers la carte ou vers la page "mes activitées"
-        if (status === 201) {
+
+        console.log("🚀 ~ file: UpdateEventScreen.jsx:102 ~ updateActivity ~ status:", status)
+        if (status === 204) {
             setIsSuccess(true)
             setLoading(false)
             setTimeout(() => {
@@ -117,7 +121,7 @@ export default function UpdateEventScreen({ navigation, route }) {
                                 <View style={pageStyles.modalView}>
                                     <View style={pageStyles.loaderContainer}>
                                         <ActivityIndicator color={styles.color} size={"large"} />
-                                        <Text style={{ marginTop: 10 }}>Création de votre activité..</Text>
+                                        <Text style={{ marginTop: 10 }}>Mise à jour de votre activité..</Text>
                                     </View>
                                 </View>
                             </Modal>
@@ -129,7 +133,7 @@ export default function UpdateEventScreen({ navigation, route }) {
                             <Modal animationType="fade" transparent={true}>
                                 <View style={pageStyles.modalView}>
                                     <View style={pageStyles.loaderContainer}>
-                                        <Text style={{ marginTop: 10 }}>Votre activité a été créée !</Text>
+                                        <Text style={{ marginTop: 10 }}>Votre activité a été bien été modifiée !</Text>
                                         <Text style={{ marginTop: 10, textAlign: "center" }}>Vous allez être redirigé vers la page de vos évènements dans quelques secondes</Text>
                                     </View>
                                 </View>
@@ -213,8 +217,7 @@ export default function UpdateEventScreen({ navigation, route }) {
                             selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
                         />
                         <CoordinateInput setSelectedIndex={setSelectedIndex} selectedIndex={selectedIndex} setLocation={setLocation} location={location} setPlace={setPlace} />
-
-                        <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
+                        <Button title="Modifier l'activité" onPress={updateActivity} buttonStyle={{ backgroundColor: styles.color }} />
                         <Text>{responseMessage}</Text>
                     </View>
                 </ScrollView>
