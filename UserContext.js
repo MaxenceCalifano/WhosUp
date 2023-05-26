@@ -12,9 +12,13 @@ export const UserContext = createContext({
 
     const updateUser = async () => {
       const session = await supabase.auth.getSession()
+      console.log("🚀 ~ file: UserContext.js:15 ~ updateUser ~ session:", session)
       
-      setSession(session)
-      setUser(session.data.session.user)
+   //   if(session.data.session !== null) {
+        setSession(session)
+        setUser(session.data.session.user)
+    //  }
+      
       
       const{data:authListener}= supabase.auth.onAuthStateChange((event, session) => {
         
@@ -26,8 +30,9 @@ export const UserContext = createContext({
           setUser(null)
         } 
         else {
+          console.log('sign in', session)
             setSession(session)
-            setUser(session.data.session.user)
+            setUser(session.user)
         }
         
       })
