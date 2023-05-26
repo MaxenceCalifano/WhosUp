@@ -118,7 +118,12 @@ export default function Map({ navigation }) {
                     autoPlay={false}
                     data={activities}
                     scrollAnimationDuration={1000}
-                    onSnapToItem={(index, item) => console.log('déclencher onSnaptoItem, ligne 69 map.jsx', index)}
+                    onSnapToItem={index => setLocation(
+                        {
+                            ...location,
+                            latitude: activities[index].location.latitude,
+                            longitude: activities[index].location.longitude
+                        })}
                     renderItem={({ index, item }) => (
                         <ActivityCard navigation={navigation} index={index} activity={item} />
                     )}
