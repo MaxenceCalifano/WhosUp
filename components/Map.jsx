@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable } from 'react-native'
-import MapView from 'react-native-maps';
-import { Marker } from 'react-native-maps';
+import { View, Text, Pressable } from 'react-native';
+import MapView, { Marker, Animated, AnimatedRegion } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
 import ActivityCard from './ActivityCard';
 import { StyleSheet, Dimensions } from 'react-native';
@@ -13,17 +12,20 @@ import { useUser } from "../UserContext";
 
 export default function Map({ navigation }) {
 
-    const [location, setLocation] = useState({
-        "latitude": 42.56896371693217,
-        "latitudeDelta": 38.061143345741286,
-        "longitude": 0.08388038724660962,
-        "longitudeDelta": 26.660386472940445
-    });
+    const [location, setLocation] = useState(
+        new AnimatedRegion({
+            "latitude": 42.56896371693217,
+            "latitudeDelta": 38.061143345741286,
+            "longitude": 0.08388038724660962,
+            "longitudeDelta": 26.660386472940445
+        })
+    );
 
     const [activities, setActivities] = useState()
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
     const { user } = useUser()
 
+    const mapViewRef = useRef()
     // Used to move carousel on press on Markers
     const ref = useRef(null)
 
@@ -86,7 +88,7 @@ export default function Map({ navigation }) {
 
             <MapView
                 style={styles.map}
-
+                ref={mapViewRef}
                 onRegionChangeComplete={(region, gesture) => {
                     if (!gesture.isGesture) return
                     handleRegionChangeComplete(region)
@@ -128,12 +130,23 @@ export default function Map({ navigation }) {
                     data={activities}
                     scrollAnimationDuration={1000}
                     ref={ref}
-                    onSnapToItem={index => setLocation(
-                        {
-                            ...location,
-                            latitude: activities[index].location.latitude,
-                            longitude: activities[index].location.longitude
-                        })}
+                    onSnapToItem={index => {
+                        mapViewRef.current.animateToRegion(
+                            {
+                                ...location,
+                                latitude: activities[index].location.latitude,
+                                longitude: activities[index].location.longitude
+                            },
+                            //Duration
+                            300
+                        )
+                        /* setLocation(
+                         {
+                             ...location,
+                             latitude: activities[index].location.latitude,
+                             longitude: activities[index].location.longitude
+                         })  */
+                    }}
                     renderItem={({ index, item }) => (
                         <ActivityCard navigation={navigation} index={index} activity={item} />
                     )}
