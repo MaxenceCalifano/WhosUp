@@ -52,7 +52,7 @@ export default function Map({ navigation }) {
     const handleRegionChangeComplete = (mapRegion) => {
         //console.log('map ligne 52', 'location: ', location, 'mapregion: ', mapRegion)
         //console.log(Math.floor(mapRegion.latitude), Math.floor(location.latitude))
-        //setLocation(mapRegion)
+        setLocation(mapRegion)
         setShowSearchInthisArea(true)
     }
 
@@ -133,16 +133,11 @@ export default function Map({ navigation }) {
                     scrollAnimationDuration={1000}
                     ref={ref}
                     onSnapToItem={index => {
-                        const newLocation = {
+                        setLocation({
                             ...location,
                             latitude: activities[index].location.latitude,
                             longitude: activities[index].location.longitude
-                        }
-                        mapViewRef.current.animateToRegion(
-                            newLocation,
-                            //Duration
-                            300
-                        )
+                        })
                     }}
                     renderItem={({ index, item }) => (
                         <ActivityCard navigation={navigation} index={index} activity={item} />
