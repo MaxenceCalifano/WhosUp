@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Pressable } from 'react-native'
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
@@ -23,6 +23,9 @@ export default function Map({ navigation }) {
     const [activities, setActivities] = useState()
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
     const { user } = useUser()
+
+    // Used to move carousel on press on Markers
+    const ref = useRef(null)
 
     const edgeFetchActivities = async () => {
 
@@ -104,6 +107,11 @@ export default function Map({ navigation }) {
                                 description={marker.activity_type}
                                 image={markerIcon}
                                 tracksViewChanges={false}
+                                onPress={() => {
+                                    console.log("marker index: ", index);
+                                    console.log(activities)
+                                    ref.current.scrollTo({ count: index, animated: true })
+                                }}
                             />
                         )
                     }) : ""
@@ -119,6 +127,7 @@ export default function Map({ navigation }) {
                     autoPlay={false}
                     data={activities}
                     scrollAnimationDuration={1000}
+                    ref={ref}
                     onSnapToItem={index => setLocation(
                         {
                             ...location,
