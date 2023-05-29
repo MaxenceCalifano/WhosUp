@@ -131,21 +131,17 @@ export default function Map({ navigation }) {
                     scrollAnimationDuration={1000}
                     ref={ref}
                     onSnapToItem={index => {
+                        const newLocation = {
+                            ...location,
+                            latitude: activities[index].location.latitude,
+                            longitude: activities[index].location.longitude
+                        }
                         mapViewRef.current.animateToRegion(
-                            {
-                                ...location,
-                                latitude: activities[index].location.latitude,
-                                longitude: activities[index].location.longitude
-                            },
+                            newLocation,
                             //Duration
                             300
                         )
-                        /* setLocation(
-                         {
-                             ...location,
-                             latitude: activities[index].location.latitude,
-                             longitude: activities[index].location.longitude
-                         })  */
+                        setLocation(newLocation)
                     }}
                     renderItem={({ index, item }) => (
                         <ActivityCard navigation={navigation} index={index} activity={item} />
