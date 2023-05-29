@@ -13,12 +13,12 @@ import { useUser } from "../UserContext";
 export default function Map({ navigation }) {
 
     const [location, setLocation] = useState(
-        new AnimatedRegion({
+        {
             "latitude": 42.56896371693217,
             "latitudeDelta": 38.061143345741286,
             "longitude": 0.08388038724660962,
             "longitudeDelta": 26.660386472940445
-        })
+        }
     );
 
     const [activities, setActivities] = useState()
@@ -133,11 +133,16 @@ export default function Map({ navigation }) {
                     scrollAnimationDuration={1000}
                     ref={ref}
                     onSnapToItem={index => {
-                        setLocation({
+                        const newLocation = {
                             ...location,
                             latitude: activities[index].location.latitude,
                             longitude: activities[index].location.longitude
-                        })
+                        }
+                        mapViewRef.current.animateToRegion(
+                            newLocation,
+                            //Duration
+                            300
+                        )
                     }}
                     renderItem={({ index, item }) => (
                         <ActivityCard navigation={navigation} index={index} activity={item} />
