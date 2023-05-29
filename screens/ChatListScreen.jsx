@@ -9,14 +9,16 @@ import styles from "../styles";
 
 function ChatListScreen({ navigation }) {
     const { user } = useUser()
+    console.log("🚀 ~ file: ChatListScreen.jsx:12 ~ ChatListScreen ~ user:", user.id)
     const [chatUsers, setChatUsers] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
     const fetchData = async () => {
         setIsLoading(true)
-        const { data, error } = await supabase.rpc('get_chats_data')
+        const { data, error } = await supabase.rpc('get_chats_data', { userid: user.id })
         let chatsArray = []
         if (data) {
+            console.log("🚀 ~ file: ChatListScreen.jsx:20 ~ fetchData ~ data:", data)
             data.forEach(item => item.id !== user.id ? chatsArray.push(item) : "")
             setChatUsers(chatsArray)
             setIsLoading(false)
