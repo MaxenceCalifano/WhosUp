@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import MapView, { Marker, Animated, AnimatedRegion } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
 import ActivityCard from './ActivityCard';
 import { StyleSheet, Dimensions } from 'react-native';
@@ -91,6 +91,7 @@ export default function Map({ navigation }) {
             <MapView
                 style={styles.map}
                 ref={mapViewRef}
+                provider={MapView.PROVIDER_OPENSTREETMAP}
                 onRegionChangeComplete={(region, gesture) => {
                     if (!gesture.isGesture) return
                     handleRegionChangeComplete(region)
