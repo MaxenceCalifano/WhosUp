@@ -32,6 +32,11 @@ export default {
     },
     android: {
       package: 'com.whosup.app',
+      config: {
+        googleMaps:{
+          apiKey: "AIzaSyA8HqahYLkO53-h022oIQeztlgNvWx_6vg"
+        },
+      },
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#FFFFFF"
