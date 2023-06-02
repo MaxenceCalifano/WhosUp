@@ -17,7 +17,7 @@ function ActivityCard({ index, activity, navigation }) {
                     </View>
                     <View>
                         {/* <Text>{activity.date.slice(4, 10)}</Text> */}
-                        <Text><FontAwesome5 name="calendar-day" size={24} color="black" /> {dayjs(activity.date).format('DD MMM, YYYY')}</Text>
+                        <Text><FontAwesome5 name="calendar-day" size={24} color="black" /> {dayjs(activity.date).format('DD/MM')}</Text>
                         <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(activity.date).format('HH:mm')}</Text>
                         <Text>{activity.activity_type}</Text>
                     </View>
