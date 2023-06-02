@@ -92,6 +92,8 @@ export default function Map({ navigation }) {
                 style={styles.map}
                 ref={mapViewRef}
                 loadingEnabled
+                loadingIndicatorColor="#F5DF4D"
+                loadingBackgroundColor="#fffff"
                 provider={PROVIDER_GOOGLE}
                 onRegionChangeComplete={(region, gesture) => {
                     if (!gesture.isGesture) return
@@ -174,8 +176,6 @@ export default function Map({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
-
     },
     map: {
         width: "100%",
