@@ -91,6 +91,7 @@ export default function Map({ navigation }) {
             <MapView
                 style={styles.map}
                 ref={mapViewRef}
+                loadingEnabled
                 provider={PROVIDER_GOOGLE}
                 onRegionChangeComplete={(region, gesture) => {
                     if (!gesture.isGesture) return
@@ -172,21 +173,22 @@ export default function Map({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+
+
     },
     map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height
+        width: "100%",
+        height: "100%"
     },
     carouselContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         zIndex: 2,
         position: 'absolute',
-        bottom: 15,
+        bottom: 0,
         gap: 15,
     },
-
     regionChangedButton_container: {
         position: "absolute",
         width: "100%",
