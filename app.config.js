@@ -5,7 +5,6 @@ export default {
     owner : 'velomarchand',
     version: "1.0.0",
     orientation: "portrait",
-    icon: './assets/adaptive-icon.png',
     userInterfaceStyle: "light",
     splash: {
       image: './assets/splash.png',
