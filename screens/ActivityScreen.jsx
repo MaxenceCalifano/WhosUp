@@ -244,9 +244,13 @@ function Activity({ route, navigation }) {
                     <Image style={activityStyles.image} source={item.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : item.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
 
                     <View style={activityStyles.dataContainer} >
+                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                            <Text style={activityStyles.title}>{item.activity_title}</Text>
+                            {isHost ? <Pressable onPress={() => navigation.navigate("Modifier l'activité", { activity: item })}>
+                                <Text style={{ fontWeight: "bold", color: '#3879d4' }}>Modifier</Text>
+                            </Pressable> : <></>}
+                        </View>
 
-                        <Text style={activityStyles.title}>{item.activity_title}</Text>
-                        {isHost ? <Pressable onPress={() => navigation.navigate("Modifier l'activité", { activity: item })}><Text>Modifier</Text></Pressable> : <></>}
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <FontAwesome5 style={{ marginHorizontal: 4 }} name="clock" size={24} color="black" />
                             <Text>{dayjs(item.date).format('DD/MM/YYYY HH:mm')}</Text>
@@ -328,7 +332,8 @@ const activityStyles = StyleSheet.create({
     container: {
         // marginTop: 40
         flex: 1,
-        height: Dimensions.get('window').height
+        height: Dimensions.get('window').height,
+        gap: 10
 
     },
     scrollView: {
@@ -339,7 +344,6 @@ const activityStyles = StyleSheet.create({
     },
     buttonsContainer: {
         flexDirection: 'row',
-        gap: 15
     },
     buttons: {
         backgroundColor: styles.color,
@@ -380,12 +384,13 @@ const activityStyles = StyleSheet.create({
         position: "relative",
         top: -15,
         backgroundColor: "#F2F2F2",
-        padding: 15
+        padding: 15,
+        gap: 5
 
     },
     title: {
         fontSize: 25,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     loaderContainer: {
         display: "flex",
