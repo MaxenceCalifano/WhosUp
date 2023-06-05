@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TextInput, FlatList } from 'react-native';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { supabase } from '../config/supabase'
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import styles from "../styles";
 
 function Chat({ route, navigation }) {
+    let chatViewRef = useRef()
 
     let roomId = route.params.chat_room_id
     console.log("🚀 ~ file: ChatScreen.jsx:14 ~ Chat ~ roomId:", roomId)
@@ -27,8 +28,8 @@ function Chat({ route, navigation }) {
                 'postgres_changes',
                 { event: '*', schema: 'public', table: 'messages' },
                 (payload) => {
-                    //console.log('Change received!', payload)
-                    setMessages(prevState => [...prevState, payload.new])
+                    console.log('Change received!', messages)
+                    setMessages((prevState) => [payload.new, ...prevState])
                 }
             )
             .subscribe()
@@ -37,6 +38,7 @@ function Chat({ route, navigation }) {
             .from('messages')
             .select()
             .eq('chat_room_id', roomId)
+            .order('created_at', { ascending: false })
 
         if (data) {
             setMessages(data)
@@ -59,7 +61,11 @@ function Chat({ route, navigation }) {
                     .from('chat_rooms')
                     .update({ last_message_id: res.data[0].id })
                     .eq('id', res.data[0].chat_room_id)
-                    .then(response => console.log(response))
+                    .then(response => {
+                        console.log(response)
+                        setMessage('')
+                        //chatViewRef.current.scrollToEnd({ animated: true })
+                    })
                     .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:75 ~ postMessage ~ error:", error))
             })
             .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:64 ~ postMessage ~ error:", error))
@@ -68,6 +74,7 @@ function Chat({ route, navigation }) {
         navigation.setOptions({ title: username })
         console.log(dayjs().format('DD/MM'))
         fetchMessages()
+        //chatViewRef.current.scrollToEnd({ animated: true })
     }, [])
     return (
         <View style={chatStyles.main}>
@@ -76,6 +83,8 @@ function Chat({ route, navigation }) {
                     :
                     messages.length > 0 ?
                         <FlatList
+                            ref={chatViewRef}
+                            inverted
                             renderItem={(message) => <View key={message.item.id}
                                 style={message.item.user_id === user.id ?
                                     [chatStyles.message, chatStyles.ownerMessage]
@@ -101,6 +110,7 @@ function Chat({ route, navigation }) {
                     style={chatStyles.messageInput}
                     placeholder='Ecrivez un message...'
                     onChangeText={setMessage}
+                    value={message}
                 />
                 <Ionicons onPress={postMessage} style={chatStyles.send_button} name="send" size={24} color={styles.color} />
             </View>
@@ -111,7 +121,6 @@ function Chat({ route, navigation }) {
 const chatStyles = StyleSheet.create({
     main: {
         height: '100%',
-        flexDirection: 'column',
         paddingBottom: 60
     },
     send: {
