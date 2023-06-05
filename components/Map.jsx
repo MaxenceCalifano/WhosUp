@@ -80,6 +80,12 @@ export default function Map({ navigation }) {
     }
     displayConfigureAccount()
 
+    const scrollToCard = (currentIndex, markerIndex) => {
+        currentIndex < markerIndex ?
+            ref.current.scrollTo(currentIndex + markerIndex)
+            : ref.current.scrollTo(currentIndex - markerIndex)
+    }
+
     useEffect(() => {
         edgeFetchActivities()
     }, [])
@@ -116,9 +122,21 @@ export default function Map({ navigation }) {
                                 image={markerIcon}
                                 tracksViewChanges={false}
                                 onPress={() => {
-                                    console.log("marker index: ", index);
-                                    console.log(activities)
-                                    ref.current.scrollTo({ count: index, animated: true })
+                                    //console.log(activities[index].activity_title)
+
+                                    //Passer la différence entre index courant et l'endroit souhaiter
+                                    //console.log("index du marqueur cliqué: ", index);
+                                    //console.log("index du carousel au mometn du clic", ref.current.getCurrentIndex());
+
+
+                                    const difference = index - ref.current.getCurrentIndex()
+                                    if (ref.current.getCurrentIndex() > index) {
+                                        //console.log("🚀 ~ file: Map.jsx:134 ~ activities?activities.map ~ difference:", difference)
+                                        ref.current.scrollTo({ count: difference, animated: true })
+                                    } else {
+                                        //console.log("🚀 ~ file: Map.jsx:139 ~ activities?activities.map ~ difference:", difference)
+                                        ref.current.scrollTo({ count: difference, animated: true })
+                                    }
                                 }}
                             />
                         )
