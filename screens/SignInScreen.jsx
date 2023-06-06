@@ -3,14 +3,14 @@ import style from '../styles';
 import { StyleSheet, View, TextInput, Pressable, Text, ActivityIndicator, Modal } from 'react-native'
 import { supabase } from '../config/supabase'
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation }) {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
     const [isLoading, setIsloading] = useState(false)
 
-    const login = async () => {
+    const login = async ({ navigation }) => {
         setIsloading(true)
         const { error, data } = await supabase.auth.signInWithPassword({
             email: email,
@@ -30,7 +30,9 @@ export default function SignInScreen() {
             <Pressable style={[style.button, styles.button]} onPress={login}>
                 <Text style={[styles.text, { color: style.color, fontSize: 20 }]}>Connexion</Text>
             </Pressable>
-            <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end' }} >Mot de passe oublié ?</Text>
+            <Pressable>
+                <Text onPress={() => navigation.navigate('Réinitialiser le mot de passe')} style={{ fontWeight: 'bold', alignSelf: 'flex-end' }} >Mot de passe oublié ?</Text>
+            </Pressable>
             <Text>{errorMessage}</Text>
             <Modal
                 visible={isLoading}

@@ -6,6 +6,7 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import ConfigureAccount from "../screens/ConfigureAccount"
+import PasswordReset from "../screens/PasswordReset";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function AuthStack() {
                 <Stack.Screen name='Se connecter' component={SignInScreen} />
                 <Stack.Screen name='Créer un compte' component={SignUpScreen} />
                 <Stack.Screen name='Configurer le compte' component={ConfigureAccount} />
+                <Stack.Screen name='Réinitialiser le mot de passe' component={PasswordReset} />
             </Stack.Navigator>
         </NavigationContainer>
     )
