@@ -3,13 +3,28 @@ import { View } from "react-native";
 import { Button, Icon } from '@rneui/themed';
 import { TextInput } from "react-native-gesture-handler";
 import styles from "../styles";
+import { supabase } from '../config/supabase'
+
 
 function PasswordReset() {
 
     const [email, setEmail] = useState()
+    const [error, setErrorMessage] = useState()
 
-    const sendResetPasswordEmail = () => {
+    const sendResetPasswordEmail = async () => {
         console.log('reset')
+        const { data, error } = await supabase.auth
+            .resetPasswordForEmail(email)
+
+        if (data) {
+            console.log("🚀 ~ file: PasswordReset.jsx:20 ~ sendResetPasswordEmail ~ data:", data)
+
+        }
+
+        if (error) {
+            console.log("🚀 ~ file: PasswordReset.jsx:18 ~ sendResetPasswordEmail ~ error:", error)
+            setErrorMessage("Une erreur est survenue")
+        }
     }
 
     return (
