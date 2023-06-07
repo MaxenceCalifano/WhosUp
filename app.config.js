@@ -6,6 +6,7 @@ export default {
     version: "1.0.0",
     orientation: "portrait",
     userInterfaceStyle: "light",
+    scheme :"whosup",
     splash: {
       image: './assets/splash.png',
       resizeMode: "contain",

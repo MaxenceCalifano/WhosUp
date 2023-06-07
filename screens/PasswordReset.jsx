@@ -4,6 +4,7 @@ import { Button, Icon } from '@rneui/themed';
 import { TextInput } from "react-native-gesture-handler";
 import styles from "../styles";
 import { supabase } from '../config/supabase'
+import * as Linking from "expo-linking";
 
 
 function PasswordReset() {
@@ -12,9 +13,10 @@ function PasswordReset() {
     const [error, setErrorMessage] = useState()
 
     const sendResetPasswordEmail = async () => {
-        console.log('reset')
+        const resetPasswordURL = Linking.createURL("/ResetPassword");
+        console.log("🚀 ~ file: PasswordReset.jsx:17 ~ sendResetPasswordEmail ~ resetPasswordURL:", resetPasswordURL)
         const { data, error } = await supabase.auth
-            .resetPasswordForEmail(email)
+            .resetPasswordForEmail(email, { redirectTo: resetPasswordURL })
 
         if (data) {
             console.log("🚀 ~ file: PasswordReset.jsx:20 ~ sendResetPasswordEmail ~ data:", data)
