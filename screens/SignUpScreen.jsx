@@ -39,7 +39,7 @@ export default function SignUpScreen({ navigation }) {
                     storeData("false")
                 }
             } else {
-                setSubmitMessage("Votre mot de passe doit contenir au moins 8 charactères, un charactère spécial, et une majuscule")
+                setSubmitMessage("Votre mot de passe doit contenir au moins 8 caractères, un caractère spécial, et une majuscule")
             }
         }
         //setLoading(true)
