@@ -46,6 +46,7 @@ export default function AddEventScreen({ navigation }) {
     const onTimeChange = (event, selectedDate) => {
         const currentDate = selectedDate.toString().slice(16, 25);
         const fullDate = dayjs(day + ' ' + currentDate, "YYYY-MM-DD HHmm")
+        console.log(Date.now() < fullDate)
         setDate(fullDate);
     }
 

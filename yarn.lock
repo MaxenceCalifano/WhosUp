@@ -7444,14 +7444,14 @@ sudo-prompt@^9.0.0:
   resolved "https://registry.yarnpkg.com/sudo-prompt/-/sudo-prompt-9.2.1.tgz#77efb84309c9ca489527a4e749f287e6bdd52afd"
   integrity sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==
 
-supabase@^1.55.1:
-  version "1.55.1"
-  resolved "https://registry.yarnpkg.com/supabase/-/supabase-1.55.1.tgz#4ab56aaa3a3354ecd7229d4e628403d2ab51faf1"
-  integrity sha512-LPm9zkMPdRhwsFlb5UBzMe7hPHLAVVA4yrInQUarfgJ+iFjQfedkYS+BT/LlHVe+9JpjIcnQJPXeVZ7bD1ootw==
+supabase@^1.74.0:
+  version "1.74.0"
+  resolved "https://registry.yarnpkg.com/supabase/-/supabase-1.74.0.tgz#7dd497d520874c26d44b5ef7fb5d065d6fb41207"
+  integrity sha512-xWn0fEf+51Y/ed8JKJMfFK+VDc2Ev8QYJ6V/mq1qfo+JTJcDN+6Dv3FhqbS1c66HZBMptssnm7YF0uqMa4p2rg==
   dependencies:
     bin-links "^4.0.1"
     node-fetch "^3.2.10"
-    tar "6.1.14"
+    tar "6.1.15"
 
 supports-color@^5.3.0:
   version "5.5.0"
@@ -7487,10 +7487,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-tar@6.1.14:
-  version "6.1.14"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-6.1.14.tgz#e87926bec1cfe7c9e783a77a79f3e81c1cfa3b66"
-  integrity sha512-piERznXu0U7/pW7cdSn7hjqySIVTYT6F76icmFk7ptU7dDYlXTm5r9A6K04R2vU3olYgoKeo1Cg3eeu5nhftAw==
+tar@6.1.15:
+  version "6.1.15"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-6.1.15.tgz#c9738b0b98845a3b344d334b8fa3041aaba53a69"
+  integrity sha512-/zKt9UyngnxIT/EAGYuxaMYgOIJiP81ab9ZfkILq4oNLPFX50qyYmu7jRj9qeXoxmJHjGlbH0+cm2uy1WCs10A==
   dependencies:
     chownr "^2.0.0"
     fs-minipass "^2.0.0"
