@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TextInput, Text, Pressable, Image, Button, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Text, Pressable, Image, Button, Modal, ActivityIndicator, Dimensions } from 'react-native';
 import { Divider } from "react-native-elements";
 import * as ImagePicker from 'expo-image-picker';
 import { decode } from 'base64-arraybuffer'
@@ -14,6 +14,7 @@ export default function ConfigureAccountScreen({ navigation }) {
     const [photo, setPhoto] = useState()
     const [userId, setUserId] = useState()
     const [responseMessage, setResponseMessage] = useState('')
+    const [loading, setIsLoading] = useState(false)
 
     const getCurrentUser = async => {
         supabase.auth.getSession()
@@ -56,6 +57,7 @@ export default function ConfigureAccountScreen({ navigation }) {
         if (photo.name.split('.')[1] === 'png') {
             contentType = 'image/png'
         }
+        setIsLoading(true)
         await supabase
             .storage
             .from('avatars')
@@ -75,6 +77,7 @@ export default function ConfigureAccountScreen({ navigation }) {
                     setResponseMessage(error.message)
                 }
                 if (status === 204) {
+                    setIsLoading(false)
                     setResponseMessage("Votre compte a été mis à jour, redirection vers la page principale")
                     setTimeout(() => navigation.navigate('Carte'), 2000)
                     const storeData = async (value) => {
@@ -107,6 +110,19 @@ export default function ConfigureAccountScreen({ navigation }) {
             }
             <Button color='#454545' title='valider' onPress={() => updateAccount()} />
             <Text style={{ fontWeight: 'bold' }}>{responseMessage}</Text>
+            {loading ?
+                <View style={accountStyles.modalContainer}>
+                    <Modal animationType="fade" transparent={true}>
+                        <View style={accountStyles.modalView}>
+                            <View style={accountStyles.loaderContainer}>
+                                <ActivityIndicator color={styles.color} size={"large"} />
+                                <Text style={{ marginTop: 10 }}>Création de votre compte..</Text>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+                : <></>
+            }
         </View>
     )
 }
@@ -119,5 +135,37 @@ const accountStyles = StyleSheet.create({
         position: 'absolute',
         right: -10,
         top: -10,
-    }
+    },
+
+    modalContainer: {
+        display: "flex",
+        position: "absolute",
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    loaderContainer: {
+        height: 250,
+        width: 250,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+        borderRadius: 15,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
 })

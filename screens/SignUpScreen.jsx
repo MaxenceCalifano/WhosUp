@@ -25,7 +25,10 @@ export default function SignUpScreen({ navigation }) {
                     password: password,
                 })
 
-                if (error) setSubmitMessage("Une erreur est survenue, veuillez réessayer")
+                if (error) {
+                    console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ signUpWithEmail ~ error:", error)
+                    setSubmitMessage("Une erreur est survenue, veuillez réessayer")
+                }
                 if (data.session !== null) {
                     const storeData = async (value) => {
                         try {
