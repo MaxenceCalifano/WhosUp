@@ -73,8 +73,9 @@ function Activity({ route, navigation }) {
             const { data: hostUsername, error } = await supabase
                 .from('profiles')
                 .select('username')
-                .eq('id', data.host_id)
-            console.log("🚀 ~ file: ActivityScreen.jsx:74 ~ edgeFecthActivity ~ error:", error)
+                .eq('id', data.data.host_id)
+            if (error) console.log("🚀 ~ file: ActivityScreen.jsx:74 ~ edgeFecthActivity ~ error:", error)
+            if (data) setItem({ ...data.data, hostUsername: hostUsername[0].username })
 
         }
         if (error) console.log("🚀 ~ file: Map.jsx:63 ~ edgeFetchActivities ~ error:", error)
@@ -274,6 +275,56 @@ function Activity({ route, navigation }) {
                                     : <Pressable style={[activityStyles.buttons, isAttendee ? activityStyles.validatedButton : '']} onPress={participate}>
                                         <Text>Participer</Text>
                                         <Text> {isAttendee ? <AntDesign name="checkcircle" size={24} color="black" /> : ""}</Text>
+                                    </Pressable>
+                            }
+                            {
+                                isHost ? <></> :
+                                    <Pressable
+                                        style={activityStyles.buttons}
+                                        onPress={async () => {
+
+                                            const { data, error } = await supabase
+                                                .from('chat_rooms_profiles')
+                                                .select()
+                                                .in('user_id', [user.id, item.host_id])
+
+                                            //We fetched all the chats of the users, now we want to match the chat they have in common :
+                                            if (data) {
+                                                const filteredArr = data.filter(obj => {
+                                                    const roomId = obj.room_id;
+                                                    return data.some(otherObj => otherObj !== obj && otherObj.room_id === roomId);
+                                                });
+
+                                                if (filteredArr.length > 0) {
+                                                    console.log(filteredArr[0].room_id)
+                                                    navigation.navigate('Chat', { chat_room_id: filteredArr[0].room_id, profile: { username: item.hostUsername } })
+                                                } else {
+                                                    //Will create a new chat between the 2 users
+                                                    console.log('no room')
+
+                                                    const { data, error } = await supabase
+                                                        .from('chat_rooms')
+                                                        .insert({})
+                                                        .select()
+                                                    if (data) {
+                                                        const { status, error } = await supabase
+                                                            .from('chat_rooms_profiles')
+                                                            .insert([
+                                                                { room_id: data[0].id, user_id: user.id },
+                                                                { room_id: data[0].id, user_id: item.host_id },
+                                                            ])
+                                                        if (status === 201) navigation.navigate('Chat', { chat_room_id: data[0].id, profile: { username: item.hostUsername } })
+                                                        if (error) console.log(error)
+                                                    }
+                                                    if (error) console.log('ligne 135', error)
+                                                }
+
+                                            }
+                                            if (error) console.log(error)
+
+                                        }}>
+                                        <Text style={{ marginRight: 4 }}>Contacter l'hôte</Text>
+                                        <Ionicons name="chatbox-ellipses" size={24} color="#454545" />
                                     </Pressable>
                             }
                             {/* <Pressable style={activityStyles.buttons}>
