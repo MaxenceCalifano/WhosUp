@@ -49,7 +49,7 @@ function Activity({ route, navigation }) {
             },
         })
         if (data) {
-            console.log('edge data', data.data.applicants)
+            console.log('edge data', data)
             setItem(data.data)
             const validatedAttendees = data.data.applicants.filter(elem => elem.is_validated)
             setAttendees(validatedAttendees)
@@ -68,6 +68,14 @@ function Activity({ route, navigation }) {
                 setIsAttendee(true)
             }
             setRegion({ latitude: data.data.location.latitude, longitude: data.data.location.longitude })
+
+            //Then load host username
+            const { data: hostUsername, error } = await supabase
+                .from('profiles')
+                .select('username')
+                .eq('id', data.host_id)
+            console.log("🚀 ~ file: ActivityScreen.jsx:74 ~ edgeFecthActivity ~ error:", error)
+
         }
         if (error) console.log("🚀 ~ file: Map.jsx:63 ~ edgeFetchActivities ~ error:", error)
     }
