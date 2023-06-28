@@ -265,9 +265,16 @@ function Activity({ route, navigation }) {
                             <Text>{dayjs(item.date).format('DD/MM/YYYY HH:mm')}</Text>
                         </View>
 
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Ionicons style={{ marginHorizontal: 2 }} name="people" size={24} color="black" />
-                            <Text>{attendees.length}/{item.number_of_participants}</Text>
+                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <Ionicons style={{ marginHorizontal: 2 }} name="people" size={24} color="black" />
+                                <Text>{attendees.length}/{item.number_of_participants}</Text>
+                            </View>
+
+                            <View>
+                                <Text style={{ fontWeight: "bold" }}>Organisateur/trice :</Text>
+                                <Text>{item.hostUsername}</Text>
+                            </View>
                         </View>
                         <View style={activityStyles.buttonsContainer}>
                             {
