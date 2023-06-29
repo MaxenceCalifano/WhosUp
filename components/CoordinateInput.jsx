@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Modal, Pressable, Dimensions } from 'react-native'
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
