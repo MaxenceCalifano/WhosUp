@@ -39,7 +39,10 @@ function UserEventScreen({ navigation }) {
         })
 
         if (data) {
-            setUserActivities(data.data)
+            console.log("🚀 ~ file: UserEventsScreen.jsx:42 ~ fetchUserActivities ~ data:", data.data)
+            //console.log('la', data.data.filter(elem => elem.activities !== null))
+
+            setUserActivities(data.data.filter(elem => elem.activities !== null))
             setUserActivitiesIsLoading(false)
         }
         if (error) console.log("🚀 ~ file: UserEventsScreen.jsx:39 ~ fetchuserActivities ~ error:", error)
