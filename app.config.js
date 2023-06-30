@@ -39,7 +39,7 @@ export default {
       },
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
-        backgroundColor: "#FFFFFF"
+        backgroundColor: "#F5DF4D"
       },
     },
     web: {
