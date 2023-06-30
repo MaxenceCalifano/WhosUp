@@ -9,7 +9,6 @@ import styles from "../styles";
 
 function ChatListScreen({ navigation }) {
     const { user } = useUser()
-    console.log("🚀 ~ file: ChatListScreen.jsx:12 ~ ChatListScreen ~ user:", user.id)
     const [chatUsers, setChatUsers] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -12,11 +12,13 @@ import UserEventScreen from '../screens/UserEventsScreen';
 import Map from './Map';
 import ChatListScreen from '../screens/ChatListScreen';
 import { supabase } from '../config/supabase'
-
+import { UnreadMessagesContext } from '../navigation/UserStack';
 
 export default function Main() {
 
     const Tab = createBottomTabNavigator();
+    const { unreadMessages } = useContext(UnreadMessagesContext)
+    console.log("🚀 ~ file: Main.jsx:21 ~ Main ~ unreadMessages:", unreadMessages)
 
     return (
         <Tab.Navigator
@@ -53,7 +55,7 @@ export default function Main() {
 
             <Tab.Screen name="Chats" component={ChatListScreen} options={{
                 title: 'Chats',
-                //tabBarBadge:
+                tabBarBadge: unreadMessages > 0 ? unreadMessages : null,
                 tabBarIcon: ({ focused, color, size }) => (
                     focused ?
                         <Ionicons name="chatbox-ellipses" size={24} color={mainStyles.color} />

@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text, TextInput, FlatList } from 'react-native';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { supabase } from '../config/supabase'
-import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from "../UserContext";
+import { UnreadMessagesContext } from '../navigation/UserStack';
 import dayjs from "dayjs";
 
 import styles from "../styles";
@@ -12,13 +12,13 @@ function Chat({ route, navigation }) {
     let chatViewRef = useRef()
 
     let roomId = route.params.chat_room_id
-    console.log("🚀 ~ file: ChatScreen.jsx:14 ~ Chat ~ roomId:", roomId)
     let username = route.params.profile.username
     let avatarUrl = route.params.profile.avatarUrl
     const { user } = useUser()
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
+    const { setUnreadMessages } = useContext(UnreadMessagesContext)
 
     supabase.channel('custom-all-channel')
         .on(
@@ -33,7 +33,11 @@ function Chat({ route, navigation }) {
                     .eq('chat_room_id', roomId)
                     .neq('user_id', user.id)
                     .eq('read', false)
-                console.log("🚀 ~ file: ChatScreen.jsx:53 ~ fetchMessages ~ count:", count)
+                if (messageError) console.log("🚀 ~ file: ChatScreen.jsx:37 ~ messageError:", messageError)
+                if (count) {
+                    console.log("🚀 ~ file: ChatScreen.jsx:38 ~ count:", count)
+                    setUnreadMessages(count)
+                }
             }
         )
         .subscribe()
