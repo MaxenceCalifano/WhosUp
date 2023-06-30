@@ -18,7 +18,7 @@ function ChatListScreen({ navigation }) {
         const { data, error } = await supabase.rpc('get_chats_data', { userid: user.id })
         let chatsArray = []
         if (data) {
-            console.log("🚀 ~ file: ChatListScreen.jsx:20 ~ fetchData ~ data:", data)
+            //  console.log("🚀 ~ file: ChatListScreen.jsx:20 ~ fetchData ~ data:", data)
             data.forEach(item => item.id !== user.id ? chatsArray.push(item) : "")
             setChatUsers(chatsArray)
             setIsLoading(false)

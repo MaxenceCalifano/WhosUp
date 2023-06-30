@@ -20,19 +20,25 @@ function Chat({ route, navigation }) {
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
 
+    supabase.channel('custom-all-channel')
+        .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'messages' },
+            async (payload) => {
+                console.log('Change received!', messages)
+                setMessages((prevState) => [payload.new, ...prevState])
+                const { count, error: messageError } = await supabase
+                    .from('messages')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('chat_room_id', roomId)
+                    .neq('user_id', user.id)
+                    .eq('read', false)
+                console.log("🚀 ~ file: ChatScreen.jsx:53 ~ fetchMessages ~ count:", count)
+            }
+        )
+        .subscribe()
 
     const fetchMessages = async () => {
-
-        supabase.channel('custom-all-channel')
-            .on(
-                'postgres_changes',
-                { event: '*', schema: 'public', table: 'messages' },
-                (payload) => {
-                    console.log('Change received!', messages)
-                    setMessages((prevState) => [payload.new, ...prevState])
-                }
-            )
-            .subscribe()
 
         const { data, error } = await supabase
             .from('messages')
@@ -45,7 +51,9 @@ function Chat({ route, navigation }) {
             setIsLoading(false)
         }
         if (error) console.log("🚀 ~ file: ChatScreen.jsx:45 ~ fetchMessages ~ error:", error)
+
     }
+
 
     const postMessage = async () => {
         /**
@@ -72,7 +80,6 @@ function Chat({ route, navigation }) {
     }
     useEffect(() => {
         navigation.setOptions({ title: username })
-        console.log(dayjs().format('DD/MM'))
         fetchMessages()
         //chatViewRef.current.scrollToEnd({ animated: true })
     }, [])

@@ -11,6 +11,8 @@ import AddEventScreen from '../screens/AddEventScreen';
 import UserEventScreen from '../screens/UserEventsScreen';
 import Map from './Map';
 import ChatListScreen from '../screens/ChatListScreen';
+import { supabase } from '../config/supabase'
+
 
 export default function Main() {
 
@@ -51,6 +53,7 @@ export default function Main() {
 
             <Tab.Screen name="Chats" component={ChatListScreen} options={{
                 title: 'Chats',
+                //tabBarBadge:
                 tabBarIcon: ({ focused, color, size }) => (
                     focused ?
                         <Ionicons name="chatbox-ellipses" size={24} color={mainStyles.color} />
