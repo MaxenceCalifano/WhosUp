@@ -20,27 +20,27 @@ function Chat({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     const { setUnreadMessages } = useContext(UnreadMessagesContext)
 
-    supabase.channel('custom-all-channel')
-        .on(
-            'postgres_changes',
-            { event: '*', schema: 'public', table: 'messages' },
-            async (payload) => {
-                console.log('Change received!', messages)
-                setMessages((prevState) => [payload.new, ...prevState])
-                const { count, error: messageError } = await supabase
-                    .from('messages')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('chat_room_id', roomId)
-                    .neq('user_id', user.id)
-                    .eq('read', false)
-                if (messageError) console.log("🚀 ~ file: ChatScreen.jsx:37 ~ messageError:", messageError)
-                if (count) {
-                    console.log("🚀 ~ file: ChatScreen.jsx:38 ~ count:", count)
-                    setUnreadMessages(count)
+    /*     supabase.channel('custom-all-channel')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'messages' },
+                async (payload) => {
+                    console.log('Change received!', messages)
+                    setMessages((prevState) => [payload.new, ...prevState])
+                    const { count, error: messageError } = await supabase
+                        .from('messages')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('chat_room_id', roomId)
+                        .neq('user_id', user.id)
+                        .eq('read', false)
+                    if (messageError) console.log("🚀 ~ file: ChatScreen.jsx:37 ~ messageError:", messageError)
+                    if (count) {
+                        console.log("🚀 ~ file: ChatScreen.jsx:38 ~ count:", count)
+                        setUnreadMessages(count)
+                    }
                 }
-            }
-        )
-        .subscribe()
+            )
+            .subscribe() */
 
     const fetchMessages = async () => {
 

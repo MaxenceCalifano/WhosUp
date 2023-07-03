@@ -17,7 +17,9 @@ function ChatListScreen({ navigation }) {
         const { data, error } = await supabase.rpc('get_chats_data', { userid: user.id })
         let chatsArray = []
         if (data) {
-            //  console.log("🚀 ~ file: ChatListScreen.jsx:20 ~ fetchData ~ data:", data)
+            //Récupère un array d'objet : {"avatar_url": "d3845241-7c65-491f-bd5e-02d00b98c0a8.png", "chat_room_id": "04ce2057-37c1-4fcb-8b23-c285721ef4cf", "content": "Gg", "created_at": "2023-07-02T06:13:09.588629+00:00", "id": "20d4f55f-78f8-40fe-b1a4-ef9612c3f982", "username": "Rémi"}
+            // Deux par discussion : l'user courant et l'autre participant
+            //console.log("🚀 ~ file: ChatListScreen.jsx:20 ~ fetchData ~ data:", data)
             data.forEach(item => item.id !== user.id ? chatsArray.push(item) : "")
             setChatUsers(chatsArray)
             setIsLoading(false)

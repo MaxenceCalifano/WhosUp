@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -13,12 +13,48 @@ import Map from './Map';
 import ChatListScreen from '../screens/ChatListScreen';
 import { supabase } from '../config/supabase'
 import { UnreadMessagesContext } from '../navigation/UserStack';
+import { useUser } from "../UserContext";
+
 
 export default function Main() {
 
+    const { user } = useUser()
     const Tab = createBottomTabNavigator();
-    const { unreadMessages } = useContext(UnreadMessagesContext)
+    //const { unreadMessages } = useContext(UnreadMessagesContext)
+    const [unreadMessages, setUnreadMeassages] = useState(0)
     console.log("🚀 ~ file: Main.jsx:21 ~ Main ~ unreadMessages:", unreadMessages)
+
+    const getUnreadMessages = async () => {
+        const { data, error } = await supabase.rpc('get_unread_messages_count', { p_user_id: user.id })
+        if (error) console.log("🚀 ~ file: Main.jsx:40 ~ error:", error)
+        if (data) setUnreadMeassages(data)
+    }
+
+    //Load one more time the number of unread messages 
+    useEffect(() => {
+        getUnreadMessages()
+    })
+    /*
+    quand il y a un changement, envoyer le payload dans le context
+    * Ensuite il faut charger le total du nmbre de messages non lus
+    * il faut aussi connaître le détail pour chaque discussion
+    */
+
+    // Listen for changes on messages table, and reloads the total number of unread messages
+    supabase.channel('custom-all-channel')
+        .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'messages' },
+            async (payload) => {
+                console.log('main jsx Change received!', payload)
+                // setMessages((prevState) => [payload.new, ...prevState])
+                getUnreadMessages()
+            }
+        )
+        .subscribe()
+
+
+
 
     return (
         <Tab.Navigator
