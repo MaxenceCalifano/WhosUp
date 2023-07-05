@@ -21,9 +21,10 @@ function AskPasswordReset() {
 
         if (error) {
             if (error.status === 422) {
-                console.log("🚀 ~ file: PasswordReset.jsx:18 ~ sendResetPasswordEmail ~ error:", error.status)
+                console.log("🚀 ~ file: AskPasswordReset.jsx:18 ~ sendResetPasswordEmail ~ error:", error.status)
                 setResponseMessage("L'adresse e-mail est invalide")
             } else {
+                console.log("🚀 ~ file: AskPasswordReset.jsx:27 ~ sendResetPasswordEmail ~ error:", error)
                 setResponseMessage("Une erreur est survenue")
             }
         }
