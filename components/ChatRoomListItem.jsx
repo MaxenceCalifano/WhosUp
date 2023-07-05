@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import dayjs from "dayjs";
 import { Pressable } from 'react-native';
 import { Image } from 'expo-image';
+import styles from "../styles";
 
 function ChatRoomListItem({ navigation, item }) {
     const { chat_room_id } = item
@@ -28,9 +29,19 @@ function ChatRoomListItem({ navigation, item }) {
                 <Text style={chatItemStyles.textContent_lastMessage}>{item.content}</Text>
             </View>
 
-            <Text>{dayjs().format('DD/MM') === dayjs(item.created_at).format('DD/MM')
-                ? dayjs(item.created_at).format('HH:mm')
-                : dayjs(item.created_at).format('DD/MM')}</Text>
+            <View style={{
+                justifyContent: 'center',
+                alignItems: "center"
+            }}>
+                <Text>{dayjs().format('DD/MM') === dayjs(item.created_at).format('DD/MM')
+                    ? dayjs(item.created_at).format('HH:mm')
+                    : dayjs(item.created_at).format('DD/MM')}</Text>
+                {
+                    item.unread_messages_count > 0 ? <View style={chatItemStyles.unreadMessagesCount}><Text style={{ color: "#FFFFFF" }}>{item.unread_messages_count}</Text></View> : null
+                }
+
+            </View>
+
 
         </Pressable>
     );
@@ -59,5 +70,14 @@ const chatItemStyles = StyleSheet.create({
     textContent_lastMessage: {
         color: 'grey'
     },
+    unreadMessagesCount: {
+        backgroundColor: styles.color,
+        borderRadius: 50,
+        width: 25,
+        height: 25,
+        fontWeight: "bold",
+        justifyContent: 'center',
+        alignItems: "center",
+    }
 })
 export default ChatRoomListItem;
