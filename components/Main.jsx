@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -12,7 +12,7 @@ import UserEventScreen from '../screens/UserEventsScreen';
 import Map from './Map';
 import ChatListScreen from '../screens/ChatListScreen';
 import { supabase } from '../config/supabase'
-import { UnreadMessagesContext } from '../navigation/UserStack';
+import { NewMessagesContext } from '../navigation/UserStack';
 import { useUser } from "../UserContext";
 
 
@@ -21,19 +21,25 @@ export default function Main() {
     const { user } = useUser()
     const Tab = createBottomTabNavigator();
     //const { unreadMessages } = useContext(UnreadMessagesContext)
+    const { setNewMessage } = useContext(NewMessagesContext)
     const [unreadMessages, setUnreadMeassages] = useState(0)
     console.log("🚀 ~ file: Main.jsx:21 ~ Main ~ unreadMessages:", unreadMessages)
 
     const getUnreadMessages = async () => {
         const { data, error } = await supabase.rpc('get_unread_messages_count', { p_user_id: user.id })
         if (error) console.log("🚀 ~ file: Main.jsx:40 ~ error:", error)
-        if (data) setUnreadMeassages(data)
+        // if (data) {
+        console.log("🚀 ~ file: Main.jsx:32 ~ getUnreadMessages ~ data:", data)
+        setUnreadMeassages(data)
+        //  }
     }
 
-    //Load one more time the number of unread messages 
+    //Load one first time the number of unread messages 
     useEffect(() => {
         getUnreadMessages()
-    })
+    }, [])
+
+    // useEffect(() => console.log(unreadMessages), [unreadMessages])
     /*
     quand il y a un changement, envoyer le payload dans le context
     * Ensuite il faut charger le total du nmbre de messages non lus
@@ -46,9 +52,17 @@ export default function Main() {
             'postgres_changes',
             { event: '*', schema: 'public', table: 'messages' },
             async (payload) => {
-                console.log('main jsx Change received!', payload)
+                //console.log('main jsx Change received!', payload)
                 // setMessages((prevState) => [payload.new, ...prevState])
-                getUnreadMessages()
+                if (payload.eventType === "INSERT") {
+                    setNewMessage({ chat_room_id: payload.new.chat_room_id, content: payload.new.content, user_id: payload.new.user_id })
+                    getUnreadMessages()
+                }
+                if (payload.eventType === 'UPDATE') {
+                    //console.log("les messages sont lus")
+                    getUnreadMessages()
+                }
+
             }
         )
         .subscribe()

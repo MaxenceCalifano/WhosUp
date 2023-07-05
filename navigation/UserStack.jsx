@@ -9,14 +9,14 @@ import Chat from "../screens/ChatScreen";
 import UpdateEventScreen from "../screens/UpdateEventScreen";
 
 const Stack = createNativeStackNavigator();
-export const UnreadMessagesContext = createContext({
+export const NewMessagesContext = createContext({
     unreadMessages: null,
 })
 
 export default function UserStack() {
-    const [unreadMessages, setUnreadMessages] = useState(0)
+    const [newMessage, setNewMessage] = useState("")
     return (
-        <UnreadMessagesContext.Provider value={{ unreadMessages, setUnreadMessages }}>
+        <NewMessagesContext.Provider value={{ newMessage, setNewMessage }}>
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Group>
@@ -28,6 +28,6 @@ export default function UserStack() {
                     </Stack.Group>
                 </Stack.Navigator>
             </NavigationContainer>
-        </UnreadMessagesContext.Provider>
+        </NewMessagesContext.Provider>
     )
 }

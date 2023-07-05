@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { supabase } from '../config/supabase'
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from "../UserContext";
-import { UnreadMessagesContext } from '../navigation/UserStack';
+import { NewMessagesContext } from '../navigation/UserStack';
 import dayjs from "dayjs";
 
 import styles from "../styles";
@@ -18,7 +18,7 @@ function Chat({ route, navigation }) {
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
-    const { setUnreadMessages } = useContext(UnreadMessagesContext)
+    const { newMessage } = useContext(NewMessagesContext)
 
     /*     supabase.channel('custom-all-channel')
             .on(
@@ -51,10 +51,18 @@ function Chat({ route, navigation }) {
             .order('created_at', { ascending: false })
 
         if (data) {
+            //console.log("🚀 ~ file: ChatScreen.jsx:54 ~ fetchMessages ~ data:", data)
+
             setMessages(data)
             setIsLoading(false)
+            // Set all the messages as read
+            const { error: messagesError } = await supabase
+                .from('messages')
+                .update({ read: true })
+                .eq('chat_room_id', roomId)
+
+            if (messagesError) console.log("🚀 ~ file: ChatScreen.jsx:45 ~ fetchMessages ~ error:", error)
         }
-        if (error) console.log("🚀 ~ file: ChatScreen.jsx:45 ~ fetchMessages ~ error:", error)
 
     }
 
@@ -63,30 +71,38 @@ function Chat({ route, navigation }) {
         /**
          * Post the message, then add his id to the chat_room table to know that this the last message
          */
+        setMessage('')
+
         supabase
             .from('messages')
             .insert({ content: message, chat_room_id: roomId, user_id: user.id })
             .select()
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 supabase
                     .from('chat_rooms')
                     .update({ last_message_id: res.data[0].id })
                     .eq('id', res.data[0].chat_room_id)
                     .then(response => {
                         console.log(response)
-                        setMessage('')
                         //chatViewRef.current.scrollToEnd({ animated: true })
                     })
                     .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:75 ~ postMessage ~ error:", error))
             })
             .catch(error => console.log("🚀 ~ file: ChatScreen.jsx:64 ~ postMessage ~ error:", error))
     }
+
     useEffect(() => {
         navigation.setOptions({ title: username })
         fetchMessages()
         //chatViewRef.current.scrollToEnd({ animated: true })
     }, [])
+
+    useEffect(() => {
+        console.log("🚀 ~ file: ChatScreen.jsx:98 ~ Chat ~ newMessage:", newMessage)
+        setMessages((prevState) => [newMessage, ...prevState])
+    }, [newMessage])
+
     return (
         <View style={chatStyles.main}>
             {
