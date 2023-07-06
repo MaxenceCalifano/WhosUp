@@ -40,6 +40,7 @@ function ChatListScreen({ navigation }) {
 
     const fetchData = async () => {
         setIsLoading(true)
+
         const { data, error } = await supabase.rpc('get_chats_data', { userid: user.id })
         let chatsArray = []
         if (data) {
@@ -47,6 +48,18 @@ function ChatListScreen({ navigation }) {
             // Deux par discussion : l'user courant et l'autre participant
             //console.log("🚀 ~ file: ChatListScreen.jsx:20 ~ fetchData ~ data:", data)
             data.forEach(item => item.id !== user.id ? chatsArray.push(item) : "")
+
+            // si il y a des discussion on ne veut charger que les nouvelles
+            // trouver dans data les discussion qui ne se trouvaient pas déja dans le state
+            /*  if (chatUsers.length !== 0) {
+                 console.log('chat user length', chatUsers.length)
+                 let filteredData = []
+                 data.forEach(elem => {
+                     if (chatUsers.findIndex(room => room.chat_room_id === elem.chat_room_id) === -1) filteredData.push(elem)
+                 })
+                 //chatUsers.filter(chat => data.every(elem => elem.chat_room_id !== chat.chat_room_id))
+                 console.log("🚀 ~ file: ChatListScreen.jsx:56 ~ fetchData ~ filteredData:", filteredData)
+             } */
             setChatUsers(chatsArray)
             setIsLoading(false)
         }
