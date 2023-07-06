@@ -1,16 +1,37 @@
 import { View, StyleSheet, FlatList, ActivityIndicator, Dimensions } from "react-native";
 import ChatRoomListItem from "../components/ChatRoomListItem";
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from "react";
+import { useCallback, useState, useContext, useEffect } from "react";
 import { supabase } from '../config/supabase'
 import { useUser } from "../UserContext";
 import styles from "../styles";
+import { NewMessagesContext } from '../navigation/UserStack';
+
 
 
 function ChatListScreen({ navigation }) {
     const { user } = useUser()
     const [chatUsers, setChatUsers] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+
+    //Message context
+    const { newMessage } = useContext(NewMessagesContext)
+
+    useEffect(() => {
+        console.log("🚀 ~ file: ChatListScreen.jsx:21 ~ ChatListScreen ~ newMessage:", newMessage)
+        const chatRooms = chatUsers.map(room => {
+            if (room.chat_room_id === newMessage.chat_room_id) {
+                room.content = newMessage.content
+                room.unread_messages_count = room.unread_messages_count + 1
+            }
+            return room
+        })
+        // console.log("🚀 ~ file: ChatListScreen.jsx:28 ~ chatRooms ~ chatRooms:", chatRooms)
+
+        setChatUsers(chatRooms)
+
+    }, [newMessage])
+
 
     const fetchData = async () => {
         setIsLoading(true)
