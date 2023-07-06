@@ -18,7 +18,12 @@ function ChatListScreen({ navigation }) {
     const { newMessage } = useContext(NewMessagesContext)
 
     useEffect(() => {
-        console.log("🚀 ~ file: ChatListScreen.jsx:21 ~ ChatListScreen ~ newMessage:", newMessage)
+
+        // Tests if the new message comes from a new chat or not
+        const isNewChatRoom = chatUsers.some(room => room.chat_room_id === newMessage.chat_room_id)
+        if (!isNewChatRoom) fetchData(user.id)
+
+        //Gets the new messages from existing chat
         const chatRooms = chatUsers.map(room => {
             if (room.chat_room_id === newMessage.chat_room_id) {
                 room.content = newMessage.content

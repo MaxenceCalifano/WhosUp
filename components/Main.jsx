@@ -23,13 +23,11 @@ export default function Main() {
     //const { unreadMessages } = useContext(UnreadMessagesContext)
     const { setNewMessage } = useContext(NewMessagesContext)
     const [unreadMessages, setUnreadMeassages] = useState(0)
-    console.log("🚀 ~ file: Main.jsx:21 ~ Main ~ unreadMessages:", unreadMessages)
 
     const getUnreadMessages = async () => {
         const { data, error } = await supabase.rpc('get_unread_messages_count', { p_user_id: user.id })
         if (error) console.log("🚀 ~ file: Main.jsx:40 ~ error:", error)
         // if (data) {
-        console.log("🚀 ~ file: Main.jsx:32 ~ getUnreadMessages ~ data:", data)
         setUnreadMeassages(data)
         //  }
     }
