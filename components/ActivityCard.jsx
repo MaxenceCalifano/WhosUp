@@ -8,7 +8,7 @@ function ActivityCard({ index, activity, navigation }) {
     return (
         <Pressable style={styles.card}
             onPress={() => navigation.navigate('Activité', { itemID: activity.uid })}>
-            <Image style={styles.image} source={activity.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : activity.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
+            <Image style={styles.image} source={activity.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : activity.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : activity.activity_type === "autre" ? require('../assets/other_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
                     <View>

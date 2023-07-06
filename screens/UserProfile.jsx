@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import styles from "../styles";
 
-export default function UserProfile() {
+export default function UserProfile({ navigation }) {
 
     const { user } = useUser()
 
@@ -166,6 +166,10 @@ export default function UserProfile() {
                 const { error } = await supabase.auth.signOut()
             }
             } title="Se déconnecter" />
+
+            <Pressable onPress={() => navigation.navigate('A propos')}>
+                <Text style={{ fontWeight: "bold", textAlign: "right", color: "#454545" }}>A propos de l'application</Text>
+            </Pressable>
         </View>
     );
 }
