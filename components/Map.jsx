@@ -113,6 +113,7 @@ export default function Map({ navigation }) {
                         if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon_approximate.png') }
                         if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon_approximate.png') }
                         if (marker.activity_type === "jeux de société") { markerIcon = require('../assets/game_icon_approximate.png') }
+                        if (marker.activity_type === "autre") { markerIcon = require('../assets/other_icon_approximate.png') }
                         return (
                             < Marker
                                 key={index}

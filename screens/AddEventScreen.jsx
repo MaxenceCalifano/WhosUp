@@ -189,9 +189,10 @@ export default function AddEventScreen({ navigation }) {
                                 color="#454545"
                                 onPress={showPicker}
 
-                            />} label="jeux de société" value="jeux de société" />
-                            <Picker.Item label="apéro" value="apéro" />
-                            <Picker.Item label="randonée" value="randonée" />
+                            />} label="Jeux de société" value="jeux de société" />
+                            <Picker.Item label="Apéro" value="apéro" />
+                            <Picker.Item label="Randonée" value="randonée" />
+                            <Picker.Item label="Autre" value="autre" />
                         </Picker>
                         <Divider />
 

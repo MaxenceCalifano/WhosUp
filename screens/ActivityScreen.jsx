@@ -91,10 +91,12 @@ function Activity({ route, navigation }) {
                 if (item.activity_type === "apéro") { setMarker(require('../assets/drink_icon.png')) }
                 if (item.activity_type === "randonée") { setMarker(require('../assets/hike_icon.png')) }
                 if (item.activity_type === "jeux de société") { setMarker(require('../assets/games_icon.png')) }
+                if (item.activity_type === "autre") { setMarker(require('../assets/otherIcon.png')) }
             } else {
                 if (item.activity_type === "apéro") { setMarker(require('../assets/drink_icon_approximate.png')) }
                 if (item.activity_type === "randonée") { setMarker(require('../assets/hike_icon_approximate.png')) }
                 if (item.activity_type === "jeux de société") { setMarker(require('../assets/game_icon_approximate.png')) }
+                if (item.activity_type === "autre") { setMarker(require('../assets/other_icon_approximate.png')) }
             }
         }
 
