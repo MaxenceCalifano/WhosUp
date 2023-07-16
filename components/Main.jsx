@@ -18,14 +18,15 @@ import { useUser } from "../UserContext";
 
 export default function Main() {
 
-    const { user } = useUser()
+    const { session } = useUser()
+    console.log("🚀 ~ file: Main.jsx:23 ~ Main ~ session:", session.data.session.user.id)
     const Tab = createBottomTabNavigator();
     //const { unreadMessages } = useContext(UnreadMessagesContext)
     const { setNewMessage } = useContext(NewMessagesContext)
     const [unreadMessages, setUnreadMeassages] = useState(0)
 
     const getUnreadMessages = async () => {
-        const { data, error } = await supabase.rpc('get_unread_messages_count', { p_user_id: user.id })
+        const { data, error } = await supabase.rpc('get_unread_messages_count', { p_user_id: session.data.session.user.id })
         if (error) console.log("🚀 ~ file: Main.jsx:40 ~ error:", error)
         // if (data) {
         setUnreadMeassages(data)
