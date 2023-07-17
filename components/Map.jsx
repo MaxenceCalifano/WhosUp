@@ -57,7 +57,9 @@ export default function Map({ navigation }) {
     }
 
     const displayConfigureAccount = async () => {
-        //console.log('display configure account')
+        const value = await AsyncStorage.getItem("welcomeScreenSeen")
+
+        console.log('display configure account', value)
         try {
             const value = await AsyncStorage.getItem("welcomeScreenSeen")
 

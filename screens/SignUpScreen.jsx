@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Pressable, TextInput, Button } from 'react-native'
+import { StyleSheet, View, Text, Pressable, TextInput, Button, ActivityIndicator, Modal, } from 'react-native'
 import styles from "../styles";
 import { supabase } from '../config/supabase'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -10,12 +10,16 @@ export default function SignUpScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [repeatedPassword, setRepeatedPassword] = useState()
     const [submitMessage, setSubmitMessage] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [userCreated, setUserCreated] = useState(false)
+
 
     // const createAccount = () => {
     async function signUpWithEmail() {
 
         if (password !== repeatedPassword) setSubmitMessage("Les mots de passe ne sont pas identiques")
         if (password === repeatedPassword) {
+            setLoading(true)
             setSubmitMessage()
             const regex = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/
 
@@ -32,7 +36,10 @@ export default function SignUpScreen({ navigation }) {
                     console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ signUpWithEmail ~ error:", error)
                     setSubmitMessage("Une erreur est survenue, veuillez réessayer")
                 }
-                if (data.session !== null) {
+                console.log("🚀 ~ file: SignUpScreen.jsx:36 ~ signUpWithEmail ~ data:", data)
+                if (data.user !== null) {
+                    setLoading(false)
+                    setUserCreated(true)
                     const storeData = async (value) => {
                         try {
                             await AsyncStorage.setItem('welcomeScreenSeen', value)
@@ -63,6 +70,31 @@ export default function SignUpScreen({ navigation }) {
     }
     return (
         <View style={styles.authContainer} >
+
+            {
+                loading ?
+                    <Modal animationType="fade" transparent={true}>
+                        <View style={signUpStyles.modalView}>
+                            <View style={signUpStyles.loaderContainer}>
+                                <ActivityIndicator color={styles.color} size={"large"} />
+                            </View>
+                        </View>
+                    </Modal>
+                    : null
+            }
+
+            {
+                userCreated ?
+                    <Modal animationType="fade" transparent={true}>
+                        <View style={signUpStyles.modalView}>
+                            <View style={signUpStyles.loaderContainer}>
+                                <Text>Votre compte à été créé, vous allez recevoir un e-mail de validation dans quelques instants</Text>
+                            </View>
+                        </View>
+                    </Modal>
+                    : null
+
+            }
             <Text style={{ fontWeight: 'bold', fontSize: 25, alignSelf: 'center', color: '#454545' }}>
                 Bienvenu(e) !
             </Text>
@@ -91,5 +123,27 @@ export default function SignUpScreen({ navigation }) {
 const signUpStyles = StyleSheet.create({
     button: {
         backgroundColor: '#FFF',
-    }
+    },
+    modalView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    loaderContainer: {
+        height: 250,
+        width: 250,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+        borderRadius: 15,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
 })
