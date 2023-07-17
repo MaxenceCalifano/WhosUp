@@ -12,7 +12,7 @@ function AskPasswordReset() {
 
     const sendResetPasswordEmail = async () => {
         const { data, error } = await supabase.auth
-            .resetPasswordForEmail(email, { redirectTo: "http://127.0.0.1:5173/" })
+            .resetPasswordForEmail(email, { redirectTo: "https://vantivities.maxencecalifano.tech/password-reset/" })
 
         if (data) {
             setResponseMessage("Vous allez recevoir un e-mail dans de réinitialisation dans quelques instants")

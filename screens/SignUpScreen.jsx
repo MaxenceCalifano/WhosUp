@@ -23,6 +23,9 @@ export default function SignUpScreen({ navigation }) {
                 const { data, error } = await supabase.auth.signUp({
                     email: email,
                     password: password,
+                    options: {
+                        emailRedirectTo: 'https://vantivities.maxencecalifano.tech/confirm-signup/'
+                    }
                 })
 
                 if (error) {
