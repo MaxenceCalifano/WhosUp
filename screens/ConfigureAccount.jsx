@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, TextInput, Text, Pressable, Image, Button, Modal, ActivityIndicator, Dimensions } from 'react-native';
 import { Divider } from "react-native-elements";
 import * as ImagePicker from 'expo-image-picker';
@@ -6,26 +6,16 @@ import { decode } from 'base64-arraybuffer'
 import styles from "../styles";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { supabase } from '../config/supabase'
-
-
+import { useUser } from "../UserContext";
 
 export default function ConfigureAccountScreen({ navigation }) {
     const [name, setName] = useState()
     const [photo, setPhoto] = useState()
-    const [userId, setUserId] = useState()
     const [responseMessage, setResponseMessage] = useState('')
     const [loading, setIsLoading] = useState(false)
+    const { user } = useUser()
 
-    const getCurrentUser = async => {
-        supabase.auth.getSession()
-            .then(res => {
-                setUserId(res.data.session.user.id)
-            })
-    }
 
-    useEffect(() => {
-        getCurrentUser()
-    }, [])
 
     const imagePicker = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -70,11 +60,19 @@ export default function ConfigureAccountScreen({ navigation }) {
                 const { error, status } = await supabase
                     .from('profiles')
                     .update({ username: name, avatar_url: res.data.path })
-                    .eq('id', userId)
+                    .eq('id', user.id)
+
 
                 if (error) {
-                    console.log(error)
-                    setResponseMessage(error.message)
+                    setIsLoading(false)
+
+                    if (error.code === 23505) {
+                        console.log(error)
+                        setResponseMessage("Ce pseudo est déjà pris")
+                    } else {
+                        console.log(error)
+                        setResponseMessage("Une erreur est survenue")
+                    }
                 }
                 if (status === 204) {
                     setIsLoading(false)
@@ -116,7 +114,7 @@ export default function ConfigureAccountScreen({ navigation }) {
                         <View style={accountStyles.modalView}>
                             <View style={accountStyles.loaderContainer}>
                                 <ActivityIndicator color={styles.color} size={"large"} />
-                                <Text style={{ marginTop: 10 }}>Création de votre compte..</Text>
+                                <Text style={{ marginTop: 10 }}>Mise à jour de votre compte..</Text>
                             </View>
                         </View>
                     </Modal>

@@ -19,7 +19,7 @@ import { useUser } from "../UserContext";
 export default function Main() {
 
     const { session } = useUser()
-    //console.log("🚀 ~ file: Main.jsx:23 ~ Main ~ session:", session.user.id)
+    console.log("🚀 ~ file: Main.jsx:23 ~ Main ~ session:", session)
     const Tab = createBottomTabNavigator();
     //const { unreadMessages } = useContext(UnreadMessagesContext)
     const { setNewMessage } = useContext(NewMessagesContext)
