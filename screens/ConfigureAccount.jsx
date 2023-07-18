@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { StyleSheet, View, TextInput, Text, Pressable, Image, Button, Modal, ActivityIndicator, Dimensions } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, TextInput, Text, Pressable, Image, Button, Modal, ActivityIndicator, Dimensions, Alert } from 'react-native';
 import { Divider } from "react-native-elements";
 import * as ImagePicker from 'expo-image-picker';
 import { decode } from 'base64-arraybuffer'
 import styles from "../styles";
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { supabase } from '../config/supabase'
 import { useUser } from "../UserContext";
 
@@ -13,9 +12,26 @@ export default function ConfigureAccountScreen({ navigation }) {
     const [photo, setPhoto] = useState()
     const [responseMessage, setResponseMessage] = useState('')
     const [loading, setIsLoading] = useState(false)
+    const [profileUpdated, setProfileUpdated] = useState(false)
     const { user } = useUser()
 
+    useEffect(
+        () =>
+            navigation.addListener('beforeRemove', (e) => {
+                if (profileUpdated) {
+                    return
+                }
 
+                // Prevent default behavior of leaving the screen
+                e.preventDefault();
+
+                // Prompt the user before leaving the screen
+                Alert.alert(
+                    'Vous devez choisir un pseudo et une photo de profil', 'pour finaliser votre inscription',
+                );
+            }),
+        [navigation, profileUpdated]
+    );
 
     const imagePicker = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -40,6 +56,7 @@ export default function ConfigureAccountScreen({ navigation }) {
         if (name === undefined || photo === undefined) {
             return setResponseMessage("Vous devez renseigner un pseudo et choisir une image de profil")
         }
+        setIsLoading(true)
         let contentType;
         if (photo.name.split('.')[1] === 'jpeg' || photo.name.split('.')[1] === 'jpg') {
             contentType = 'image/jpg'
@@ -47,7 +64,6 @@ export default function ConfigureAccountScreen({ navigation }) {
         if (photo.name.split('.')[1] === 'png') {
             contentType = 'image/png'
         }
-        setIsLoading(true)
         await supabase
             .storage
             .from('avatars')
@@ -75,18 +91,10 @@ export default function ConfigureAccountScreen({ navigation }) {
                     }
                 }
                 if (status === 204) {
+                    setProfileUpdated(true)
                     setIsLoading(false)
                     setResponseMessage("Votre compte a été mis à jour, redirection vers la page principale")
                     setTimeout(() => navigation.navigate('Carte'), 2000)
-                    const storeData = async (value) => {
-                        try {
-                            await AsyncStorage.setItem('welcomeScreenSeen', value)
-                        } catch (e) {
-                            console.log("🚀 ~ file: ConfigureAccount.jsx:17 ~ storeData ~ e:", e)
-                            // saving error
-                        }
-                    }
-                    storeData("true")
                 }
             })
     }

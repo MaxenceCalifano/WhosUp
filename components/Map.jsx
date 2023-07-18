@@ -7,7 +7,6 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useUser } from "../UserContext";
 
 export default function Map({ navigation }) {
@@ -57,28 +56,18 @@ export default function Map({ navigation }) {
     }
 
     const displayConfigureAccount = async () => {
-        const value = await AsyncStorage.getItem("welcomeScreenSeen")
 
-        console.log('display configure account', value)
-        try {
-            const value = await AsyncStorage.getItem("welcomeScreenSeen")
+        let { data, error } = await supabase
+            .from('profiles')
+            .select('username, avatar_url')
+            .eq('id', user.id)
 
-            if (value === 'false') {
-                console.log('user', user.id)
-                let { data, error } = await supabase
-                    .from('profiles')
-                    .select('username, avatar_url')
-                    .eq('id', user.id)
+        console.log("🚀 ~ file: Map.jsx:65 ~ displayConfigureAccount ~ data:", data)
+        console.log("🚀 ~ file: Map.jsx:62 ~ displayConfigureAccount ~ error:", error)
 
-                console.log(data)
-                console.log(error)
-                data[0].avatar_url === null || data[0].username === null ? navigation.navigate("Configurer le compte")
-                    : await AsyncStorage.setItem('welcomeScreenSeen', "true")
-            }
-        } catch (e) {
-            // error reading value
-            console.log(e)
-        }
+
+        data[0].avatar_url === null || data[0].username === null ? navigation.navigate("Configurer le compte")
+            : null
     }
     displayConfigureAccount()
 
