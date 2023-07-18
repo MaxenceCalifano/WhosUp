@@ -40,6 +40,10 @@ export default function SignUpScreen({ navigation }) {
                 if (data.user !== null) {
                     setLoading(false)
                     setUserCreated(true)
+                    setTimeout(() => {
+                        setUserCreated(false)
+                        navigation.navigate("Se connecter")
+                    }, 5000)
                     const storeData = async (value) => {
                         try {
                             await AsyncStorage.setItem('welcomeScreenSeen', value)
