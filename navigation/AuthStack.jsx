@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
-import ConfigureAccount from "../screens/ConfigureAccount"
 import AskPasswordReset from "../screens/AskPasswordReset";
 import PasswordReset from "../screens/PasswordReset";
 
