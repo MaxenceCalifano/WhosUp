@@ -18,6 +18,7 @@ export default function SignInScreen({ navigation }) {
         })
         if (data) setIsloading(false)
         if (error) {
+            console.log("🚀 ~ file: SignInScreen.jsx:21 ~ login ~ error:", error)
             setErrorMessage(error.message)
         }
     }
