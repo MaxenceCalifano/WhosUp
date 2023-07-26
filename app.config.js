@@ -1,6 +1,6 @@
 export default {
   expo: {
-    name: "WhosUp",
+    name: "Vantivities",
     slug: "whosUp",
     owner : 'velomarchand',
     version: "1.0.0",
@@ -31,7 +31,7 @@ export default {
       backgroundColor: "#F5DF4D",
     },
     android: {
-      package: 'com.whosup.app',
+      package: 'com.vantivities.app',
       config: {
         googleMaps:{
           apiKey: "AIzaSyA8HqahYLkO53-h022oIQeztlgNvWx_6vg"
