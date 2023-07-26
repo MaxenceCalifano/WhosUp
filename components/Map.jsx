@@ -22,7 +22,8 @@ export default function Map({ navigation }) {
 
     const [activities, setActivities] = useState()
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
-    const { user } = useUser()
+    const { session } = useUser()
+
 
     const mapViewRef = useRef()
     // Used to move carousel on press on Markers
@@ -60,7 +61,7 @@ export default function Map({ navigation }) {
         let { data, error } = await supabase
             .from('profiles')
             .select('username, avatar_url')
-            .eq('id', user.id)
+            .eq('id', session.user.id)
 
         console.log("🚀 ~ file: Map.jsx:65 ~ displayConfigureAccount ~ data:", data)
         console.log("🚀 ~ file: Map.jsx:62 ~ displayConfigureAccount ~ error:", error)
@@ -69,7 +70,6 @@ export default function Map({ navigation }) {
         data[0].avatar_url === null || data[0].username === null ? navigation.navigate("Configurer le compte")
             : null
     }
-    displayConfigureAccount()
 
     const scrollToCard = (currentIndex, markerIndex) => {
         currentIndex < markerIndex ?
@@ -78,6 +78,7 @@ export default function Map({ navigation }) {
     }
 
     useEffect(() => {
+        displayConfigureAccount()
         edgeFetchActivities()
     }, [])
 
