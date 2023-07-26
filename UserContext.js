@@ -15,7 +15,8 @@ export const UserContext = createContext({
       console.log("🚀 ~ file: UserContext.js:15 ~ updateUser ~ session:", session)
       
       if(session.data.session !== null) {
-        setSession(session)
+        setSession(session.data.session)
+        console.log("🚀 ~ file: UserContext.js:19 ~ updateUser ~ session:", session)
         setUser(session.data.session.user)
       }
       
