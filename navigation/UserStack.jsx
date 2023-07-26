@@ -23,10 +23,17 @@ export default function UserStack() {
                     <Stack.Group>
                         <Stack.Screen name='Carte' component={Main} options={{ headerShown: false }} />
                         <Stack.Screen name='Activité' component={Activity} options={{ headerShown: false }} />
-                        <Stack.Screen name='Configurer le compte' component={ConfigureAccount} />
                         <Stack.Screen name='Chat' component={Chat} />
                         <Stack.Screen name="Modifier l'activité" component={UpdateEventScreen} />
                         <Stack.Screen name="A propos" component={About} />
+                        <Stack.Screen
+                            name='Configurer le compte'
+                            component={ConfigureAccount}
+                            options={{
+                                headerBackVisible: false,
+                                gestureEnabled: false,
+                                headerLeft: () => (<></>),
+                            }} />
                     </Stack.Group>
                 </Stack.Navigator>
             </NavigationContainer>

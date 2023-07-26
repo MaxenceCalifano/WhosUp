@@ -19,12 +19,6 @@ export default function AuthStack() {
                 <Stack.Screen name='Bienvenu(e)' component={WelcomeScreen} />
                 <Stack.Screen name='Se connecter' component={SignInScreen} />
                 <Stack.Screen name='Créer un compte' component={SignUpScreen} />
-                <Stack.Screen name='Configurer le compte' component={ConfigureAccount} options={{
-                    headerBackVisible: false,
-                    gestureEnabled: false,
-                    headerLeft: () => (<></>),
-                    headerShown: false
-                }} />
                 <Stack.Screen name='Réinitialiser le mot de passe' component={AskPasswordReset} />
                 <Stack.Screen name='Choisir le nouveau mot de passe' component={PasswordReset} />
             </Stack.Navigator>

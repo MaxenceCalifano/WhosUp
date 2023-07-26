@@ -18,17 +18,17 @@ export default function ConfigureAccountScreen({ navigation }) {
     useEffect(
         () =>
             navigation.addListener('beforeRemove', (e) => {
-                if (profileUpdated) {
-                    return
+                if (!profileUpdated) {
+                    // Prevent default behavior of leaving the screen
+                    e.preventDefault();
+
+                    // Prompt the user before leaving the screen
+                    Alert.alert(
+                        'Vous devez choisir un pseudo et une photo de profil', 'pour finaliser votre inscription',
+                    );
                 }
 
-                // Prevent default behavior of leaving the screen
-                e.preventDefault();
 
-                // Prompt the user before leaving the screen
-                Alert.alert(
-                    'Vous devez choisir un pseudo et une photo de profil', 'pour finaliser votre inscription',
-                );
             }),
         [navigation, profileUpdated]
     );
