@@ -17,4 +17,4 @@ supabase/
 
 my-app
 .env
-certificate_for_google.pem
+*.pem
