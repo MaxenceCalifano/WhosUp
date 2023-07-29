@@ -13,7 +13,7 @@ function ActivityCard({ index, activity, navigation }) {
                 <View style={styles.firstColumn}>
                     <View>
                         <Text style={styles.activityTitle}>{activity.activity_title}</Text>
-                        <Text>{activity.activity_description.slice(0, 40)}</Text>
+                        <Text>{activity.activity_description.slice(0, 30) + '...'}</Text>
                     </View>
                     <View>
                         {/* <Text>{activity.date.slice(4, 10)}</Text> */}

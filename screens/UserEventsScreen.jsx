@@ -58,7 +58,7 @@ function UserEventScreen({ navigation }) {
             {isValidated ? "" : <Text>(En attente de validation par l'organisateur)</Text>}
             <Text>{item.activity_description.slice(0, 40)}</Text>
             <View style={eventsScreenStyles.dateAndParticipants}>
-                <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(item.date).format('DD MMM, YYYY hh:mm')}</Text>
+                <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(item.date).format('DD/MM/YYYY HH:mm')}</Text>
             </View>
         </Pressable>
     )
