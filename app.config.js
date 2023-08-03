@@ -12,6 +12,11 @@ export default {
       resizeMode: "contain",
       backgroundColor: "#F5DF4D"
     },
+    build: {
+      production: {
+        channel: "production"
+      }
+    },
     runtimeVersion: {
       policy: "sdkVersion"
     },
@@ -32,6 +37,7 @@ export default {
     },
     android: {
       package: 'com.vantivities.app',
+      versionCode: 2,
       config: {
         googleMaps:{
           apiKey: "AIzaSyA8HqahYLkO53-h022oIQeztlgNvWx_6vg"
