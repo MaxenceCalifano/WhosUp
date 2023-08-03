@@ -148,7 +148,7 @@ export default function AddEventScreen({ navigation }) {
                         </View>
                         : <></>
                     }
-                    <View style={{ height: Dimensions.get("screen").height, flex: 1, justifyContent: "space-between" }}>
+                    <View style={{ height: Dimensions.get("window").height, flex: 1, justifyContent: "space-between" }}>
                         {/*Activity title*/}
                         <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
 

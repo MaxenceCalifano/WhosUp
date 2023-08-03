@@ -382,7 +382,7 @@ function Activity({ route, navigation }) {
                                     : <></>}
                             </MapView>
                         </View>
-                        {currentUserIsValidated || isHost ? <></> : <Text>L'emplacement exact vous sera communiquée lorsque votre participation sera validée</Text>}
+                        {currentUserIsValidated || isHost ? <></> : <Text>L'emplacement exact vous sera communiqué lorsque votre participation sera validée</Text>}
                     </View>
                 </ScrollView >
             </View >
