@@ -20,7 +20,7 @@ export default function Map({ navigation }) {
         }
     );
 
-    const [activities, setActivities] = useState()
+    const [activities, setActivities] = useState([])
     const [showSearchIsthisArea, setShowSearchInthisArea] = useState(false)
     const { session } = useUser()
 
@@ -100,7 +100,7 @@ export default function Map({ navigation }) {
                 region={location}
             >
                 {
-                    activities ? activities.map((marker, index) => {
+                    activities.length > 0 ? activities.map((marker, index) => {
                         let markerIcon;
                         if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon_approximate.png') }
                         if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon_approximate.png') }
@@ -133,37 +133,40 @@ export default function Map({ navigation }) {
                                 }}
                             />
                         )
-                    }) : ""
+                    }) : null
                 }
 
             </ MapView>
-            <View style={styles.carouselContainer}>
-                <Carousel
-                    style={styles.carousel}
-                    loop={false}
-                    width={Dimensions.get('window').width - 10}
-                    height={150}
-                    autoPlay={false}
-                    data={activities}
-                    scrollAnimationDuration={1000}
-                    ref={ref}
-                    onSnapToItem={index => {
-                        const newLocation = {
-                            ...location,
-                            latitude: activities[index].location.latitude,
-                            longitude: activities[index].location.longitude
-                        }
-                        mapViewRef.current.animateToRegion(
-                            newLocation,
-                            //Duration
-                            300
-                        )
-                    }}
-                    renderItem={({ index, item }) => (
-                        <ActivityCard navigation={navigation} index={index} activity={item} />
-                    )}
-                />
-            </View>
+            {
+                activities.length > 0 ? <View style={styles.carouselContainer}>
+                    <Carousel
+                        style={styles.carousel}
+                        loop={false}
+                        width={Dimensions.get('window').width - 10}
+                        height={150}
+                        autoPlay={false}
+                        data={activities}
+                        scrollAnimationDuration={1000}
+                        ref={ref}
+                        onSnapToItem={index => {
+                            const newLocation = {
+                                ...location,
+                                latitude: activities[index].location.latitude,
+                                longitude: activities[index].location.longitude
+                            }
+                            mapViewRef.current.animateToRegion(
+                                newLocation,
+                                //Duration
+                                300
+                            )
+                        }}
+                        renderItem={({ index, item }) => (
+                            <ActivityCard navigation={navigation} index={index} activity={item} />
+                        )}
+                    />
+                </View> : null
+            }
+
 
             {
                 /* Search in this area button */
