@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Modal, Pressable, Dimensions } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Modal, Pressable, Dimensions, Button } from 'react-native'
+import MapView from 'react-native-maps';
+import { Icon } from 'react-native-elements'
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import UserLocation from "./UserLocation";
+import styles from "../styles";
 
 
 export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLocation, location, setPlace }) {
@@ -13,38 +16,64 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
             // User's position
             return <UserLocation setLocation={setLocation} setPlace={setPlace} />
         case 1:
-            // Coordinate 
-            const regex = /[^0-9.-]/
-            const [errorMessage, setErrorMessage] = useState()
+            // Coordinate
+            const validateLocation = () => {
+                console.log(region)
+                setRegion(region)
+                setPlace(region.latitude + ', ' + region.longitude)
+                setMapModalVisible(!mapModal)
+                setSelectedIndex(null)
+            }
+            const windowWidth = Dimensions.get('window').width;
+            const [mapModal, setMapModalVisible] = useState(true)
+            const [region, setRegion] = useState({
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
+            })
 
             return (
-                <View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }} >
-                        <View style={pageStyles.coordinateCard} >
-                            <Text style={pageStyles.labelColor}>Latitude</Text>
-                            <TextInput keyboardType="numeric" placeholder="43.15656" onChangeText={(value) => {
-                                if (regex.test(value)) setErrorMessage("Les coordonnées ne doivent inclure que des chiffres et un point")
-                                if (!regex.test(value)) {
-                                    setErrorMessage('')
-                                    if (value <= 90 && value >= -90) setLocation({ ...location, latitude: value })
-                                    else setErrorMessage("La latitude ne doit être inclue qu'entre -90 et 90 degrès")
-                                }
-                            }}></TextInput>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={mapModal}>
+                    <View style={{ flex: 1 }}>
+                        <MapView
+                            initialRegion={{
+                                latitude: 37.78825,
+                                longitude: -122.4324,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421,
+                            }}
+                            onRegionChangeComplete={(region) => setRegion(region)}
+                            loadingEnabled
+                            loadingIndicatorColor="#F5DF4D"
+                            loadingBackgroundColor="#fffff"
+                            style={pageStyles.map}
+                        />
+                        <Button accessibilityLabel="Valider la localisation de l'activité"
+                            title="Valider" onPress={() => validateLocation()}
+                            color={styles.color}
+                            buttonStyle={{ backgroundColor: styles.color, position: "absolute", bottom: 150, width: '50%' }} />
+
+                        <Pressable
+                            style={{ width: '10%', backgroundColor: 'red', position: 'absolute', right: 10, top: 20, borderRadius: 50 }}
+                            onPress={() => {
+                                setMapModalVisible(!mapModal)
+                                setSelectedIndex(null)
+                            }
+                            }
+                        >
+                            <Text style={{ textAlign: 'center', textAlignVertical: 'center', height: 35, color: "white" }}>X</Text>
+                        </Pressable>
+                        <View style={{ position: "absolute", top: "50%", left: windowWidth / 2 - 13, zIndex: 2 }}>
+                            <Icon name="crosshairs-gps" type="material-community" size={50} color={"black"} />
                         </View>
-                        <View style={pageStyles.coordinateCard} >
-                            <Text style={pageStyles.labelColor}>Longitude</Text>
-                            <TextInput keyboardType="numeric" placeholder="43.15656" onChangeText={(value) => {
-                                if (regex.test(value)) setErrorMessage("Les coordonnées ne doivent inclure que des chiffres et un point")
-                                if (!regex.test(value)) {
-                                    setErrorMessage('')
-                                    if (value <= 180 && value >= -180) setLocation({ ...location, longitude: value })
-                                    else setErrorMessage("La longitude ne doit être inclue qu'entre -180 et 180 degrès")
-                                }
-                            }}></TextInput>
-                        </View>
+                        <Text>{region.latitude}, {region.longitude}</Text>
                     </View>
-                    <Text>{errorMessage}</Text>
-                </View>
+
+                </Modal>
             )
         case 2:
             // Place selected with Google maps
@@ -77,7 +106,7 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                                     },
                                     listView: {
                                         backgroundColor: "white",
-                                        width: Dimensions.get('window').width - 20,
+                                        width: Dimensions.get('screen').width - 20,
                                         padding: 10
                                     }
                                 }}
@@ -98,7 +127,7 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                                 style={{ width: '10%', backgroundColor: 'white' }}
                                 onPress={() => {
                                     setModalVisible(!modalVisible)
-                                    setSelectedIndex()
+                                    setSelectedIndex(null)
                                 }
                                 }
                             >
@@ -125,5 +154,10 @@ const pageStyles = StyleSheet.create({
         padding: 5,
         width: '48%',
         borderRadius: 5
+    },
+    map: {
+        /*  width: "100%",
+         height: "100%" */
+        flex: 1
     }
 })
