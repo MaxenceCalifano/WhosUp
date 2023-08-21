@@ -89,13 +89,13 @@ function Activity({ route, navigation }) {
         if (item) {
             if (currentUserIsValidated || isHost) {
                 if (item.activity_type === "apéro") { setMarker(require('../assets/drink_icon.png')) }
-                if (item.activity_type === "randonée") { setMarker(require('../assets/hike_icon.png')) }
-                if (item.activity_type === "jeux de société") { setMarker(require('../assets/games_icon.png')) }
+                if (item.activity_type === "sport") { setMarker(require('../assets/hike_icon.png')) }
+                if (item.activity_type === "jeux") { setMarker(require('../assets/games_icon.png')) }
                 if (item.activity_type === "autre") { setMarker(require('../assets/otherIcon.png')) }
             } else {
                 if (item.activity_type === "apéro") { setMarker(require('../assets/drink_icon_approximate.png')) }
-                if (item.activity_type === "randonée") { setMarker(require('../assets/hike_icon_approximate.png')) }
-                if (item.activity_type === "jeux de société") { setMarker(require('../assets/game_icon_approximate.png')) }
+                if (item.activity_type === "sport") { setMarker(require('../assets/hike_icon_approximate.png')) }
+                if (item.activity_type === "jeux") { setMarker(require('../assets/game_icon_approximate.png')) }
                 if (item.activity_type === "autre") { setMarker(require('../assets/other_icon_approximate.png')) }
             }
         }
@@ -252,7 +252,7 @@ function Activity({ route, navigation }) {
                     <Pressable style={activityStyles.backIcon} onPress={() => navigation.goBack()}>
                         <Ionicons name="arrow-back-outline" size={24} color="black" />
                     </Pressable>
-                    <Image style={activityStyles.image} source={item.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : item.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : item.activity_type === "autre" ? require('../assets/other_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
+                    <Image style={activityStyles.image} source={item.activity_type === "sport" ? require('../assets/hiking_thumbnail.jpg') : item.activity_type === "jeux" ? require('../assets/tablegame_thumbnail.jpg') : item.activity_type === "autre" ? require('../assets/other_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
 
                     <View style={activityStyles.dataContainer} >
                         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>

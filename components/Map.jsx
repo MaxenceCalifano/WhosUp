@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
 import { useUser } from "../UserContext";
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 export default function Map({ navigation }) {
 
@@ -85,7 +86,6 @@ export default function Map({ navigation }) {
 
     return (
         <GestureHandlerRootView>
-
             <MapView
                 style={styles.map}
                 ref={mapViewRef}
@@ -103,8 +103,8 @@ export default function Map({ navigation }) {
                     activities.length > 0 ? activities.map((marker, index) => {
                         let markerIcon;
                         if (marker.activity_type === "apéro") { markerIcon = require('../assets/drink_icon_approximate.png') }
-                        if (marker.activity_type === "randonée") { markerIcon = require('../assets/hike_icon_approximate.png') }
-                        if (marker.activity_type === "jeux de société") { markerIcon = require('../assets/game_icon_approximate.png') }
+                        if (marker.activity_type === "sport") { markerIcon = require('../assets/hike_icon_approximate.png') }
+                        if (marker.activity_type === "jeux") { markerIcon = require('../assets/game_icon_approximate.png') }
                         if (marker.activity_type === "autre") { markerIcon = require('../assets/other_icon_approximate.png') }
                         return (
                             < Marker

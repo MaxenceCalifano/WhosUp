@@ -153,7 +153,7 @@ export default function AddEventScreen({ navigation }) {
                         <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
 
                         {/*Number of antendees input*/}
-                        <Text>Nombre de participants: {people}</Text>
+                        <Text>Nombre de participants : {people}</Text>
                         <Slider
                             value={people}
                             onValueChange={setPeople}
@@ -189,14 +189,15 @@ export default function AddEventScreen({ navigation }) {
                                 color="#454545"
                                 onPress={showPicker}
 
-                            />} label="Jeux de société" value="jeux de société" />
+                            />} label="Jeux" value="jeux" />
                             <Picker.Item label="Apéro" value="apéro" />
-                            <Picker.Item label="Randonée" value="randonée" />
+                            <Picker.Item label="Sport" value="sport" />
                             <Picker.Item label="Autre" value="autre" />
                         </Picker>
                         <Divider />
 
                         {/*Calendar */}
+                        <Text>Sélectionnez la date et l'heure de votre activité :</Text>
                         <Pressable style={{ flexDirection: 'row', paddingHorizontal: 0, gap: 5 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
                             <Icon
                                 name="calendar"
@@ -210,12 +211,12 @@ export default function AddEventScreen({ navigation }) {
                         <Divider />
 
                         {/*Activity description*/}
-                        <Text style={{ marginTop: pageStyles.marginTop }}>Description de l'activité</Text>
+                        <Text style={{ marginTop: pageStyles.marginTop }}>Description :</Text>
                         <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
                         <Divider />
 
                         {/*Place input*/}
-                        <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
+                        <Text style={{ marginTop: pageStyles.marginTop }}>Lieu : {place}</Text>
                         <ButtonGroup
                             buttons={['Ma position', 'Sur la carte', "Autour d'un lieu"]}
                             selectedIndex={selectedIndex}
