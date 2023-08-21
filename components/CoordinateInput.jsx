@@ -19,7 +19,7 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
             // Coordinate
             const validateLocation = () => {
                 console.log(region)
-                setRegion(region)
+                setLocation(region)
                 setPlace(region.latitude + ', ' + region.longitude)
                 setMapModalVisible(!mapModal)
                 setSelectedIndex(null)
