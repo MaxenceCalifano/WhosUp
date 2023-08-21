@@ -11,7 +11,7 @@ function ActivityCard({ index, activity, navigation }) {
             <Image style={styles.image} source={activity.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : activity.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : activity.activity_type === "autre" ? require('../assets/other_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
-                    <View>
+                    <View >
                         <Text style={styles.activityTitle}>{activity.activity_title}</Text>
                         <Text>{activity.activity_description.slice(0, 30) + '...'}</Text>
                     </View>
@@ -19,7 +19,6 @@ function ActivityCard({ index, activity, navigation }) {
                         {/* <Text>{activity.date.slice(4, 10)}</Text> */}
                         <Text><FontAwesome5 name="calendar-day" size={24} color="black" /> {dayjs(activity.date).format('DD/MM')}</Text>
                         <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(activity.date).format('HH:mm')}</Text>
-                        <Text>{activity.activity_type}</Text>
                     </View>
                 </View>
 
@@ -49,11 +48,14 @@ const styles = StyleSheet.create({
     },
     textContent: {
         padding: 7,
+        //backgroundColor: 'red',
+        // width: '100%'
+        flex: 1
     },
     firstColumn: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '50%',
+        width: '65%',
         paddingHorizontal: 5,
         gap: 10,
     },
