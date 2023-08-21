@@ -70,7 +70,9 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                         <View style={{ position: "absolute", top: "50%", left: windowWidth / 2 - 13, zIndex: 2 }}>
                             <Icon name="crosshairs-gps" type="material-community" size={50} color={"black"} />
                         </View>
-                        <Text>{region.latitude}, {region.longitude}</Text>
+                        <View style={{ width: '100%', flex: 1, alignContent: "center", justifyContent: "center", alignItems: "center", position: "absolute", bottom: 100 }}>
+                            <Text style={{ width: '70%', backgroundColor: "lightgrey", padding: 10, borderRadius: 5 }}>Latitude:{Math.round(region.latitude * 1000) / 1000}, Longitude:{Math.round(region.longitude * 1000) / 1000}</Text>
+                        </View>
                     </View>
 
                 </Modal>
