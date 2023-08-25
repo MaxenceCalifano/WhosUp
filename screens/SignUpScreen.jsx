@@ -108,6 +108,7 @@ export default function SignUpScreen({ navigation }) {
                 autoComplete="email"
                 onChangeText={(value) => setEmail(value)}
                 style={styles.input} placeholder="e-mail" />
+            <Text>Votre mot de passe doit contenir au moins 8 caractères, un caractère spécial, et une majuscule</Text>
             <TextInput
                 secureTextEntry
                 value={password}
