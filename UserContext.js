@@ -29,7 +29,7 @@ export const UserContext = createContext({
           console.log('signed out')
           setSession(null)
           setUser(null)
-        } else  if (event ==='SIGN_IN') {
+        } else  if (event ==='SIGNED_IN') {
           console.log('sign in', session)
             setSession(session)
             setUser(session.user)
