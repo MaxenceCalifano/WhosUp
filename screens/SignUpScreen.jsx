@@ -100,7 +100,7 @@ export default function SignUpScreen({ navigation }) {
 
             }
             <Text style={{ fontWeight: 'bold', fontSize: 25, alignSelf: 'center', color: '#454545' }}>
-                Bienvenu(e) !
+                Bienvenue !
             </Text>
             <TextInput
                 value={email}
@@ -108,7 +108,7 @@ export default function SignUpScreen({ navigation }) {
                 autoComplete="email"
                 onChangeText={(value) => setEmail(value)}
                 style={styles.input} placeholder="e-mail" />
-            <Text>Votre mot de passe doit contenir au moins 8 caractères, un caractère spécial, et une majuscule</Text>
+            <Text style={signUpStyles.passwordCondition}>Le mot de passe doit contenir au moins 8 caractères, un caractère spécial, et une majuscule</Text>
             <TextInput
                 secureTextEntry
                 value={password}
@@ -150,5 +150,12 @@ const signUpStyles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+    },
+    passwordCondition: {
+        alignSelf: "center",
+        color: styles.input.color,
+        borderRadius: 10,
+        padding: 5,
+        width: "100%"
     },
 })
