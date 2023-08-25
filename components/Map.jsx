@@ -8,7 +8,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
 import { useUser } from "../UserContext";
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 export default function Map({ navigation }) {
 
