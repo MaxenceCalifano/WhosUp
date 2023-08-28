@@ -15,7 +15,7 @@ function AskPasswordReset() {
             .resetPasswordForEmail(email, { redirectTo: "https://vantivities.maxencecalifano.tech/password-reset/" })
 
         if (data) {
-            setResponseMessage("Vous allez recevoir un e-mail dans de réinitialisation dans quelques instants")
+            setResponseMessage("Vous allez recevoir un e-mail de réinitialisation dans quelques instants")
             console.log("🚀 ~ file: PasswordReset.jsx:20 ~ sendResetPasswordEmail ~ data:", data)
         }
 
