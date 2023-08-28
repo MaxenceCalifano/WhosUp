@@ -25,7 +25,7 @@ export default function SignInScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={[styles.text, { fontSize: 25 }]} >A la rencontre de voyageurs !</Text>
+            <Text style={[styles.text, { fontSize: 25 }]} >Bon retour parmi nous !</Text>
             <TextInput keyboardType="email-address" style={style.input} placeholder="e-mail" onChangeText={(value) => setEmail(value)} />
             <TextInput secureTextEntry style={style.input} placeholder="mot de passe" onChangeText={(value) => setPassword(value)} />
             <Pressable style={[style.button, styles.button]} onPress={login}>
