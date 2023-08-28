@@ -1,22 +1,26 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Dimensions, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
 import ActivityCard from './ActivityCard';
-import { StyleSheet, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
 import { useUser } from "../UserContext";
+import * as Location from 'expo-location';
 
 export default function Map({ navigation }) {
+
+    const { width, height } = Dimensions.get('window');
+    const ASPECT_RATIO = width / height;
+    const LATITUDE_DELTA = 38.061143345741286;
 
     const [location, setLocation] = useState(
         {
             "latitude": 42.56896371693217,
-            "latitudeDelta": 38.061143345741286,
+            "latitudeDelta": LATITUDE_DELTA,
             "longitude": 0.08388038724660962,
-            "longitudeDelta": 26.660386472940445
+            "longitudeDelta": LATITUDE_DELTA * ASPECT_RATIO
         }
     );
 
@@ -29,7 +33,7 @@ export default function Map({ navigation }) {
     // Used to move carousel on press on Markers
     const ref = useRef(null)
 
-    const edgeFetchActivities = async () => {
+    const edgeFetchActivities = async (location) => {
 
         //Arbitraries values to loads activities in a not too big perimeter
         // Makes sure that the value is a number
@@ -77,9 +81,33 @@ export default function Map({ navigation }) {
             : ref.current.scrollTo(currentIndex - markerIndex)
     }
 
+    const getUserLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            //fetch activities at the default values
+            edgeFetchActivities(location)
+            return;
+        }
+
+        let userLocation = await Location.getCurrentPositionAsync({});
+        const newLocation = {
+            ...location,
+            latitude: userLocation.coords.latitude,
+            longitude: userLocation.coords.longitude
+        }
+        console.log("🚀 ~ file: Map.jsx:94 ~ getUserLocation ~ newLocation:", newLocation)
+
+        setLocation(newLocation)
+        edgeFetchActivities(newLocation)
+        console.log("🚀 ~ file: Map.jsx:93 ~ getUserLocation ~ location:", userLocation.coords)
+    }
+
     useEffect(() => {
+        getUserLocation()
         displayConfigureAccount()
-        edgeFetchActivities()
+        //edgeFetchActivities()
     }, [])
 
 
@@ -92,6 +120,7 @@ export default function Map({ navigation }) {
                 loadingIndicatorColor="#F5DF4D"
                 loadingBackgroundColor="#fffff"
                 provider={PROVIDER_GOOGLE}
+                rotateEnabled={false}
                 onRegionChangeComplete={(region, gesture) => {
                     if (!gesture.isGesture) return
                     handleRegionChangeComplete(region)

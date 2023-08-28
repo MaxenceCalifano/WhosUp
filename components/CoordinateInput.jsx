@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet, Modal, Pressable, Dimensions, Button } from 'react-native'
 import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements'
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import * as Location from 'expo-location';
 import UserLocation from "./UserLocation";
 import styles from "../styles";
 
@@ -25,13 +25,34 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                 setSelectedIndex(null)
             }
             const windowWidth = Dimensions.get('window').width;
+            const windowheight = Dimensions.get('window').height;
             const [mapModal, setMapModalVisible] = useState(true)
             const [region, setRegion] = useState({
-                latitude: 37.78825,
-                longitude: -122.4324,
+                latitude: 42.391,
+                longitude: 2.18,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421
             })
+            const getUserLocation = async () => {
+                let { status } = await Location.requestForegroundPermissionsAsync();
+
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
+
+                let userLocation = await Location.getCurrentPositionAsync({});
+                const newLocation = {
+                    ...region,
+                    latitude: userLocation.coords.latitude,
+                    longitude: userLocation.coords.longitude
+                }
+                console.log("🚀 ~ file: CoordinateInput.jsx:46 ~ getUserLocation ~ newLocation:", newLocation)
+                setRegion(newLocation)
+            }
+            useEffect(() => {
+                getUserLocation()
+            }, [])
 
             return (
                 <Modal
@@ -40,12 +61,7 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                     visible={mapModal}>
                     <View style={{ flex: 1 }}>
                         <MapView
-                            initialRegion={{
-                                latitude: 37.78825,
-                                longitude: -122.4324,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421,
-                            }}
+                            region={region}
                             onRegionChangeComplete={(region) => setRegion(region)}
                             loadingEnabled
                             loadingIndicatorColor="#F5DF4D"
@@ -67,7 +83,7 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                         >
                             <Text style={{ textAlign: 'center', textAlignVertical: 'center', height: 35, color: "white" }}>X</Text>
                         </Pressable>
-                        <View style={{ position: "absolute", top: "50%", left: windowWidth / 2 - 13, zIndex: 2 }}>
+                        <View style={{ position: "absolute", top: windowheight / 2 - 50, left: windowWidth / 2 - 25, zIndex: 2 }}>
                             <Icon name="crosshairs-gps" type="material-community" size={50} color={"black"} />
                         </View>
                         <View style={{ width: '100%', flex: 1, alignContent: "center", justifyContent: "center", alignItems: "center", position: "absolute", bottom: 100 }}>
