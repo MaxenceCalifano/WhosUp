@@ -202,7 +202,7 @@ export default function Map({ navigation }) {
                     <View style={styles.regionChangedButton_container}>
                         <Pressable onPress={() => {
                             setShowSearchInthisArea(false)
-                            edgeFetchActivities()
+                            edgeFetchActivities(location)
                         }} style={styles.regionChangedButton}>
                             <Text><FontAwesome name="search" size={24} color="black" /> </Text><Text>Rechercher dans cette zone</Text>
                         </Pressable>

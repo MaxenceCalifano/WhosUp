@@ -62,7 +62,10 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                     <View style={{ flex: 1 }}>
                         <MapView
                             region={region}
-                            onRegionChangeComplete={(region) => setRegion(region)}
+                            onRegionChangeComplete={(region, gesture) => {
+                                if (!gesture.isGesture) return
+                                setRegion(region)
+                            }}
                             loadingEnabled
                             loadingIndicatorColor="#F5DF4D"
                             loadingBackgroundColor="#fffff"
