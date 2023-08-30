@@ -46,7 +46,6 @@ export default function AddEventScreen({ navigation }) {
     const onTimeChange = (event, selectedDate) => {
         const currentDate = selectedDate.toString().slice(16, 25);
         const fullDate = dayjs(day + ' ' + currentDate, "YYYY-MM-DD HHmm")
-        console.log(Date.now() < fullDate)
         setDate(fullDate);
     }
 
@@ -77,6 +76,11 @@ export default function AddEventScreen({ navigation }) {
 
     const createNewActivity = async () => {
         setLoading(true)
+        if (date - dayjs() < 3500000) { // Activity is planned in less than an hour
+            setLoading(false)
+            setResponseMessage("Il n'est pas possible de plannifier une activité moins d'une heure à l'avance")
+            return
+        }
         const { error, status } = await supabase
             .from('activities')
             .insert({
