@@ -36,25 +36,31 @@ export default function SignUpScreen({ navigation }) {
                     console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ signUpWithEmail ~ error:", error)
                     setSubmitMessage("Une erreur est survenue, veuillez réessayer")
                 }
-                console.log("🚀 ~ file: SignUpScreen.jsx:36 ~ signUpWithEmail ~ data:", data)
+                console.log("🚀 ~ file: SignUpScreen.jsx:36 ~ signUpWithEmail ~ data:", data.user.identities)
                 if (data.user !== null) {
-                    setLoading(false)
-                    setUserCreated(true)
-                    setTimeout(() => {
-                        setUserCreated(false)
-                        navigation.navigate("Se connecter")
-                    }, 5000)
-                    const storeData = async (value) => {
-                        try {
-                            await AsyncStorage.setItem('welcomeScreenSeen', value)
-                        } catch (e) {
-                            console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ storeData ~ e:", e)
-                            // saving error
+                    if (data.user.identities && data.user.identities.length > 0) {
+                        setLoading(false)
+                        setUserCreated(true)
+                        setTimeout(() => {
+                            setUserCreated(false)
+                            navigation.navigate("Se connecter")
+                        }, 5000)
+                        const storeData = async (value) => {
+                            try {
+                                await AsyncStorage.setItem('welcomeScreenSeen', value)
+                            } catch (e) {
+                                console.log("🚀 ~ file: SignUpScreen.jsx:29 ~ storeData ~ e:", e)
+                                // saving error
 
+                            }
                         }
+                        storeData("false")
+                    } else {
+                        setLoading(false)
+                        setSubmitMessage("Une erreur est survenue, veuillez vérifier que l'adresse e-mail n'est pas déjà utilisée")
                     }
-                    storeData("false")
                 }
+
             } else {
                 setSubmitMessage("Votre mot de passe doit contenir au moins 8 caractères, un caractère spécial, et une majuscule")
             }
