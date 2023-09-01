@@ -40,7 +40,7 @@ export default {
       versionCode: 7,
       config: {
         googleMaps:{
-          apiKey: "AIzaSyA8HqahYLkO53-h022oIQeztlgNvWx_6vg"
+          apiKey: process.env.EXPO_PUBLIC_MAPS
         },
       },
       adaptiveIcon: {
