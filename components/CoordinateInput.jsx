@@ -68,7 +68,7 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                                     setPlace(data.description)
                                 }}
                                 query={{
-                                    key: 'AIzaSyCFqiJdXcKGbazXuBJayQHSau6sdZN0fMw',
+                                    key:
                                     language: 'fr',
                                 }}
                             />
