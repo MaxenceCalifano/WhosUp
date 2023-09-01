@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { View, Text, Pressable, Dimensions, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
@@ -6,10 +6,12 @@ import ActivityCard from './ActivityCard';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { supabase } from '../config/supabase'
 import { FontAwesome } from '@expo/vector-icons';
-import { useUser } from "../UserContext";
+import { useUser, UserContext } from "../UserContext";
 import * as Location from 'expo-location';
 
 export default function Map({ navigation }) {
+
+    const { setUserLocation } = useContext(UserContext)
 
     const { width, height } = Dimensions.get('window');
     const ASPECT_RATIO = width / height;
@@ -98,7 +100,7 @@ export default function Map({ navigation }) {
             longitude: userLocation.coords.longitude
         }
         console.log("🚀 ~ file: Map.jsx:94 ~ getUserLocation ~ newLocation:", newLocation)
-
+        setUserLocation(newLocation)
         setLocation(newLocation)
         edgeFetchActivities(newLocation)
         console.log("🚀 ~ file: Map.jsx:93 ~ getUserLocation ~ location:", userLocation.coords)

@@ -4,11 +4,13 @@ import { supabase } from './config/supabase'
 
 export const UserContext = createContext({
     user: null,
+    userLocation: null,
   })
 
   export const UserContextProvider = (props) => {
     const [session, setSession] = useState(null)
     const [user, setUser] = useState(null)
+    const [userLocation, setUserLocation] = useState(null)
 
     const updateUser = async () => {
       const session = await supabase.auth.getSession()
@@ -51,6 +53,8 @@ export const UserContext = createContext({
     const value = {
       session,
       user,
+      userLocation,
+      setUserLocation
     }
     return <UserContext.Provider value={value} {...props} />
   }

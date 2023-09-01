@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, TextInput, StyleSheet, Modal, Pressable, Dimensions, Button } from 'react-native'
 import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements'
-
+import { UserContext } from "../UserContext";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import * as Location from 'expo-location';
 import UserLocation from "./UserLocation";
 import styles from "../styles";
 
 
 export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLocation, location, setPlace }) {
-
+    const { userLocation } = useContext(UserContext)
+    console.log("🚀 ~ file: CoordinateInput.jsx:14 ~ CoordinateInput ~ userLocation:", userLocation)
     switch (selectedIndex) {
         case 0:
             // User's position
-            return <UserLocation setLocation={setLocation} setPlace={setPlace} />
+            return <UserLocation userLocation={userLocation} setLocation={setLocation} setPlace={setPlace} />
         case 1:
             // Coordinate
             const validateLocation = () => {
@@ -34,18 +34,16 @@ export default function CoordinateInput({ setSelectedIndex, selectedIndex, setLo
                 longitudeDelta: 0.0421
             })
             const getUserLocation = async () => {
-                let { status } = await Location.requestForegroundPermissionsAsync();
-
-                if (status !== 'granted') {
+                const locationGranted = userLocation !== null ? true : false;
+                if (locationGranted !== true) {
                     setErrorMsg('Permission to access location was denied');
                     return;
                 }
 
-                let userLocation = await Location.getCurrentPositionAsync({});
                 const newLocation = {
                     ...region,
-                    latitude: userLocation.coords.latitude,
-                    longitude: userLocation.coords.longitude
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude
                 }
                 console.log("🚀 ~ file: CoordinateInput.jsx:46 ~ getUserLocation ~ newLocation:", newLocation)
                 setRegion(newLocation)
