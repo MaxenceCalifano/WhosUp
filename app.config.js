@@ -33,8 +33,7 @@ export default {
       package: 'com.whosup.app',
       config: {
         googleMaps:{
-          apiKey: "AIzaSyA8HqahYLkO53-h022oIQeztlgNvWx_6vg"
-        },
+          apiKey: 
       },
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
