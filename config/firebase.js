@@ -7,7 +7,7 @@ import Constants  from "expo-constants";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyD4NY9M0j2F7qD2PcD5mEeldJqLap78VjE",
+    apiKey: 
     authDomain: "whosup-25c37.firebaseapp.com",
     projectId: "whosup-25c37",
     storageBucket: "whosup-25c37.appspot.com",
