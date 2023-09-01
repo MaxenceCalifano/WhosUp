@@ -54,7 +54,7 @@ export default function CoordinateInput({ selectedIndex, setLocation, location, 
                                     console.log('date', data, details);
                                 }}
                                 query={{
-                                    key: 'AIzaSyC2y8jzrQcwMvNhm0P273F-4elbS5kTFp0',
+                                    key:
                                     language: 'fr',
                                 }}
                             />
