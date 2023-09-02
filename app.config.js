@@ -3,7 +3,7 @@ export default {
     name: "Vantivities",
     slug: "whosUp",
     owner : 'velomarchand',
-    version: "1.0.6",
+    version: "1.0.7",
     orientation: "portrait",
     userInterfaceStyle: "light",
     scheme :"whosup",
@@ -37,7 +37,7 @@ export default {
     },
     android: {
       package: 'com.vantivities.app',
-      versionCode: 7,
+      versionCode: 8,
       config: {
         googleMaps:{
           apiKey: process.env.EXPO_PUBLIC_MAPS
