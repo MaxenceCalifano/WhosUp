@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import mainStyles from '../styles';
-
 import { FontAwesome, Ionicons, AntDesign } from '@expo/vector-icons';
-
 import UserProfile from '../screens/UserStack/UserProfile';
 import AddEventScreen from '../screens/UserStack/AddEventScreen';
 import UserEventScreen from '../screens/UserStack/UserEventsScreen';
@@ -15,13 +12,10 @@ import { supabase } from '../config/supabase'
 import { NewMessagesContext } from '../navigation/UserStack';
 import { useUser } from "../UserContext";
 
-
 export default function Main() {
 
     const { session } = useUser()
-    console.log("🚀 ~ file: Main.jsx:23 ~ Main ~ session:", session)
     const Tab = createBottomTabNavigator();
-    //const { unreadMessages } = useContext(UnreadMessagesContext)
     const { setNewMessage } = useContext(NewMessagesContext)
     const [unreadMessages, setUnreadMeassages] = useState(0)
 
@@ -37,8 +31,6 @@ export default function Main() {
     useEffect(() => {
         getUnreadMessages()
     }, [])
-
-    // useEffect(() => console.log(unreadMessages), [unreadMessages])
     /*
     quand il y a un changement, envoyer le payload dans le context
     * Ensuite il faut charger le total du nmbre de messages non lus
@@ -51,8 +43,6 @@ export default function Main() {
             'postgres_changes',
             { event: '*', schema: 'public', table: 'messages' },
             async (payload) => {
-                //console.log('main jsx Change received!', payload)
-                // setMessages((prevState) => [payload.new, ...prevState])
                 if (payload.eventType === "INSERT") {
                     setNewMessage({ chat_room_id: payload.new.chat_room_id, content: payload.new.content, user_id: payload.new.user_id })
                     getUnreadMessages()
@@ -61,13 +51,9 @@ export default function Main() {
                     //console.log("les messages sont lus")
                     getUnreadMessages()
                 }
-
             }
         )
         .subscribe()
-
-
-
 
     return (
         <Tab.Navigator
