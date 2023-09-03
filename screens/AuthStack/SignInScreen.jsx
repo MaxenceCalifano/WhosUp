@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import style from '../styles';
+import style from '../../styles';
 import { StyleSheet, View, TextInput, Pressable, Text, ActivityIndicator, Modal } from 'react-native'
-import { supabase } from '../config/supabase'
+import { supabase } from '../../config/supabase'
 
 export default function SignInScreen({ navigation }) {
 

@@ -1,12 +1,12 @@
 import { StyleSheet, View, Text, TextInput, FlatList } from 'react-native';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { supabase } from '../config/supabase'
+import { supabase } from '../../config/supabase'
 import { Ionicons } from '@expo/vector-icons';
-import { useUser } from "../UserContext";
-import { NewMessagesContext } from '../navigation/UserStack';
+import { useUser } from "../../UserContext";
+import { NewMessagesContext } from '../../navigation/UserStack';
 import dayjs from "dayjs";
 
-import styles from "../styles";
+import styles from "../../styles";
 
 function Chat({ route, navigation }) {
     let chatViewRef = useRef()

@@ -6,11 +6,11 @@ import mainStyles from '../styles';
 
 import { FontAwesome, Ionicons, AntDesign } from '@expo/vector-icons';
 
-import UserProfile from '../screens/UserProfile';
-import AddEventScreen from '../screens/AddEventScreen';
-import UserEventScreen from '../screens/UserEventsScreen';
+import UserProfile from '../screens/UserStack/UserProfile';
+import AddEventScreen from '../screens/UserStack/AddEventScreen';
+import UserEventScreen from '../screens/UserStack/UserEventsScreen';
 import Map from './Map';
-import ChatListScreen from '../screens/ChatListScreen';
+import ChatListScreen from '../screens/UserStack/ChatListScreen';
 import { supabase } from '../config/supabase'
 import { NewMessagesContext } from '../navigation/UserStack';
 import { useUser } from "../UserContext";

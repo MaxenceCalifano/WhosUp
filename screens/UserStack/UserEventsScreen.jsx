@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, Pressable, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import { Divider } from 'react-native-elements'
-import { supabase } from '../config/supabase'
-import { useUser } from "../UserContext";
+import { supabase } from '../../config/supabase'
+import { useUser } from "../../UserContext";
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import dayjs from "dayjs";
-import styles from "../styles"
+import styles from "../../styles"
 
 function UserEventScreen({ navigation }) {
 
@@ -64,12 +64,10 @@ function UserEventScreen({ navigation }) {
     )
 
     useFocusEffect(
-        React.useCallback(() => {
+        useCallback(() => {
             fetchHostActivites()
             fetchUserActivities()
         }, []))
-
-
 
     return (
         <View style={eventsScreenStyles.container}>
@@ -92,7 +90,6 @@ function UserEventScreen({ navigation }) {
                 }
                 <Divider style={eventsScreenStyles.dividers} />
             </ScrollView>
-
         </View>
     );
 }
@@ -123,6 +120,6 @@ const eventsScreenStyles = StyleSheet.create({
     },
     titles: {
         fontSize: 15,
-        fontWeight: 500
+        fontWeight: "500"
     }
 })

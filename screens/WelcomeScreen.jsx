@@ -1,7 +1,4 @@
-
-import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import reactDom from 'react-dom';
 import styles from '../styles';
 
 import { StyleSheet, View, Text, Pressable, Image } from 'react-native'

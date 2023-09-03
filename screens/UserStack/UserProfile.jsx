@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Divider } from "react-native-elements";
 import { View, Text, Button, StyleSheet, TextInput, Pressable } from 'react-native'
 import { decode } from 'base64-arraybuffer'
-import { supabase } from "../config/supabase";
-import { useUser } from "../UserContext";
+import { supabase } from "../../config/supabase";
+import { useUser } from "../../UserContext";
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 
 
-import styles from "../styles";
+import styles from "../../styles";
 
 export default function UserProfile({ navigation }) {
 

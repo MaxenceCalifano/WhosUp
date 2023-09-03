@@ -4,37 +4,41 @@ import { Input, Slider, Icon, Divider } from 'react-native-elements'
 import { Button, ButtonGroup } from "@rneui/themed";
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { supabase } from '../config/supabase'
+import { supabase } from '../../config/supabase'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import CoordinateInput from "../components/CoordinateInput";
+import CoordinateInput from "../../components/CoordinateInput";
 
-import styles from "../styles";
+import styles from "../../styles";
 import dayjs from "dayjs";
 
 const customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
 
 
-export default function UpdateEventScreen({ navigation, route }) {
+export default function AddEventScreen({ navigation }) {
 
-    const activity = route.params.activity
-    console.log("🚀 ~ file: UpdateEventScreen.jsx:22 ~ UpdateEventScreen ~ activity:", activity)
+    /*Get the id of the current user */
+    supabase.auth.getSession()
+        .then(res => { setHostId(res.data.session.user.id) })
+
 
     /* All event informations */
-    const [people, setPeople] = useState(activity.number_of_participants);
-    const [activityTitle, setActivityTitle] = useState(activity.activity_title);
-    const [activityDescription, setActivityDescription] = useState(activity.activity_description);
-    const [selectedActivityType, setSelectedActivityType] = useState(activity.activity_type);
-    const [date, setDate] = useState(activity.date);
-    const [location, setLocation] = useState(activity.location)
+    const [hostId, setHostId] = useState();
+    const [people, setPeople] = useState(1);
+    const [activityTitle, setActivityTitle] = useState();
+    const [activityDescription, setActivityDescription] = useState();
+    const [selectedActivityType, setSelectedActivityType] = useState('apéro');
+    const [date, setDate] = useState(dayjs());
+    //const [day, setDay] = useState();
+    const [location, setLocation] = useState()
 
     const [selectedIndex, setSelectedIndex] = useState()
     const [loading, setLoading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
     const [responseMessage, setResponseMessage] = useState('')
 
-    const [place, setPlace] = useState(`${activity.location.latitude}, ${activity.location.longitude}`) // Used to display the place selected by the google place picker
+    const [place, setPlace] = useState('') // Used to display the place selected by the google place picker
 
     /* Related with date picker*/
     let day;
@@ -70,12 +74,17 @@ export default function UpdateEventScreen({ navigation, route }) {
     }
     /* End of date picker dependencies */
 
-    const updateActivity = async () => {
+    const createNewActivity = async () => {
         setLoading(true)
-
+        if (date - dayjs() < 3500000) { // Activity is planned in less than an hour
+            setLoading(false)
+            setResponseMessage("Merci de plannifier votre acitvité au moins une heure à l'avance")
+            return
+        }
         const { error, status } = await supabase
             .from('activities')
-            .update({
+            .insert({
+                host_id: hostId,
                 activity_title: activityTitle,
                 activity_description: activityDescription,
                 activity_type: selectedActivityType,
@@ -83,11 +92,9 @@ export default function UpdateEventScreen({ navigation, route }) {
                 date: date,
                 location: location
             })
-            .eq('uid', activity.uid)
-
 
         if (error) {
-            console.log('UpdateEventScreen, ligne 91: ', error)
+            console.log('AddEventScreen, ligne 91: ', error, status)
             setLoading(false)
             if (error.code === "23502") {
                 Alert.alert("Veuillez renseigner tout les champs s'il vous plaît")
@@ -97,9 +104,8 @@ export default function UpdateEventScreen({ navigation, route }) {
             if (status === 401) setResponseMessage("Vous devez être connecté pour créer une activité")
             if (status >= 500) setResponseMessage("Le serveur ne répond pas, veuillez réessayer plus tard")
         }
-
-        console.log("🚀 ~ file: UpdateEventScreen.jsx:102 ~ updateActivity ~ status:", status)
-        if (status === 204) {
+        // TO DO créer une modale qui s'affiche quelques secondes puis rediriger vers la carte ou vers la page "mes activitées"
+        if (status === 201) {
             setIsSuccess(true)
             setLoading(false)
             setTimeout(() => {
@@ -109,7 +115,12 @@ export default function UpdateEventScreen({ navigation, route }) {
         }
     }
 
+    useEffect(() => {
+        console.log('location ' + location)
+    }, [location])
+
     return (
+        //   <ScrollView contentContainerStyle={{ minHeight: '100%' }} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
         <SafeAreaProvider>
             <View style={pageStyles.container}>
                 <ScrollView
@@ -121,7 +132,7 @@ export default function UpdateEventScreen({ navigation, route }) {
                                 <View style={pageStyles.modalView}>
                                     <View style={pageStyles.loaderContainer}>
                                         <ActivityIndicator color={styles.color} size={"large"} />
-                                        <Text style={{ marginTop: 10 }}>Mise à jour de votre activité..</Text>
+                                        <Text style={{ marginTop: 10 }}>Création de votre activité..</Text>
                                     </View>
                                 </View>
                             </Modal>
@@ -133,7 +144,7 @@ export default function UpdateEventScreen({ navigation, route }) {
                             <Modal animationType="fade" transparent={true}>
                                 <View style={pageStyles.modalView}>
                                     <View style={pageStyles.loaderContainer}>
-                                        <Text style={{ marginTop: 10 }}>Votre activité a été bien été modifiée !</Text>
+                                        <Text style={{ marginTop: 10 }}>Votre activité a été créée !</Text>
                                         <Text style={{ marginTop: 10, textAlign: "center" }}>Vous allez être redirigé vers la page de vos évènements dans quelques secondes</Text>
                                     </View>
                                 </View>
@@ -141,12 +152,12 @@ export default function UpdateEventScreen({ navigation, route }) {
                         </View>
                         : <></>
                     }
-                    <View style={{ height: Dimensions.get("screen").height, flex: 1, justifyContent: "space-between" }}>
+                    <View style={{ height: Dimensions.get("window").height, flex: 1, justifyContent: "space-between" }}>
                         {/*Activity title*/}
-                        <Input placeholder={activity.activity_title} value={activityTitle} containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
+                        <Input placeholder="Titre de l'activité" containerStyle={{ paddingHorizontal: 0, marginTop: pageStyles.marginTop }} onChangeText={(value) => setActivityTitle(value)} />
 
                         {/*Number of antendees input*/}
-                        <Text>Nombre de participants: {people}</Text>
+                        <Text>Nombre de participants : {people}</Text>
                         <Slider
                             value={people}
                             onValueChange={setPeople}
@@ -182,13 +193,15 @@ export default function UpdateEventScreen({ navigation, route }) {
                                 color="#454545"
                                 onPress={showPicker}
 
-                            />} label="jeux de société" value="jeux de société" />
-                            <Picker.Item label="apéro" value="apéro" />
-                            <Picker.Item label="randonée" value="randonée" />
+                            />} label="Jeux" value="jeux" />
+                            <Picker.Item label="Apéro" value="apéro" />
+                            <Picker.Item label="Sport" value="sport" />
+                            <Picker.Item label="Autre" value="autre" />
                         </Picker>
                         <Divider />
 
                         {/*Calendar */}
+                        <Text>Sélectionnez la date et l'heure de votre activité :</Text>
                         <Pressable style={{ flexDirection: 'row', paddingHorizontal: 0, gap: 5 }} titleStyle={{ color: '#454545' }} onPress={showPicker}>
                             <Icon
                                 name="calendar"
@@ -202,22 +215,24 @@ export default function UpdateEventScreen({ navigation, route }) {
                         <Divider />
 
                         {/*Activity description*/}
-                        <Text style={{ marginTop: pageStyles.marginTop }}>Description de l'activité</Text>
-                        <TextInput placeholder="Décrivez l'activité en quelques mots" value={activityDescription} onChangeText={value => setActivityDescription(value)} />
+                        <Text style={{ marginTop: pageStyles.marginTop }}>Description :</Text>
+                        <TextInput placeholder="Décrivez l'activité en quelques mots" onChangeText={value => setActivityDescription(value)} />
                         <Divider />
 
                         {/*Place input*/}
-                        <Text style={{ marginTop: pageStyles.marginTop }}>Lieu: {place}</Text>
+                        <Text style={{ marginTop: pageStyles.marginTop }}>Lieu : {place}</Text>
                         <ButtonGroup
-                            buttons={['Ma position', 'Coordonnées', "Autour d'un lieu"]}
+                            buttons={['Ma position', 'Sur la carte', "Autour d'un lieu"]}
                             selectedIndex={selectedIndex}
+                            buttonStyle={{ alignItems: "center", flexDirection: "row", justifyContent: "center" }}
                             onPress={(value) => {
                                 setSelectedIndex(value);
                             }}
                             selectedButtonStyle={{ backgroundColor: styles.color }} selectedTextStyle={{ color: "#454545" }}
                         />
                         <CoordinateInput setSelectedIndex={setSelectedIndex} selectedIndex={selectedIndex} setLocation={setLocation} location={location} setPlace={setPlace} />
-                        <Button title="Modifier l'activité" onPress={updateActivity} buttonStyle={{ backgroundColor: styles.color }} />
+
+                        <Button title="Créer une activité" onPress={createNewActivity} buttonStyle={{ backgroundColor: styles.color }} />
                         <Text>{responseMessage}</Text>
                     </View>
                 </ScrollView>

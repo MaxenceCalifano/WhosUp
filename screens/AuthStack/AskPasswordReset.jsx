@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { Button, Icon } from '@rneui/themed';
-import { TextInput } from "react-native-gesture-handler";
-import styles from "../styles";
-import { supabase } from '../config/supabase'
+import styles from "../../styles";
+import { supabase } from '../../config/supabase'
 
 function AskPasswordReset() {
 

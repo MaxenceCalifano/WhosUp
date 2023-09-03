@@ -3,11 +3,11 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import Main from '../components/Main'
-import ConfigureAccount from '../screens/ConfigureAccount'
-import Activity from "../screens/ActivityScreen";
-import Chat from "../screens/ChatScreen";
-import UpdateEventScreen from "../screens/UpdateEventScreen";
-import About from "../screens/About";
+import ConfigureAccount from '../screens/UserStack/ConfigureAccount'
+import Activity from "../screens/UserStack/ActivityScreen";
+import Chat from "../screens/UserStack/ChatScreen";
+import UpdateEventScreen from "../screens/UserStack/UpdateEventScreen";
+import About from "../screens/UserStack/About";
 
 const Stack = createNativeStackNavigator();
 export const NewMessagesContext = createContext({

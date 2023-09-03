@@ -3,9 +3,9 @@ import { StyleSheet, View, TextInput, Text, Pressable, Image, Button, Modal, Act
 import { Divider } from "react-native-elements";
 import * as ImagePicker from 'expo-image-picker';
 import { decode } from 'base64-arraybuffer'
-import styles from "../styles";
-import { supabase } from '../config/supabase'
-import { useUser } from "../UserContext";
+import styles from "../../styles";
+import { supabase } from '../../config/supabase'
+import { useUser } from "../../UserContext";
 
 export default function ConfigureAccountScreen({ navigation }) {
     const [name, setName] = useState()
