@@ -1,34 +1,28 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import dayjs from 'dayjs';
 
-function ActivityCard({ index, item, navigation }) {
-    /* let thumbnail;
-    if (item.activityType = "randonée") thumbnail = require('../assets/hiking_thumbnail.jpg')
-    if (item.activityType = "jeux de société") thumbnail = require('../assets/tablegame_thumbnail.jpg') 
-     navigation.navigate('Activité')
-    */
-    const thumbnail = item.activityType = "randonée" ? require('../assets/hiking_thumbnail.jpg') : require('../assets/tablegame_thumbnail.jpg')
+function ActivityCard({ index, activity, navigation }) {
+    // console.log("🚀 ~ file: ActivityCard.jsx:6 ~ ActivityCard ~ activity:", activity.activity_type === 'randonée')
 
     return (
         <Pressable style={styles.card}
-            onPress={() => navigation.navigate('Activité', { itemID: item.id })}>
-            <Image style={styles.image} source={thumbnail} />
+            onPress={() => navigation.navigate('Activité', { itemID: activity.uid })}>
+            <Image style={styles.image} source={activity.activity_type === "randonée" ? require('../assets/hiking_thumbnail.jpg') : activity.activity_type === "jeux de société" ? require('../assets/tablegame_thumbnail.jpg') : activity.activity_type === "autre" ? require('../assets/other_thumbnail.jpg') : require('../assets/drinks_thumbnail.jpg')} />
             <View style={styles.textContent}>
                 <View style={styles.firstColumn}>
-                    <View>
-                        <Text>{item.activityTitle}</Text>
-                        <Text>{item.activityDescription}</Text>
+                    <View >
+                        <Text style={styles.activityTitle}>{activity.activity_title}</Text>
+                        <Text>{activity.activity_description.slice(0, 30) + '...'}</Text>
                     </View>
-                    <View style={styles.date}>
-                        <Ionicons name="time-sharp" size={24} color="black" />
-                        <View>
-                            <Text>{item.date.slice(4, 10)}</Text>
-                            <Text>{item.date.slice(11, item.date.length)}</Text>
-                        </View>
+                    <View>
+                        {/* <Text>{activity.date.slice(4, 10)}</Text> */}
+                        <Text><FontAwesome5 name="calendar-day" size={24} color="black" /> {dayjs(activity.date).format('DD/MM')}</Text>
+                        <Text><Ionicons name="time-sharp" size={24} color="black" /> {dayjs(activity.date).format('HH:mm')}</Text>
                     </View>
                 </View>
 
-                <Text><Ionicons name="people" size={24} color="black" />{item.numberOfParticipants}</Text>
+                <Text><Ionicons name="people" size={24} color="black" />{activity.number_of_participants}</Text>
             </View>
         </Pressable>
     );
@@ -36,12 +30,12 @@ function ActivityCard({ index, item, navigation }) {
 
 const styles = StyleSheet.create({
     card: {
-        //padding: 10,
+        marginLeft: "2.5%",
+        // flex: 1,
         flexDirection: 'row',
-        // width: '100%',
         borderRadius: 20,
-        // height: '100%',
         backgroundColor: 'white',
+        minHeight: 100
     },
     image: {
         height: '100%',
@@ -49,14 +43,21 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 15,
         borderBottomLeftRadius: 15,
     },
+    activityTitle: {
+        fontWeight: 'bold'
+    },
     textContent: {
-        padding: 7
+        padding: 7,
+        //backgroundColor: 'red',
+        // width: '100%'
+        flex: 1
     },
     firstColumn: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%',
-        paddingHorizontal: 5
+        width: '65%',
+        paddingHorizontal: 5,
+        gap: 10,
     },
     date: {
         display: 'flex',
@@ -64,7 +65,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         backgroundColor: '#FFFF',
         borderRadius: 5,
-        alignItems: 'center'
+        alignItems: 'center',
+        textAlign: 'right'
     }
 });
 

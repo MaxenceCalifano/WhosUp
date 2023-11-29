@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+supabase/
 
 # macOS
 .DS_Store
@@ -16,5 +17,4 @@ web-build/
 
 my-app
 .env
-assets
-config
+*.pem

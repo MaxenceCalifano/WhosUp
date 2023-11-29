@@ -1,44 +1,56 @@
-import 'dotenv/config';
-
 export default {
   expo: {
-    name: "WhosUp",
+    name: "Vantivities",
     slug: "whosUp",
-    owner : 'velomarchand',
-    version: "1.0.0",
+    owner: "velomarchand",
+    version: "1.0.8",
     orientation: "portrait",
-    icon: "./assets/icon.png",
     userInterfaceStyle: "light",
+    scheme: "whosup",
     splash: {
       image: "./assets/splash.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff"
+      backgroundColor: "#F5DF4D",
+    },
+    build: {
+      production: {
+        channel: "production",
+      },
+    },
+    runtimeVersion: {
+      policy: "sdkVersion",
+    },
+    extra: {
+      eas: {
+        projectId: "3e85fa30-fc15-4e46-805e-c1d768961bd7",
+      },
     },
     updates: {
-      fallbackToCacheTimeout: 0
+      fallbackToCacheTimeout: 0,
+      url: "https://u.expo.dev/3e85fa30-fc15-4e46-805e-c1d768961bd7",
     },
-    assetBundlePatterns: [
-      "**/*"
-    ],
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+    },
+    androidStatusBar: {
+      backgroundColor: "#F5DF4D",
     },
     android: {
+      package: "com.vantivities.app",
+      versionCode: 9,
+      config: {
+        googleMaps: {
+          apiKey: process.env.EXPO_PUBLIC_MAPS,
+        },
+      },
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
-        backgroundColor: "#FFFFFF"
-      }
+        backgroundColor: "#F5DF4D",
+      },
     },
     web: {
-      favicon: "./assets/favicon.png"
+      favicon: "./assets/favicon.png",
     },
-    extra : {
-      firebaseApiKey: process.env.FIREBASE_API_KEY,
-      firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
-      firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
-      firebaseStorageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-      firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-      firebaseAppId: process.env.FIREBASE_APP_ID
-  }
-  }
-}
+  },
+  assetBundlePatterns: ["**/*"],
+};
