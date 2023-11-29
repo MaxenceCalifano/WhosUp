@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList, ActivityIndicator, Dimensions } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator, Dimensions, Text } from "react-native";
 import ChatRoomListItem from "../../components/ChatRoomListItem";
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useState, useContext, useEffect } from "react";
@@ -11,7 +11,7 @@ import { NewMessagesContext } from '../../navigation/UserStack';
 
 function ChatListScreen({ navigation }) {
     const { user } = useUser()
-    const [chatUsers, setChatUsers] = useState([])
+    const [chatRooms, setChatRooms] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
     //Message context
@@ -20,11 +20,11 @@ function ChatListScreen({ navigation }) {
     useEffect(() => {
 
         // Tests if the new message comes from a new chat or not
-        const isNewChatRoom = chatUsers.some(room => room.chat_room_id === newMessage.chat_room_id)
+        const isNewChatRoom = chatRooms.some(room => room.chat_room_id === newMessage.chat_room_id)
         if (!isNewChatRoom) fetchData(user.id)
 
         //Gets the new messages from existing chat
-        const chatRooms = chatUsers.map(room => {
+        const rooms = chatRooms.map(room => {
             if (room.chat_room_id === newMessage.chat_room_id) {
                 room.content = newMessage.content
                 room.unread_messages_count = room.unread_messages_count + 1
@@ -33,7 +33,7 @@ function ChatListScreen({ navigation }) {
         })
         // console.log("🚀 ~ file: ChatListScreen.jsx:28 ~ chatRooms ~ chatRooms:", chatRooms)
 
-        setChatUsers(chatRooms)
+        setChatRooms(rooms)
 
     }, [newMessage])
 
@@ -51,16 +51,16 @@ function ChatListScreen({ navigation }) {
 
             // si il y a des discussion on ne veut charger que les nouvelles
             // trouver dans data les discussion qui ne se trouvaient pas déja dans le state
-            /*  if (chatUsers.length !== 0) {
-                 console.log('chat user length', chatUsers.length)
+            /*  if (chatRoom.length !== 0) {
+                 console.log('chat user length', chatRoom.length)
                  let filteredData = []
                  data.forEach(elem => {
-                     if (chatUsers.findIndex(room => room.chat_room_id === elem.chat_room_id) === -1) filteredData.push(elem)
+                     if (chatRoom.findIndex(room => room.chat_room_id === elem.chat_room_id) === -1) filteredData.push(elem)
                  })
-                 //chatUsers.filter(chat => data.every(elem => elem.chat_room_id !== chat.chat_room_id))
+                 //chatRoom.filter(chat => data.every(elem => elem.chat_room_id !== chat.chat_room_id))
                  console.log("🚀 ~ file: ChatListScreen.jsx:56 ~ fetchData ~ filteredData:", filteredData)
              } */
-            setChatUsers(chatsArray)
+            setChatRooms(chatsArray)
             setIsLoading(false)
         }
         if (error) console.log("🚀 ~ file: ChatListScreen.jsx:24 ~ fetchData ~ error:", error)
@@ -68,23 +68,27 @@ function ChatListScreen({ navigation }) {
 
     useFocusEffect(
         useCallback(() => {
-            setChatUsers([])
+            setChatRooms([])
             fetchData(user.id)
         }, []))
 
     return (
-        <View style={chatStyles.container}>
+        <View style={chatStyles.wrapper}>
             {
-                isLoading ? <View style={chatStyles.loaderContainer}>
+                isLoading ? <View style={chatStyles.container}>
                     <ActivityIndicator color={styles.color} size={"large"} />
                 </View>
-                    : <FlatList
-                        data={chatUsers}
+                    : chatRooms.length > 0 ?
+                        <FlatList
+                        data={chatRooms}
                         renderItem={item => <ChatRoomListItem
                             navigation={navigation}
                             item={item.item}
                             keyExtractor={item => item.user_id} />}
                     />
+                : <View style={chatStyles.container}>
+                    <Text style={chatStyles.noDiscussions}>Vous n'avez pas encore de discussion</Text>
+                </View>
             }
 
         </View>
@@ -92,13 +96,16 @@ function ChatListScreen({ navigation }) {
 }
 
 const chatStyles = StyleSheet.create({
-    container: {
+    wrapper: {
         paddingHorizontal: 10,
     },
-    loaderContainer: {
+    container: {
         display: "flex",
         justifyContent: 'center',
         height: Dimensions.get('window').height,
+    },
+    noDiscussions: {
+        textAlign:'center'
     }
 })
 export default ChatListScreen;

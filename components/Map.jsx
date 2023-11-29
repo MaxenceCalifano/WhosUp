@@ -73,7 +73,7 @@ export default function Map({ navigation }) {
         console.log("🚀 ~ file: Map.jsx:62 ~ displayConfigureAccount ~ error:", error)
 
 
-        data[0].avatar_url === null || data[0].username === null ? navigation.navigate("Configurer le compte")
+        data[0]?.avatar_url === null || data[0]?.username === null ? navigation.navigate("Configurer le compte")
             : null
     }
 
