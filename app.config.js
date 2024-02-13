@@ -37,6 +37,7 @@ export default {
     },
     android: {
       package: "com.vantivities.app",
+      googleServicesFile: "./google-services.json",
       versionCode: 9,
       config: {
         googleMaps: {

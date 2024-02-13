@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "746922089335",
+    "project_id": "vantivities-notifications",
+    "storage_bucket": "vantivities-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746922089335:android:b894287c51f57063845f72",
+        "android_client_info": {
+          "package_name": "com.vantivities.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO1tR8WhDZxz9VBi4dfIqwtFzIFqciC4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
