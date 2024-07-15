@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import style from '../../styles';
 import { StyleSheet, View, TextInput, Pressable, Text, ActivityIndicator, Modal } from 'react-native'
 import { supabase } from '../../config/supabase'
+import { Feather } from '@expo/vector-icons';
 
 export default function SignInScreen({ navigation }) {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [errorMessage, setErrorMessage] = useState("")
     const [isLoading, setIsloading] = useState(false)
 
@@ -17,9 +19,8 @@ export default function SignInScreen({ navigation }) {
             password: password
         })
         if (data) setIsloading(false)
-        if (error) {
-            console.log("🚀 ~ file: SignInScreen.jsx:21 ~ login ~ error:", error)
-            setErrorMessage(error.message)
+        if (error.message === "Invalid login credentials") {
+            setErrorMessage("E-mail ou mot de passe invalide")
         }
     }
 
@@ -27,7 +28,11 @@ export default function SignInScreen({ navigation }) {
         <View style={styles.container}>
             <Text style={[styles.text, { fontSize: 25 }]} >Bon retour parmi nous !</Text>
             <TextInput keyboardType="email-address" style={style.input} placeholder="e-mail" onChangeText={(value) => setEmail(value)} />
-            <TextInput secureTextEntry style={style.input} placeholder="mot de passe" onChangeText={(value) => setPassword(value)} />
+            <View style={[style.input, {display: 'flex', flexDirection:"row", justifyContent:"space-between"}]}>
+            <TextInput secureTextEntry={secureTextEntry} placeholder="mot de passe" onChangeText={(value) => setPassword(value)} />
+            {!secureTextEntry && <Feather onPress={() => setSecureTextEntry(!secureTextEntry)} name="eye" size={24} color="black" />}
+            {secureTextEntry && <Feather onPress={() => setSecureTextEntry(!secureTextEntry)} name="eye-off" size={24} color="black" />}
+            </View>
             <Pressable style={[style.button, styles.button]} onPress={login}>
                 <Text style={[styles.text, { color: style.color, fontSize: 20 }]}>Connexion</Text>
             </Pressable>
