@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Divider } from "react-native-elements";
 import { View, Text, Button, StyleSheet, TextInput, Pressable } from 'react-native'
 import { decode } from 'base64-arraybuffer'
 import { supabase } from "../../config/supabase";
-import { useUser } from "../../UserContext";
+import { useUser, UserContext } from "../../UserContext";
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-
-
+import { useTranslation } from "react-i18next";
 import styles from "../../styles";
+import { Entypo } from '@expo/vector-icons';
 
 export default function UserProfile({ navigation }) {
-
+    const {t} = useTranslation()
     const { user } = useUser()
+    const { userLanguage } = useContext(UserContext)
+    console.log("🚀 ~ UserProfile ~ userLanguage:", userLanguage)
 
     const fetchProfile = async () => {
         let { data: profiles, error } = await supabase
@@ -125,6 +127,11 @@ export default function UserProfile({ navigation }) {
                 <Text>{username}</Text>
             </View>
             <Divider />
+            <Pressable onPress={() => navigation.navigate('chooseLanguage')} className="flex-row ">
+                <Text className="flex-1">{t('settings.chooseLanguage')}</Text>
+                <Entypo name="chevron-right" size={24} color="black" />
+            </Pressable>
+            <Divider />
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <Text>Photo de profil</Text>
                 <Pressable onPress={imagePicker}>
@@ -149,7 +156,7 @@ export default function UserProfile({ navigation }) {
 
 
             {updatingPhoto ? <Button title="changer de photo" color={styles.color} onPress={updateAvatar} /> : <></>}
-            {responseMessage ? <Text>{responseMessage}</Text> : ""}
+            {responseMessage && <Text>{responseMessage}</Text>}
             {
                 newPassword ?
                     <View style={{ flex: 1, gap: 15 }}>

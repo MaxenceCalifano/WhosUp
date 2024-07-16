@@ -8,6 +8,8 @@ import Activity from "../screens/UserStack/ActivityScreen";
 import Chat from "../screens/UserStack/ChatScreen";
 import UpdateEventScreen from "../screens/UserStack/UpdateEventScreen";
 import About from "../screens/UserStack/About";
+import chooseLanguage from "../screens/UserStack/ChooseLanguage";
+import { useTranslation } from "react-i18next";
 
 const Stack = createNativeStackNavigator();
 export const NewMessagesContext = createContext({
@@ -16,6 +18,7 @@ export const NewMessagesContext = createContext({
 
 export default function UserStack() {
     const [newMessage, setNewMessage] = useState("")
+    const {t} = useTranslation()
     return (
         <NewMessagesContext.Provider value={{ newMessage, setNewMessage }}>
             <NavigationContainer>
@@ -34,6 +37,7 @@ export default function UserStack() {
                                 gestureEnabled: false,
                                 headerLeft: () => (<></>),
                             }} />
+                        <Stack.Screen name="chooseLanguage" options={{title: t('pages.chooseLanguage')}} component={chooseLanguage} />
                     </Stack.Group>
                 </Stack.Navigator>
             </NavigationContainer>
