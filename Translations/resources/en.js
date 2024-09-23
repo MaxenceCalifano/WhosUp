@@ -6,8 +6,11 @@ export default {
     chooseLanguage: "Choose your language",
   },
   language: {
-    english: "english",
-    french: "french",
-    spanish: "spanish",
+    english: "English",
+    french: "French",
+    spanish: "Spanish",
+  },
+  button: {
+    validate: "Validate",
   },
 };

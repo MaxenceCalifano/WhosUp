@@ -11,7 +11,7 @@ export const UserContextProvider = (props) => {
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
-  const [userLanguage, setUserLanguage] = useState("en");
+  const [userLanguage, setUserLanguage] = useState("gb");
 
   const updateUser = async () => {
     const session = await supabase.auth.getSession();

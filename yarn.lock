@@ -6123,6 +6123,11 @@ react-is@^18.1.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
 
+react-native-country-flag@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-country-flag/-/react-native-country-flag-2.0.2.tgz#ef22a6017f3118aaeae23c0409663c18e49241bd"
+  integrity sha512-5LMWxS79ZQ0Q9ntYgDYzWp794+HcQGXQmzzZNBR1AT7z5HcJHtX7rlk8RHi7RVzfp5gW6plWSZ4dKjRpu/OafQ==
+
 react-native-elements@^3.4.2:
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-3.4.3.tgz#c33919002aef83a0c0f98d0ed56009714ad9b1b3"
