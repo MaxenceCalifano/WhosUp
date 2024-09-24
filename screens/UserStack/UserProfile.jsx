@@ -3,7 +3,7 @@ import { Divider } from "react-native-elements";
 import { View, Text, Button, StyleSheet, TextInput, Pressable } from 'react-native'
 import { decode } from 'base64-arraybuffer'
 import { supabase } from "../../config/supabase";
-import { useUser, UserContext } from "../../UserContext";
+import { useUser } from "../../UserContext";
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from "react-i18next";
@@ -13,8 +13,6 @@ import { Entypo } from '@expo/vector-icons';
 export default function UserProfile({ navigation }) {
     const {t} = useTranslation()
     const { user } = useUser()
-    const { userLanguage } = useContext(UserContext)
-    console.log("🚀 ~ UserProfile ~ userLanguage:", userLanguage)
 
     const fetchProfile = async () => {
         let { data: profiles, error } = await supabase
