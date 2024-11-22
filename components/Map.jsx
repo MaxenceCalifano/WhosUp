@@ -69,8 +69,6 @@ export default function Map({ navigation }) {
             .select('username, avatar_url')
             .eq('id', session.user.id)
 
-        console.log("🚀 ~ file: Map.jsx:65 ~ displayConfigureAccount ~ data:", data)
-        console.log("🚀 ~ file: Map.jsx:62 ~ displayConfigureAccount ~ error:", error)
 
 
         data[0]?.avatar_url === null || data[0]?.username === null ? navigation.navigate("Configurer le compte")

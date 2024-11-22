@@ -1,6 +1,5 @@
 import React, { useEffect, useState, createContext, useContext } from "react";
 import { supabase } from "./config/supabase";
-
 export const UserContext = createContext({
   user: null,
   userLocation: null,
@@ -11,21 +10,12 @@ export const UserContextProvider = (props) => {
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
-  const [userLanguage, setUserLanguage] = useState("gb");
 
   const updateUser = async () => {
     const session = await supabase.auth.getSession();
-    console.log(
-      "🚀 ~ file: UserContext.js:15 ~ updateUser ~ session:",
-      session
-    );
 
     if (session.data.session !== null) {
       setSession(session.data.session);
-      console.log(
-        "🚀 ~ file: UserContext.js:19 ~ updateUser ~ session:",
-        session
-      );
       setUser(session.data.session.user);
     }
 
@@ -61,8 +51,6 @@ export const UserContextProvider = (props) => {
     user,
     userLocation,
     setUserLocation,
-    userLanguage,
-    setUserLanguage,
   };
   return <UserContext.Provider value={value} {...props} />;
 };
